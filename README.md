@@ -1,3 +1,8 @@
+# Table of Contents
+* [Introduction](#Introduction)
+* [Whetting Your Appetite](#Whetting-Your-Appetite)
+* [Using the Python Interpreter](#Using-the-Python-Interpreter)
+
 # Introduction
 
 Python is an easy-to-learn, powerful programming language known for its efficient data structures, simple object-oriented approach, elegant syntax, dynamic typing, and interpreted nature, making it ideal for scripting and rapid development across platforms.
