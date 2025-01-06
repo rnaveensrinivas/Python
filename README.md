@@ -9,23 +9,13 @@
 
 # Introduction
 
-Python is an easy-to-learn, powerful programming language known for its efficient data structures, simple object-oriented approach, elegant syntax, dynamic typing, and interpreted nature, making it **ideal for scripting and rapid development across platforms**.
-
-## Key Features:
-- **High-level Data Structures**: Powerful and easy-to-use data structures.
-- **Object-Oriented**: Supports simple object-oriented programming.
-- **Elegant Syntax**: Clean and easy-to-understand syntax.
-- **Dynamic Typing**: Dynamically assigns types to variables.
-- **Interpreted**: Executes code line-by-line for quick development.
-
-## Extensibility:
-Python can be extended with functions and data types which are written in C, C++, or other languages callable from C, and is ???suitable as an extension language for customizable applications.
+Python is an easy-to-learn, powerful programming language known for its efficient high level data structures, simple object-oriented approach, elegant syntax, dynamic typing, and interpreted nature, making it ideal for scripting and rapid development across platforms.
 
 ---
 
 # Whetting Your Appetite
 
-Python is a versatile, easy-to-learn programming language that caters to a wide range of tasks, from scripting to GUI applications and game development. Its simplicity, power, and wide applicability make it an excellent choice for programmers of all levels.
+Python is a versatile  programming language that caters to a wide range of tasks, from scripting to GUI applications and game development. Its simplicity, power, and wide applicability make it an excellent choice for programmers of all levels.
 
 ---
 
@@ -77,11 +67,11 @@ Python is a versatile, easy-to-learn programming language that caters to a wide 
 ---
 
 ## Extensibility
-- Python can be extended using **C**:
+- Python can be extended with functions and data types which are written in C, C++, or other languages callable from C, For example,
   - Add new built-in functions or modules for:
     - Performance-critical operations.
     - Access to binary-only libraries (e.g., vendor-specific graphics libraries).
-- Embed the Python interpreter into C applications:
+- One can also embed the Python interpreter into C applications:
   - Use Python as an extension or command language within custom applications.
 
 ---
@@ -1270,7 +1260,7 @@ else:
 
 ## `for` Statements
 
-The `for` statement iterates over items in a sequence (like a list or string) in order:
+The `for` statement iterates over items of any sequence (like a list or string) in order:
 
 ```python
 # Syntax 
@@ -1320,7 +1310,7 @@ for num in nums:
     if num % 2 == 0:
         nums.append(num * 2)  # Modifying the list during iteration
 ```
-##### What Happens?
+##### What Happend?
 
 * The iterator starts with the original list, [1, 2, 3, 4, 5].
 * When it encounters 2, it appends 4 (twice its value) to the list.
@@ -1333,7 +1323,7 @@ for num in nums:
 
 `type()` is a built-in function in Python. It is used for two primary purposes:
 
-### Checking the Type of an Object*
+### Checking the Type of an Object
 When called with one argument, `type(obj)` returns the type of the object `obj`.  
 Example:
 ```python
@@ -1359,17 +1349,18 @@ print(obj.greet())      # Output: Hello
 
 So, `type()` is versatile, serving both to inspect objects and to define new classes dynamically.
 
+## Iterable 
+Iterable is an object **capable of returning its members one at a time**. Examples of iterables include all sequence types (such as list, str, and tuple) and some non-sequence types like dict, file objects, and objects of any classes you define with an __iter__() method or with a __getitem__() method that implements sequence semantics.
+
 ## The `range()` Function
 
-Use the built-in `range(start, stop, step)` function to generate sequences of numbers:
+Use the built-in `range(start, stop, step)` function to generate sequences of numbers (**arthimetic progressions**):
 
 ```python
-for i in range(5):
+for i in range(5): # end is not included 
     print(i)
-```
 
-**Output:**
-```
+# Outputs
 0
 1
 2
@@ -1385,7 +1376,7 @@ print(list(range(0, 10, 3)))     # [0, 3, 6, 9]
 print(list(range(-10, -100, -30)))  # [-10, -40, -70]
 ```
 
-### Iterating Over Indices
+### Iterating Over Indices of a Sequence
 
 Combine `range()` and `len()` to iterate over sequence indices:
 
@@ -1393,10 +1384,8 @@ Combine `range()` and `len()` to iterate over sequence indices:
 a = ['Mary', 'had', 'a', 'little', 'lamb']
 for i in range(len(a)):
     print(i, a[i])
-```
 
-**Output:**
-```
+# Outputs
 0 Mary
 1 had
 2 a
@@ -1414,7 +1403,7 @@ for i, word in enumerate(a):
 
 ### Characteristics of `range()`
 
-`range()` returns an iterable, not a list, **saving memory**. Example of using `range()` with `sum()`:
+`range()` returns an iterable, not a list, **saving memory**. it returns successive elements when invoked. Example of using `range()` with `sum()`:
 
 ```python
 print(sum(range(4)))  # 0 + 1 + 2 + 3 = 6
@@ -1620,20 +1609,23 @@ Patterns can bind variables, extracting components from the matched value.
 match point:
     case (0, 0):
         print("Origin")
-    case (0, y):
+    case (0, y): # binding the value of y from point
         print(f"Y={y}")
-    case (x, 0):
+    case (x, 0): # binding the value of x from point
         print(f"X={x}")
-    case (x, y):
+    case (x, y): # essentially unpacking the point, (x, y) = point
         print(f"X={x}, Y={y}")
     case _:
         raise ValueError("Not a point")
 ```
 
+In the above, `x` and `y` are **capture variables**, they fetch the value from the expression.
+
+Now, that we have worked with tuple, it's not a big stretch to talk about Classes and Objects. 
+
 ### Matching Objects with Attributes
 Class instances can be matched using patterns resembling constructors, binding attributes to variables.
 
-#### Example: Object Matching
 ```python
 class Point:
     def __init__(self, x, y):
@@ -1642,11 +1634,11 @@ class Point:
 
 def where_is(point):
     match point:
-        case Point(x=0, y=0):
+        case Point(x=0, y=0): # these are matching varialbes. 
             print("Origin")
-        case Point(x=0, y=y):
+        case Point(x=0, y=y): # y is capture variable. 
             print(f"Y={y}")
-        case Point(x=x, y=0):
+        case Point(x=x, y=0): # x is capture variable.
             print(f"X={x}")
         case Point():
             print("Somewhere else")
@@ -1655,7 +1647,7 @@ def where_is(point):
 ```
 
 ### Using `__match_args__`
-The `__match_args__` attribute specifies the **order of attributes** for positional matching.
+The `__match_args__` attribute specifies the **order of attributes** for positional matching that can be used in `match` statements.
 ```python
 class Point:
     __match_args__ = ('x', 'y')
@@ -1664,16 +1656,15 @@ class Point:
         self.y = y
 
 match point:
-    case Point(1, var):
+    case Point(1, var): # var is capture variable. 
         print(f"Y={var}")
-    case Point(x=1, y=var):
+    case Point(x=1, y=var): # var is capture variable. 
         print(f"Y={var}")
 ```
 
 ### Nested Patterns
 Patterns can be nested for complex matching scenarios.
 
-#### Example: Matching Lists of Objects
 ```python
 class Point:
     __match_args__ = ('x', 'y')
@@ -1686,7 +1677,7 @@ match points:
         print("No points")
     case [Point(0, 0)]:
         print("The origin")
-    case [Point(x, y)]:
+    case [Point(x, y)]: 
         print(f"Single point {x}, {y}")
     case [Point(0, y1), Point(0, y2)]:
         print(f"Two on the Y axis at {y1}, {y2}")
@@ -1697,7 +1688,6 @@ match points:
 ### Using Guards with `if`
 Guards can **add conditions to patterns**, filtering matches further.
 
-#### Example: Guard in Pattern
 ```python
 match point:
     case Point(x, y) if x == y:
@@ -1717,7 +1707,7 @@ Match arbitrary sequences like lists or tuples (not iterators or strings). Suppo
 #### Mapping Patterns:
 Match dictionaries by keys:
  ```python
- case {"bandwidth": b, "latency": l}:
+ case {"bandwidth": b, "latency": l}: # other keys are ignored
      print(f"Bandwidth={b}, Latency={l}")
  ```
 
@@ -1729,7 +1719,7 @@ case (Point(x1, y1), Point(x2, y2) as p2):
 ```
 
 #### Literal Comparison:
-Most **literals are compared by equality**. `True`, `False`, and `None` are compared by identity.
+Most **literals are compared by equality**. However **singleton** `True`, `False`, and `None` are compared by identity.
 
 #### Named Constants:
 Prevent interpretation as capture variables using dotted names:
@@ -1749,6 +1739,43 @@ match color:
    case Color.BLUE:
        print("I'm feeling the blues :(")
 ```
+
+## `in` Keyword
+
+The `in` keyword is used to check for **membership** in sequences (like lists, strings, tuples, or sets) or to iterate through items in an iterable.
+
+### Uses of `in`
+
+#### Membership Testing:
+Checks if an element exists in a sequence.
+
+```python
+fruits = ["apple", "banana", "cherry"]
+print("apple" in fruits)  # True
+print("grape" in fruits)  # False
+```
+
+#### Iteration in Loops:
+Used in `for` loops to iterate over elements in an iterable.
+
+```python
+for fruit in fruits:
+   print(fruit)
+# Output:
+# apple
+# banana
+# cherry
+```
+
+---
+
+#### Negation with `not in`
+Checks if an element does **not** exist in a sequence.
+
+```python
+print("grape" not in fruits)  # True
+```
+---
 
 ## Function
 
@@ -1782,7 +1809,7 @@ Functions are executed when called, e.g., `fib(2000)`.
 #### Local Symbol Table:  
 Each function call creates a new local symbol table for its variables. Variables are first looked up in the local table, then in enclosing functions' tables, global scope, and finally in built-in names.
 
-#### Global Variables
+#### Assigning to Global Variables
 The `global` keyword is used **declare** that you want to modify a variable defined at the global (module) level inside a function.
 
 ```python
@@ -1806,7 +1833,7 @@ Counter outside function: 2
 
 Without the `global` statement, the function would create a new local variable `counter`, and the global `counter` would remain unchanged.
 
-#### Nonlocal Variables:
+#### Assigning to Nonlocal Variables:
 The `nonlocal` keyword is used when you need to modify a variable from an enclosing (non-global) scope, such as in a nested function.
 
 ```python
@@ -1968,144 +1995,131 @@ If a mutable object (e.g., a list) is passed as an argument, modifications insid
 
 Default argument values in Python allow functions to be called with fewer arguments than they are defined to accept. This provides flexibility and avoids repetitive argument passing in common use cases.
 
-1. **Basic Syntax**:
-   - Default values are defined by assigning values to parameters in the function definition.
-   - For example:
-     ```python
-     def ask_ok(prompt, retries=4, reminder='Please try again!'):
-         ...
-     ```
+#### Basic Syntax:
+Default values are defined by assigning values to parameters in the function definition. For example:
+ ```python
+ def ask_ok(prompt, retries=4, reminder='Please try again!'):
+     ...
+ ```
 
-2. **Function Usage**:
-   - You can call such functions in multiple ways:
-     - **Only mandatory argument**: `ask_ok('Do you really want to quit?')`
-     - **One optional argument**: `ask_ok('OK to overwrite the file?', 2)`
-     - **All arguments**: `ask_ok('OK to overwrite the file?', 2, 'Come on, only yes or no!')`
+#### Function Usage:
+You can call such functions in multiple ways:
+ - **Only mandatory argument**: `ask_ok('Do you really want to quit?')`
+ - **One optional argument**: `ask_ok('OK to overwrite the file?', 2)`
+ - **All arguments**: `ask_ok('OK to overwrite the file?', 2, 'Come on, only yes or no!')`
 
-3. **Evaluation of Default Values**:
-   - Default values are evaluated **at the time of function definition**, not at runtime.
-   - Example:
-     ```python
-     i = 5
-     def f(arg=i):
-         print(arg)
-     i = 6
-     f()  # Prints 5 because the value of `i` was captured when the function was defined.
-     ```
+#### Evaluation of Default Values:
+Default values are evaluated **at the time of function definition**, not at runtime. For example:
+```python
+i = 5
+def f(arg=i):
+   print(arg)
+i = 6
+f()  # Prints 5 because the value of `i` was captured when the function was defined.
+```
 
-4. **Using Mutable Default Arguments**:
-   - Default values are evaluated **only once**, which can lead to unintended behavior if the default is a mutable object (like a list or dictionary).
-   - Example of unintended behavior:
-     ```python
-     def f(a, L=[]):
-         L.append(a)
-         return L
-     print(f(1))  # [1]
-     print(f(2))  # [1, 2]
-     print(f(3))  # [1, 2, 3]
-     ```
-     The list `L` persists across calls because it is shared between calls.
+#### Using Mutable Default Arguments:
+Default values are evaluated **only once**, which can lead to unintended behavior if the default is a mutable object (like a list or dictionary). Example of unintended behavior:
+```python
+def f(a, L=[]): # L = [] get's a location and points to it across calls.
+   L.append(a)
+   return L
+print(f(1))  # [1]
+print(f(2))  # [1, 2]
+print(f(3))  # [1, 2, 3]
+```
+The list `L` persists across calls because it is shared between calls.
 
-5. **Avoiding Mutable Defaults**:
-   - To avoid this issue, use `None` as the default value and initialize the mutable object inside the function:
-     ```python
-     def f(a, L=None):
-         if L is None:
-             L = []
-         L.append(a)
-         return L
-     print(f(1))  # [1]
-     print(f(2))  # [2]
-     print(f(3))  # [3]
-     ```
+#### Avoiding Mutable Defaults:
+To avoid this issue, use `None` as the default value and initialize the mutable object inside the function:
+```python
+def f(a, L=None):
+   if L is None:
+       L = []
+   L.append(a)
+   return L
+print(f(1))  # [1]
+print(f(2))  # [2]
+print(f(3))  # [3]
+```
 
 ---
 
-#### **Best Practices**
+#### Best Practices
 - Avoid using mutable objects as default values to prevent unexpected behavior.
 - Use `None` as the default and explicitly initialize mutable objects inside the function body.
 - Always consider how the default value's evaluation timing might affect function behavior.
 
-### Keyword Arguments
+### Keyword Arguments (Named Arguments)
 
 Keyword arguments allow functions to be called with arguments explicitly named using the format `kwarg=value`. This enhances flexibility, clarity, and allows positional and optional arguments to be mixed effectively.
 
----
+#### Basic Usage:
+A function can have required positional arguments and optional (default argument ones) keyword arguments:
+```python
+def parrot(voltage, state='a stiff', action='voom', type='Norwegian Blue'):
+   print("-- This parrot wouldn't", action, end=' ')
+   print("if you put", voltage, "volts through it.")
+   print("-- Lovely plumage, the", type)
+   print("-- It's", state, "!")
 
-1. **Basic Usage**:
-   - A function can have required positional arguments and optional keyword arguments:
-     ```python
-     def parrot(voltage, state='a stiff', action='voom', type='Norwegian Blue'):
-         print("-- This parrot wouldn't", action, end=' ')
-         print("if you put", voltage, "volts through it.")
-         print("-- Lovely plumage, the", type)
-         print("-- It's", state, "!")
-     ```
-   - Example calls:
-     ```python
-     parrot(1000)                                # 1 positional argument
-     parrot(voltage=1000)                        # 1 keyword argument
-     parrot(voltage=1000000, action='VOOOOOM')   # 2 keyword arguments
-     parrot(action='VOOOOOM', voltage=1000000)   # Order doesn't matter for keyword arguments
-     parrot('a million', 'bereft of life', 'jump')  # 3 positional arguments
-     parrot('a thousand', state='pushing up the daisies')  # Mixed positional and keyword
-     ```
+# Valid Calls
+parrot(1000)                                        # 1 positional argument
+parrot(voltage=1000)                                # 1 keyword argument
+parrot(voltage=1000000, action='VOOOOOM')           # 2 keyword arguments
+parrot(action='VOOOOOM', voltage=1000000)           # Order doesn't matter for keyword arguments
+parrot('a million', 'bereft of life', 'jump')       # 3 positional arguments
+parrot('a thousand', state='pushing up  daisies')   # Mixed positional and keyword
+```
 
-2. **Invalid Calls**:
-   - Missing required arguments: `parrot()` → Error.
-   - Mixing positional arguments after keyword arguments: `parrot(voltage=5.0, 'dead')` → Error.
-   - Providing multiple values for the same argument: `parrot(110, voltage=220)` → Error.
-   - Using unknown arguments: `parrot(actor='John Cleese')` → Error.
+#### Invalid Calls:
+- Missing required arguments: `parrot()` → Error.
+- Mixing positional arguments **after** keyword arguments: `parrot(voltage=5.0, 'dead')` → Error.
+- Providing multiple values for the same argument: `parrot(110, voltage=220)` → Error.
+- Using unknown arguments: `parrot(actor='John Cleese')` → Error.
 
-3. **Rules for Keyword Arguments**:
-   - Keyword arguments must **follow all positional arguments**.
-   - Each argument can receive a value only once.
-   - The order of keyword arguments in the function call does not matter.
-   - All keyword arguments must match the parameter names in the function definition.
+#### Rules for Keyword Arguments:
+- Keyword arguments must **follow all positional arguments**.
+- Each argument can **receive a value only once**.
+- The order of keyword arguments in the function call does not matter.
+- All keyword arguments must match the parameter names in the function definition.
 
-4. **Using `*args` and `**kwargs`**:
-   - The `*args` parameter collects additional positional arguments into a tuple.
-   - The `**kwargs` parameter collects additional keyword arguments into a dictionary.
-   - Example:
-     ```python
-     def cheeseshop(kind, *arguments, **keywords):
-         print("-- Do you have any", kind, "?")
-         print("-- I'm sorry, we're all out of", kind)
-         for arg in arguments:
-             print(arg)
-         print("-" * 40)
-         for kw in keywords:
-             print(kw, ":", keywords[kw])
-     ```
-   - Example call:
-     ```python
-     cheeseshop(
-         "Limburger",
-         "It's very runny, sir.",
-         "It's really very, VERY runny, sir.",
-         shopkeeper="Michael Palin",
-         client="John Cleese",
-         sketch="Cheese Shop Sketch"
-     )
-     ```
-   - Output:
-     ```
-     -- Do you have any Limburger ?
-     -- I'm sorry, we're all out of Limburger
-     It's very runny, sir.
-     It's really very, VERY runny, sir.
-     ----------------------------------------
-     shopkeeper : Michael Palin
-     client : John Cleese
-     sketch : Cheese Shop Sketch
-     ```
+### Using `*args` and `**kwargs`**:
+The `*args` parameter collects additional positional arguments into a tuple. This should be placed before all keyword arguments. The `**kwargs` parameter collects additional keyword arguments into a dictionary. The order in which keyword arguments are printed matches the order they are provided during the function call.
 
-5. **Order of Printing Keyword Arguments**:
-   - The order in which keyword arguments are printed matches the order they are provided during the function call.
+**Example**:
+```python
+def cheeseshop(kind, *arguments, **keywords):
+   print("-- Do you have any", kind, "?")
+   print("-- I'm sorry, we're all out of", kind)
+   for arg in arguments:
+       print(arg)
+   print("-" * 40)
+   for kw in keywords:
+       print(kw, ":", keywords[kw])
 
----
+# Example
+cheeseshop(
+   "Limburger",
+   "It's very runny, sir.",
+   "It's really very, VERY runny, sir.",
+   shopkeeper="Michael Palin",
+   client="John Cleese",
+   sketch="Cheese Shop Sketch"
+)
 
-#### **Best Practices**
+# Output
+-- Do you have any Limburger ?
+-- I'm sorry, we're all out of Limburger
+It's very runny, sir.
+It's really very, VERY runny, sir.
+----------------------------------------
+shopkeeper : Michael Palin
+client : John Cleese
+sketch : Cheese Shop Sketch
+```
+
+#### Best Practices
 - Use keyword arguments to improve function call clarity and avoid mistakes in argument order.
 - Use `*args` and `**kwargs` when creating flexible functions that can handle variable numbers of arguments.
 - Ensure that all required arguments are provided, either positionally or by name.
@@ -2114,89 +2128,77 @@ Keyword arguments allow functions to be called with arguments explicitly named u
 
 ### Special Parameters
 
-Python allows arguments to be passed to functions by position or by keyword. For clarity and better control, the way arguments are passed can be restricted using special symbols (`/` and `*`) in function definitions. These symbols define **positional-only**, **positional-or-keyword**, and **keyword-only** arguments.
+Python allows arguments to be passed to functions by position or by keyword. For clarity and better control, **the way arguments are passed can be restricted** using special symbols (`/` and `*`) in function definitions. These symbols define **positional-only**, **positional-or-keyword**, and **keyword-only** arguments.
 
----
+#### Positional-or-Keyword Arguments:
+This is the **default behavior** when `/` and `*` are not used. Arguments can be passed by position or keyword. And the old rules follow shere, positional arguments come before keyword arguments. For Example: 
+```python
+def standard_arg(arg):
+   print(arg)
+standard_arg(2)         # Positional
+standard_arg(arg=2)     # Keyword
+```
 
-#### Key Types of Parameters
+#### Positional-Only Parameters:
+This is defined by placing a `/` in the function definition. **Arguments must be passed by position**; using keywords for these parameters raises an error. Useful for enforcing strict argument order or preventing reliance on parameter names. For example: 
+```python
+def pos_only_arg(arg, /):
+   print(arg)
+pos_only_arg(1)         # Valid
+pos_only_arg(arg=1)     # TypeError: argument must be positional
+```
 
-1. **Positional-or-Keyword Arguments**:
-   - Default behavior when `/` and `*` are not used.
-   - Arguments can be passed by position or keyword.
-   - Example:
-     ```python
-     def standard_arg(arg):
-         print(arg)
-     standard_arg(2)         # Positional
-     standard_arg(arg=2)     # Keyword
-     ```
+#### Keyword-Only Parameters:
+Defined by placing a `*` before the first keyword-only parameter. These arguments must be passed by keyword, not position. Useful for explicit function calls where argument names add clarity. For example: 
+```python
+def kwd_only_arg(*, arg):
+   print(arg)
+kwd_only_arg(arg=3)     # Valid
+kwd_only_arg(3)         # TypeError: argument must be a keyword
+```
 
-2. **Positional-Only Parameters**:
-   - Defined by placing a `/` in the function definition.
-   - Arguments must be passed by position; using keywords for these parameters raises an error.
-   - Useful for enforcing strict argument order or preventing reliance on parameter names.
-   - Example:
-     ```python
-     def pos_only_arg(arg, /):
-         print(arg)
-     pos_only_arg(1)         # Valid
-     pos_only_arg(arg=1)     # TypeError: argument must be positional
-     ```
+#### Combined Use of `/` and `*`:
+A function can mix all three parameter types: positional-only, positional-or-keyword, and keyword-only. For example, 
+```python
+def combined_example(pos_only, /, standard, *, kwd_only):
+   print(pos_only, standard, kwd_only)
 
-3. **Keyword-Only Parameters**:
-   - Defined by placing a `*` before the first keyword-only parameter.
-   - These arguments must be passed by keyword, not position.
-   - Useful for explicit function calls where argument names add clarity.
-   - Example:
-     ```python
-     def kwd_only_arg(*, arg):
-         print(arg)
-     kwd_only_arg(arg=3)     # Valid
-     kwd_only_arg(3)         # TypeError: argument must be a keyword
-     ```
+combined_example(1, 2, kwd_only=3)                      # Valid
+combined_example(1, standard=2, kwd_only=3)             # Valid 
+combined_example(pos_only=1, standard=2, kwd_only=3)    # TypeError
+combined_example(1, 2, 3)                               # TypeError
+```
 
-4. **Combined Use of `/` and `*`**:
-   - A function can mix all three parameter types: positional-only, positional-or-keyword, and keyword-only.
-   - Example:
-     ```python
-     def combined_example(pos_only, /, standard, *, kwd_only):
-         print(pos_only, standard, kwd_only)
+#### Handling Name Collisions:
+Positional-only arguments can avoid conflicts with `**kwargs`. For example, 
+```python
+def foo(name, /, **kwds):
+   return 'name' in kwds
 
-     combined_example(1, 2, kwd_only=3)          # Valid
-     combined_example(1, standard=2, kwd_only=3) # Valid
-     combined_example(pos_only=1, standard=2, kwd_only=3)  # TypeError
-     ```
+foo(1, **{'name': 2})   # True
+foo(1, name=2)          # True
+foo(name=1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: foo() missing 1 required positional argument: 'name'
+>>> 
 
----
+```
+In the above, by using `/` we instructure that the positional argument `name` in formal parameter an never be passed as keyword argument, this helps thwart ambiguity. 
 
-#### Special Cases
-
-1. **Handling Name Collisions**:
-   - Positional-only arguments can avoid conflicts with `**kwargs`.
-   - Example:
-     ```python
-     def foo(name, /, **kwds):
-         return 'name' in kwds
-
-     foo(1, **{'name': 2})  # True
-     ```
-   - Here, `name` is treated as a positional argument, allowing `name` to also appear in the `**kwds` dictionary.
-
-2. **Errors and Ambiguities**:
-   - Using the same parameter as both positional and keyword:
-     ```python
-     def foo(name, **kwds):
-         return 'name' in kwds
-     foo(1, **{'name': 2})  # TypeError: multiple values for argument 'name'
-     ```
-
----
+#### Errors and Ambiguities:
+Using the same parameter as both positional and keyword:
+```python
+def foo(name, **kwds):
+   return 'name' in kwds
+foo(1, **{'name': 2})  # TypeError: multiple values for argument 'name'
+```
 
 #### Guidelines for Usage
 
 1. **Positional-Only Parameters**:
-   - Use when parameter names are irrelevant or could change without breaking the API.
-   - Enforce strict argument order for readability and performance.
+   - Use when **parameter names are irrelevant** or could change without breaking the API.
+   - Enforce strict argument order for **performance**.
 
 2. **Keyword-Only Parameters**:
    - Use when argument names are meaningful and enhance code readability.
@@ -2209,97 +2211,77 @@ Python allows arguments to be passed to functions by position or by keyword. For
      def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
          pass
      ```
-
----
-
 #### Advantages
 
 - **Readability**: Restricting argument passing improves code clarity by showing intent directly in the function signature.
 - **Robust APIs**: Helps prevent breaking changes in APIs when parameter names are modified.
 - **Control**: Allows developers to enforce positional arguments or require explicit naming for clarity and maintainability.
 
+---
+
 ### Arbitrary Argument Lists
-- Functions can accept an arbitrary number of arguments, which are gathered into a tuple using the `*args` syntax. These variadic arguments must appear after any normal positional arguments.
-- Example: `write_multiple_items(file, separator, *args)` where `args` is a tuple containing extra arguments.
-- Keyword-only arguments must be placed after the `*args` parameter and can only be passed as keywords, not positional arguments.
-- Example of a function with arbitrary arguments: 
-  ```python
-  def concat(*args, sep="/"):
-      return sep.join(args)
-  ```
-  It can be called with or without specifying the separator:
-  ```python
-  concat("earth", "mars", "venus")  # 'earth/mars/venus'
-  concat("earth", "mars", "venus", sep=".")  # 'earth.mars.venus'
-  ```
+Functions can accept an arbitrary number of arguments, which are gathered into a tuple using the `*args` syntax. These variadic arguments must appear after any normal positional arguments. For example `write_multiple_items(file, separator, *args)` where `args` is **a tuple** containing extra arguments. Keyword-only arguments must be placed after the `*args` parameter and can only be passed as keywords, not positional arguments.
+```python
+def concat(*args, sep="/"):
+    return sep.join(args)
+
+concat("earth", "mars", "venus")  # 'earth/mars/venus'
+concat("earth", "mars", "venus", sep=".")  # 'earth.mars.venus'
+```
 
 ### Unpacking Argument Lists
-- When arguments are already stored in a list or tuple, they can be unpacked using the `*` operator in function calls that require separate positional arguments.
-- Example of unpacking arguments for the `range()` function:
-  ```python
-  args = [3, 6]
-  list(range(*args))  # [3, 4, 5]
-  ```
-- Similarly, dictionaries can be used to pass keyword arguments to functions using the `**` operator.
-- Example of using a dictionary for keyword arguments:
-  ```python
-  def parrot(voltage, state='a stiff', action='voom'):
-      print(f"-- This parrot wouldn't {action} if you put {voltage} volts through it. E's {state}!")
-  d = {"voltage": "four million", "state": "bleedin' demised", "action": "VOOM"}
-  parrot(**d)  # Output: -- This parrot wouldn't VOOM if you put four million volts through it. E's bleedin' demised!
-  ```
+When arguments are already stored in a list or tuple, they can be unpacked using the **`*` operator** in function calls that require separate positional arguments. Example of unpacking arguments for the `range()` function:
+```python
+args = [3, 6]
+list(range(*args))  # [3, 4, 5]
+```
+Similarly, dictionaries can be used to pass keyword arguments to functions using the `**` operator. Example of using a dictionary for keyword arguments:
+```python
+def parrot(voltage, state='a stiff', action='voom'):
+    print(f"-- This parrot wouldn't {action} if you put {voltage} volts through it. E's {state}!")
+d = {"voltage": "four million", "state": "bleedin' demised", "action": "VOOM"}
+parrot(**d)  # Output: -- This parrot wouldn't VOOM if you put four million volts through it. E's bleedin' demised!
+```
 
 ---
 
 ### Function Annotations
 
-**Function annotations** in Python provide a way to add metadata to the parameters and return values of functions. They are optional and serve as a way to document the types or other properties of function inputs and outputs. Function annotations have no impact on the execution of the function, but they can be accessed programmatically for purposes such as documentation or type checking.
+**Function annotations** provide a way **to add metadata** to the parameters and return values of functions. They **are optional** and serve as **a way to document** the types or other properties of function inputs and outputs. Function annotations have **no impact on the execution of the function**, but they can be accessed programmatically for **purposes such as documentation or type checking**.
 
-1. **Syntax of Annotations:**
-   - **Parameter Annotations**: A colon `:` is used after the parameter name, followed by an expression that evaluates to the annotation.
-   - **Return Annotations**: A literal `->` is used before the return type annotation, placed between the parameter list and the colon that ends the `def` statement.
+#### Syntax of Annotations:
+**Parameter Annotations**: A colon `:` is used after the parameter name, followed by an expression that evaluates to the annotation.  
+**Return Annotations**: A literal `->` is used before the return type annotation, placed between the parameter list and the colon that ends the `def` statement.
 
-   Example:
-   ```python
-   def f(ham: str, eggs: str = 'eggs') -> str:
-       return ham + ' and ' + eggs
-   ```
+**For example**
+```python
+def f(ham: str, eggs: str = 'eggs') -> str:
+   return ham + ' and ' + eggs
+```
 
-2. **How Annotations are Stored:**
-   - Annotations are stored in the `__annotations__` attribute of the function as a dictionary.
-   - The dictionary keys are the parameter names (and 'return' for the return type), and the values are the corresponding annotations.
+#### How Annotations are Stored:
+Annotations are stored in the **`__annotations__` attribute** of the function as a dictionary. The dictionary keys are the parameter names (and 'return' for the return type), and the values are the corresponding annotations.
 
-3. **Example:**
-   In the following example, the function `f` has annotated parameters and a return type:
-   ```python
-   def f(ham: str, eggs: str = 'eggs') -> str:
-       print("Annotations:", f.__annotations__)
-       print("Arguments:", ham, eggs)
-       return ham + ' and ' + eggs
-   ```
-   Output:
-   ```
-   Annotations: {'ham': <class 'str'>, 'eggs': <class 'str'>, 'return': <class 'str'>}
-   Arguments: spam eggs
-   'spam and eggs'
-   ```
-   - **Annotations**: The `__annotations__` attribute shows that both `ham` and `eggs` are of type `str`, and the return value is also a `str`.
+In the following example, the function `f` has annotated parameters and a return type:
+```python
+def f(ham: str, eggs: str = 'eggs') -> str:
+   print("Annotations:", f.__annotations__)
+   print("Arguments:", ham, eggs)
+   return ham + ' and ' + eggs
 
-4. **No Effect on Function Behavior:**
-   - Function annotations are purely for documentation and do not affect how the function operates. They don't enforce type checking at runtime.
-
-5. **Use Cases:**
-   - Annotations are useful for tools that perform type checking, static analysis, or for generating documentation automatically.
-   
-Function annotations in Python allow developers to add metadata to function parameters and return values. While they do not affect execution, they provide valuable information for tools and documentation. They are stored in the `__annotations__` attribute as a dictionary, and their syntax follows a simple pattern of `parameter_name: annotation` for parameters and `-> return_annotation` for the return type.
+f('ham') 
+# Outputs: 
+# Annotations: {'ham': <class 'str'>, 'eggs': <class 'str'>, 'return': <class 'str'>}
+# Arguments: spam eggs
+# 'spam and eggs'
+```
 
 ---
 
 ## Lambda Expressions
 
-Lambda expressions provide a concise way to define **small, anonymous** functions. These functions are syntactically limited to a single expression, but they can be used wherever a function object is required. Although lambda functions are often viewed as a more compact alternative to traditional function definitions, they are semantically equivalent to standard functions.
+Lambda expressions provide a concise way to define **small, anonymous** functions. These functions are syntactically limited to a single expression, but they can be used wherever a function object is required. Although lambda functions are often viewed as a more compact alternative to traditional function definitions, they are **semantically equivalent to standard functions**. Just like functions they can access variables from the enclosing scope. 
 
-### Syntax and Structure:
 A lambda expression follows this syntax:
 ```python
 lambda arguments: expression
@@ -2307,16 +2289,10 @@ lambda arguments: expression
 - **Arguments**: The input parameters to the function (can be zero or more).
 - **Expression**: A single expression that gets evaluated and returned when the function is called.
 
-#### Example:
 A simple lambda function that adds two arguments:
 ```python
 lambda a, b: a + b
 ```
-
-### Key Characteristics:
-1. **Single Expression**: Lambda functions can only contain one expression. Unlike regular functions, which can have multiple statements, lambda functions are limited to a single expression that is evaluated and returned.
-2. **Syntactic Sugar**: Lambda expressions are a more concise way to define functions but are functionally equivalent to a normal function definition.
-3. **Can Reference Outer Variables**: Like nested functions, lambda functions can access variables from the enclosing scope.
 
 ### Example of Lambda in Practice:
 A function `make_incrementor` returns a lambda function that increments its argument by a given value:
@@ -2326,14 +2302,14 @@ def make_incrementor(n):
 ```
 Usage:
 ```python
-f = make_incrementor(42)
-print(f(0))  # Output: 42
-print(f(1))  # Output: 43
+inc_42 = make_incrementor(42)
+print(inc_42(0))  # Output: 42
+print(inc_42(1))  # Output: 43
 ```
 Here, the lambda function adds `n` (in this case, 42) to its argument `x`. The lambda expression is returned and stored in `f`.
 
 ### Lambda Functions as Arguments:
-Lambda expressions are often used as arguments in functions that require a function object. This allows for passing small, one-off functions without having to define a full function.
+Lambda expressions are often used as arguments in functions that require a function object. For example, `sort()`, `map()`, `filter()`, and `reduce()`. This allows for passing small, one-off functions without having to define a full function.
 
 #### Example of Using Lambda in Sorting:
 In this example, we use a lambda function to specify the key by which a list of tuples should be sorted:
@@ -2342,11 +2318,6 @@ pairs = [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]
 pairs.sort(key=lambda pair: pair[1])
 print(pairs)  # Output: [(4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
 ```
-Here, the lambda function `lambda pair: pair[1]` tells the `sort()` method to sort the tuples based on the second element (the string) of each pair.
-
-### Use Cases:
-- **Short, anonymous functions**: Lambda expressions are useful for defining small, throwaway functions that don't need to be reused elsewhere.
-- **Functional arguments**: Lambda functions are often passed as arguments to higher-order functions, such as `sort()`, `map()`, `filter()`, and `reduce()`.
 
 ## Documentation Strings
 
@@ -2354,134 +2325,219 @@ Documentation strings (also known as docstrings) in Python provide a way to docu
 
 ### Key Conventions for Writing Documentation Strings:
 
-### Concise Summary in the First Line
-   - The first line of a docstring should offer a short and clear summary of the object's purpose or behavior. 
-   - **Do not include the object's name or type** in this summary unless the name is a verb describing the function's operation (e.g., `fetch_data()` might be summarized as "Fetches data from the server").
-   - The first line should begin with a capital letter and end with a period.
+#### Concise Summary in the First Line
+- The first line of a docstring should offer a short and clear summary of the object's purpose or behavior. 
+- **Do not include the object's name or type** in this summary unless the name is a verb describing the function's operation (e.g., `fetch_data()` might be summarized as "Fetches data from the server").
+- The first line should begin with a capital letter and end with a period.
 
-   Example:
-   ```python
-   def fetch_data():
-       """Fetches data from the server."""
-       pass
-   ```
+Example:
+```python
+def fetch_data():
+   """Fetches data from the server."""
+   pass
+```
 
-### Blank Line Separating Summary from Further Details
-   - If the docstring contains more than one line, the second line should be **blank**. This blank line visually separates the concise summary from the rest of the documentation.
-   - After the blank line, you can provide additional details such as the function's parameters, return values, side effects, exceptions, and usage examples.
+#### Blank Line Separating Summary from Further Details
+- If the docstring contains more than one line, the second line should be **blank**. This blank line visually separates the concise summary from the rest of the documentation.
+- After the blank line, you can provide additional details such as the function's parameters, return values, side effects, exceptions, and usage examples.
 
-   Example:
-   ```python
-   def fetch_data(url):
-       """Fetches data from the server.
+Example:
+```python
+def fetch_data(url):
+   """Fetches data from the server.
 
-       This function makes a GET request to the provided URL and returns the response content.
-       It raises a ValueError if the URL is invalid.
-       """
-       pass
-   ```
+   This function makes a GET request to the provided URL and returns the response content.
+   It raises a ValueError if the URL is invalid.
+   """
+   pass
+```
 
-### Multi-line Docstrings and Indentation
-   - In Python, the parser does not automatically strip indentation from multi-line string literals. Therefore, documentation tools that process docstrings must account for indentation.
-   - The convention to handle this is:
-     - **The first non-blank line after the docstring's opening quotes** determines the indentation level for the entire docstring.
-     - Any leading whitespace "equivalent" to this indentation is stripped from all subsequent lines.
-     - Whitespace equivalency is checked after tabs are expanded to spaces (usually 8 spaces).
-   - **Indentation**: Ensure that the docstring is properly aligned with the function's or class's code indentation. The documentation should be indented the same amount as the code block it is in.
+#### Multi-line Docstrings and Indentation
+- In Python, the parser does not automatically strip indentation from multi-line string literals. Therefore, documentation tools that process docstrings must account for indentation.
+- The convention to handle this is:
+  - **The first non-blank line after the docstring's opening quotes** determines the indentation level for the entire docstring.
+  - Any leading whitespace "equivalent" to this indentation is stripped from all subsequent lines.
+  - Whitespace equivalency is checked after tabs are expanded to spaces (usually 8 spaces).
+  - **Indentation**: Ensure that the docstring is properly aligned with the function's or class's code indentation. The documentation should be indented the same amount as the code block it is in.
 
-   Example:
-   ```python
-   def my_function():
-       """Do nothing, but document it.
-       
-       No, really, it doesn't do anything.
-       """
-       pass
-   ```
+Example:
+```python
+def my_function():
+    """Do nothing, but document it.
 
-   When printed, this would display as:
-   ```python
-   print(my_function.__doc__)
-   ```
-   Output:
-   ```
-   Do nothing, but document it.
-   
-   No, really, it doesn't do anything.
-   ```
+    This line determines the indentation here after. 
+    """
+    pass
+
+print(my_function.__doc__)
+```
+Output:
+```
+Do nothing, but document it.
+
+This line determines the indentation here after.
+```
 
 ### Content of Documentation Strings
-   Beyond the initial summary, the docstring should provide:
-   - **Function or Method Behavior**: A description of what the function or method does.
-   - **Parameters**: A description of each parameter, including their expected types.
-   - **Return Values**: A description of what the function returns (if applicable), including the return type.
-   - **Side Effects**: Any effects the function has beyond returning a value, such as modifying data or interacting with external systems.
-   - **Exceptions**: A list of exceptions the function might raise, and under what circumstances.
-   - **Examples**: Optional, but useful examples demonstrating how to use the function or class.
+Beyond the initial summary, the docstring should provide:
+- **Function or Method Behavior**: A description of what the function or method does.
+- **Parameters**: A description of each parameter, including their expected types.
+- **Return Values**: A description of what the function returns (if applicable), including the return type.
+- **Side Effects**: Any effects the function has beyond returning a value, such as modifying data or interacting with external systems.
+- **Exceptions**: A list of exceptions the function might raise, and under what circumstances.
+- **Examples**: Optional, but useful examples demonstrating how to use the function or class.
 
-   Example:
-   ```python
-   def fetch_data(url):
-       """Fetches data from the server.
+Example:
+```python
+def fetch_data(url):
+    """Fetches data from the server.
 
-       Arguments:
-           url (str): The URL to fetch data from.
+    Arguments:
+        url (str): The URL to fetch data from.
 
-       Returns:
-           str: The content of the response.
+    Returns:
+        str: The content of the response.
 
-       Raises:
-           ValueError: If the URL is invalid or the request fails.
-       """
-
-       pass
-   ```
+    Raises:
+        ValueError: If the URL is invalid or the request fails.
+   """
+   pass
+```
 
 ### Best Practices for Formatting Docstrings
-   - **Keep the first line brief**: It should only provide a high-level summary.
-   - **Use reStructuredText**: This is a lightweight markup language commonly used for docstring formatting in Python. Tools like Sphinx can process reStructuredText-formatted docstrings to generate documentation.
-   - **Be consistent**: Follow the same formatting conventions throughout the codebase for readability and maintainability.
+- **Keep the first line brief**: It should only provide a high-level summary.
+- **Use reStructuredText**: This is a lightweight markup language commonly used for docstring formatting in Python. Tools like Sphinx can process reStructuredText-formatted docstrings to generate documentation.
+- **Be consistent**: Follow the same formatting conventions throughout the codebase for readability and maintainability.
 
 ## Intermezzo - Coding Style
 
-Let's look at coding style guidelines that promote readability and maintainability in Python code. By adhering to these conventions, developers can write code that is easier for others to read, understand, and maintain. The guidelines are based on **[PEP 8](https://peps.python.org/pep-0008/)**, which is the official style guide for Python.
+Let's look at coding style guidelines that promote readability and maintainability in Python code. By adhering to these conventions, developers can write code that is easier for others to read, understand, and maintain. The guidelines are based on **[PEP 8](https://peps.python.org/pep-0008/)**, which is the **official style guide** for Python.
 
 ### Key Guidelines from PEP 8:
 
-1. **Indentation**:
-   - Use **4 spaces** for indentation, not tabs.
-   - **Why?**: 4 spaces provide a good balance between readability and compactness, while tabs can cause confusion due to potential tab width differences across environments.
+#### Indentation:
+- Use **4 spaces** for indentation, not tabs.
+- **Why?**: 4 spaces provide a good balance between readability and compactness, while tabs can cause confusion due to potential tab width differences across environments.
 
-2. **Line Length**:
-   - Wrap lines so that they **don't exceed 79 characters**.
-   - **Why?**: This makes it easier to read code on smaller displays and allows multiple files to be viewed side-by-side on larger screens.
+#### Line Length:
+- Wrap lines so that they **don't exceed 79 characters**.
+- **Why?**: This makes it easier to read code on smaller displays and allows multiple files to be viewed side-by-side on larger screens.
 
-3. **Blank Lines**:
-   - Use **blank lines** to separate functions, classes, and larger code blocks inside functions.
-   - **Why?**: Blank lines improve readability and help separate logical sections of the code.
+#### Blank Lines:
+- Use **blank lines** to separate functions, classes, and larger code blocks inside functions.
+- **Why?**: Blank lines improve readability and help separate logical sections of the code.
 
-4. **Comments**:
-   - When possible, place comments **on their own line**.
-   - Use **docstrings** for documenting functions, classes, and methods.
-   - **Why?**: Clear and concise comments help explain the code's logic, making it easier for others to understand.
+#### Comments:
+- When possible, place comments **on their own line**.
+- Use **docstrings** for documenting functions, classes, and methods.
+- **Why?**: Clear and concise comments help explain the code's logic, making it easier for others to understand.
 
-5. **Spacing Around Operators**:
-   - Use **spaces around operators** and **after commas**, but **not inside brackets** (e.g., `a = f(1, 2) + g(3, 4)`).
-   - **Why?**: Consistent spacing makes the code more visually appealing and easier to read.
+#### Spacing Around Operators:
+- Use **spaces around operators** and **after commas**, but **not inside brackets** (e.g., `a = f(1, 2) + g(3, 4)`).
+- **Why?**: Consistent spacing makes the code more visually appealing and easier to read.
 
-6. **Naming Conventions**:
-   - **Classes** should be named using **UpperCamelCase**.
-   - **Functions and methods** should be named using **lowercase_with_underscores**.
-   - Always use `self` as the first argument for methods in classes.
-   - **Why?**: Consistent naming makes it easier to recognize different types of code elements (classes vs. functions).
+#### Naming Conventions:
+- **Classes** should be named using **UpperCamelCase**.
+- **Functions and methods** should be named using **lowercase_with_underscores**, **snake_case**.
+- Always use `self` as the first argument for methods in classes.
+- **Why?**: Consistent naming makes it easier to recognize different types of code elements (classes vs. functions).
 
-7. **Character Encoding**:
-   - **Avoid using fancy encodings**. Stick to **UTF-8** or **plain ASCII**.
-   - **Why?**: Using a standard encoding ensures compatibility across various environments and platforms.
+#### Character Encoding:
+- **Avoid using fancy encodings**. Stick to **UTF-8** or **plain ASCII**.
+- **Why?**: Using a standard encoding ensures compatibility across various environments and platforms.
 
-8. **Non-ASCII Characters**:
-   - Avoid **non-ASCII characters in identifiers** if the code is likely to be used or maintained by people who may not speak the same language.
-   - **Why?**: Using non-ASCII characters can cause issues in international environments and may be confusing to non-native speakers.
+#### Non-ASCII Characters:
+- Avoid **non-ASCII characters in identifiers** if the code is likely to be used or maintained by people who may not speak the same language.
+- **Why?**: Using non-ASCII characters can cause issues in international environments and may be confusing to non-native speakers.
+
+---
+
+## Zen of Python
+
+This is **The Zen of Python**, a collection of guiding principles for writing Pythonic code, authored by Tim Peters. It's a playful yet insightful set of aphorisms that encapsulate Python's philosophy and best practices. To view it just type `import this` in interactive shell. 
+
+```
+>>> import this
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+```
+
+### Explanation
+1. **Beautiful is better than ugly.**
+   - Strive for code that is aesthetically pleasing and clean, as it's easier to read and maintain.
+
+2. **Explicit is better than implicit.**
+   - Code should clearly express its intent, avoiding hidden or ambiguous behavior.
+
+3. **Simple is better than complex.**
+   - Opt for simplicity in your design and implementation. Complexity should only be introduced when absolutely necessary.
+
+4. **Complex is better than complicated.**
+   - When complexity is unavoidable, ensure it is well-organized and understandable, not convoluted or messy.
+
+5. **Flat is better than nested.**
+   - Minimize deep levels of nesting in structures or logic, as they can make code harder to follow.
+
+6. **Sparse is better than dense.**
+   - Avoid cramming too much into one line or block of code. Allow your code to "breathe."
+
+7. **Readability counts.**
+   - Prioritize readability, as code is often read more times than it is written.
+
+8. **Special cases aren't special enough to break the rules.**
+   - Stick to consistent rules and patterns; exceptions should be rare.
+
+9. **Although practicality beats purity.**
+   - Pragmatism is valued over strict adherence to theoretical ideals.
+
+10. **Errors should never pass silently.**
+    - Errors should be detected and addressed, not ignored.
+
+11. **Unless explicitly silenced.**
+    - If an error needs to be suppressed, do so explicitly (e.g., with proper error-handling mechanisms).
+
+12. **In the face of ambiguity, refuse the temptation to guess.**
+    - Code should avoid ambiguous behavior; clarity and determinism are key.
+
+13. **There should be one-- and preferably only one --obvious way to do it.**
+    - Python aims for a single clear approach to solving a problem, promoting consistency and simplicity.
+
+14. **Although that way may not be obvious at first unless you're Dutch.**
+    - A playful nod to Python's creator, Guido van Rossum, who is Dutch. Some solutions might require deeper understanding.
+
+15. **Now is better than never.**
+    - Don't procrastinate; start solving problems now.
+
+16. **Although never is often better than *right* now.**
+    - Rushing to implement something without proper planning can lead to poor decisions.
+
+17. **If the implementation is hard to explain, it's a bad idea.**
+    - Complicated solutions are usually not ideal.
+
+18. **If the implementation is easy to explain, it may be a good idea.**
+    - Solutions that are straightforward to explain are more likely to be robust and maintainable.
+
+19. **Namespaces are one honking great idea -- let's do more of those!**
+    - Namespaces (e.g., modules, classes) help organize and isolate code, making it more modular and reusable.
 
 ---
 
@@ -8150,25 +8206,35 @@ Generator expressions are a compact way to create generators without writing a f
 - **Generators** allow for efficient, lazy iteration over data by using the `yield` statement. They automatically handle state between `yield` calls and raise `StopIteration` when the sequence is exhausted.
 - **Generator Expressions** provide a more compact and memory-efficient way to create generators in a single line, similar to list comprehensions but with parentheses. They are particularly useful when a generator is passed directly to a function.
 
+---
+
 # Brief Tour of the Standard Library
 
-This chapter introduces a variety of Python's standard library modules, which offer ready-to-use solutions for common tasks such as interacting with the operating system, handling files, performing math operations, and more. Below is a summary of the key modules discussed, along with examples to illustrate their functionality.
-
-## 10.1 Operating System Interface
+## `os` Module
 
 The `os` module provides several functions to interact with the operating system. It allows for file and directory management, running system commands, and more.
 
-### Examples:
+  
 ```python
-import os
-print(os.getcwd())  # Returns current working directory
-# Output: 'C:\\Python313'
+# os.getcwd()
+>>> import os
+>>> print(os.getcwd())
+/home/sri/Documents/Python
+>>> 
+
+# os.chdir(command)
+>>> os.chdir('..')
+>>> print(os.getcwd())
+/home/sri/Documents
+>>> 
+
+# os.system(command)
 
 os.chdir('/server/accesslogs')  # Change working directory
 os.system('mkdir today')  # Execute system shell command
 ```
 
-**Tip:** Use `import os` instead of `from os import *` to avoid conflicts with built-in functions.
+**Tip:** Use `import os` instead of `from os import *`, since `os.open()` will hide built-in `open()`.
 
 The `shutil` module offers a higher-level interface for file operations such as copying and moving files:
 ```python
