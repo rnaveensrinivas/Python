@@ -149,6 +149,10 @@ You can exit the Python interpreter using one of the following methods:
 #### Execute Commands Directly:
 Use `-c` to execute Python commands inline and qutoe the entire command to avoid shell issues with special characters.
 ```bash
+# Syntax
+$ python -c "commands"
+
+# Example
 $ python -c "print('Hello, World')"
 Hello, World
 ```
@@ -156,18 +160,29 @@ Hello, World
 #### Execute Modules: 
 Use `-m` to run Python modules as scripts:
 ```bash
-python -m module_name [arguments]
+# Syntax
+$ python -m module_name [arguments]
+
+# Example
+$ cat script.py 
+import sys
+print(sys.argv)
+$ python -m script passing arguments
+['/home/usr/Desktop/script.py', '-m', 'script.py', 'passing', 'arguments']
 ```
 **Note**: Don't use the extension `.py` in the module name. 
 
 #### Interactive Mode After Script: 
 Use `-i` to enter interactive mode after running a script. 
-Consider a script `script.py`:
-```python
-print("Hello, World!")
-```
-When the below command is run
+
 ```bash
+# Syntax
+$ python -i file
+
+# Example
+$ cat script.py
+print("Hello, World!")
+
 $ python -i script.py
 Hello, World!
 >>> # we have enetered interactive mode after executing the script.py
@@ -427,6 +442,29 @@ Hello, World!
 ### Shebang Portablility:
 The `env` utility (`/usr/bin/env`) is often used for portability. It searches for the interpreter in the system's `PATH`, making the script adaptable across environments.AN INFORMAL INTRODUCTION TO PYTHON
 
+
+## Summary of Python Interpreter
+```
+$ sudo apt update
+$ sudo apt install python3 -y
+$ python3 --version
+$ echo "alias python=python3" >> ~/.bashrc
+$ whereis python
+$ python --help
+$ python
+^z
+^d
+exit()
+quit()
+$ python -c "commands"
+$ python -m module_name [arguments]
+$ python -i file
+$ python - [arguments]
+import sys; sys.argv
+# -*- coding: encoding -*-
+#!/usr/bin/python3
+#!/usr/bin/env
+```
 ---
 
 # An Informal Introduction to Python
@@ -1200,6 +1238,18 @@ The `print()` function writes output to the screen. Differences from writing exp
 The `if` statement is used to execute code based on a condition. It can include optional `elif` and `else` parts:
 
 ```python
+# Syntax
+if condition: 
+    code...
+elif condition:
+    code...
+elif condition: 
+    code...
+
+else: 
+    code...
+
+# Example
 x = int(input("Please enter an integer: "))
 if x < 0:
     x = 0
@@ -1211,14 +1261,7 @@ elif x == 1:
 else:
     print('More')
 ```
-
-**Example Interaction:**
-```
-Please enter an integer: 42
-More
-```
-- An `if … elif … elif …` sequence is a substitute for the switch or case
-statements found in other languages.
+- An `if … elif … elif …` sequence is a substitute for the switch or case statements found in other languages.
 - `elif` is short for "else if" and prevents **excessive indentation**.
 - The `else` part is optional.
 - Use the `match` statement for comparing same constant value to several constant.
@@ -1230,14 +1273,16 @@ statements found in other languages.
 The `for` statement iterates over items in a sequence (like a list or string) in order:
 
 ```python
+# Syntax 
+for variable in iterator: 
+    code...
+
+# Example
 words = ['cat', 'window', 'defenestrate']
 for w in words:
     print(w, len(w))
-```
-
-**Output:**
-```
-cat 3Match
+# o/p
+cat 3
 window 6
 defenestrate 12
 ```
@@ -1246,7 +1291,7 @@ defenestrate 12
 
 Avoid modifying a collection directly while iterating. Instead, use a copy or create a new collection:
 
-**Using a Copy:**
+#### Using a Copy:
 ```python
 users = {'Hans': 'active', 'Éléonore': 'inactive', 'John': 'active'}
 for user, status in users.copy().items():
@@ -1254,7 +1299,7 @@ for user, status in users.copy().items():
         del users[user]
 ```
 
-**Creating a New Collection:**
+#### Creating a New Collection:
 ```python
 users = {'Hans': 'active', 'Éléonore': 'inactive', 'John': 'active'}
 active_users = {}
@@ -1283,6 +1328,36 @@ for num in nums:
 * The iterator does not track that the new elements have been added, and depending on how Python processes the list, this may cause repeated processing of some elements or even go back to earlier elements.
 
 ---
+
+## The `type()` Function
+
+`type()` is a built-in function in Python. It is used for two primary purposes:
+
+### Checking the Type of an Object*
+When called with one argument, `type(obj)` returns the type of the object `obj`.  
+Example:
+```python
+print(type(42))          # Output: <class 'int'>
+print(type(3.14))        # Output: <class 'float'>
+print(type("Hello"))     # Output: <class 'str'>
+print(type([1, 2, 3]))   # Output: <class 'list'>
+```
+
+### Creating New Types (Classes)
+When called with three arguments, `type(name, bases, dict)` dynamically creates and returns a new class.  
+- `name`: Name of the class (string).
+- `bases`: Tuple of base classes (inheritance).
+- `dict`: Dictionary containing attributes and methods of the class.  
+
+Example:
+```python
+MyClass = type('MyClass', (object,), {'x': 42, 'greet': lambda self: "Hello"})
+obj = MyClass()
+print(obj.x)            # Output: 42
+print(obj.greet())      # Output: Hello
+```
+
+So, `type()` is versatile, serving both to inspect objects and to define new classes dynamically.
 
 ## The `range()` Function
 
@@ -1339,18 +1414,21 @@ for i, word in enumerate(a):
 
 ### Characteristics of `range()`
 
-- `range()` returns an iterable, not a list, **saving memory**.
-- Example of using `range()` with `sum()`:
+`range()` returns an iterable, not a list, **saving memory**. Example of using `range()` with `sum()`:
 
 ```python
 print(sum(range(4)))  # 0 + 1 + 2 + 3 = 6
 ```
 
+The type of `range()` object is `range`: 
+```python
+type(range(10))
+<class 'range'>
+```
+
 ---
 
-## `break` and `continue` Statements
-
-### `break`
+## `break`Statement
 
 The `break` statement exits the innermost loop:
 
@@ -1360,17 +1438,15 @@ for n in range(2, 10):
         if n % x == 0:
             print(f"{n} equals {x} * {n//x}")
             break
-```
 
-**Output:**
-```
+# Output
 4 equals 2 * 2
 6 equals 2 * 3
 8 equals 2 * 4
 9 equals 3 * 3
 ```
 
-### `continue`
+## `continue`
 
 The `continue` statement skips to the next iteration of the loop:
 
@@ -1380,9 +1456,8 @@ for num in range(2, 10):
         print(f"Found an even number {num}")
         continue
     print(f"Found an odd number {num}")
-```
 
-**Output:**
+# Output
 Found an even number 2
 Found an odd number 3
 Found an even number 4
@@ -1391,7 +1466,7 @@ Found an even number 6
 Found an odd number 7
 Found an even number 8
 Found an odd number 9
-
+```
 
 ---
 
@@ -1401,7 +1476,7 @@ An `else` clause can follow a `for` or `while` loop. The `else` block executes o
 
 ### For Loops with `else`
 
-In the following example, the `else` clause executes if no factors are found (i.e., the loop does not encounter a `break`):
+In the following example, the `else` clause executes if no factors are found (i.e., the loop does not encounter a `break`). Continue doesn't affect the else clause. 
 
 ```python
 for n in range(2, 10):
@@ -1412,10 +1487,8 @@ for n in range(2, 10):
     else:
         # Loop fell through without finding a factor
         print(f"{n} is a prime number")
-```
 
-**Output:**
-```
+# Output
 2 is a prime number
 3 is a prime number
 4 equals 2 * 2
@@ -1437,10 +1510,8 @@ while count < 5:
     count += 1
 else:
     print("Loop completed without a break.")
-```
 
-**Output:**
-```
+# Output
 0
 1
 2
@@ -1456,6 +1527,7 @@ The `else` block does not execute if the loop is terminated by a `break`. This b
 Here's the syntax for a `try...except...else` block in Python:
 
 ```python
+# Syntax
 try:
     # Code that might raise an exception
     risky_code()
@@ -1465,17 +1537,8 @@ except SomeException as e:
 else:
     # Code that runs if no exceptions were raised in the try block
     print("No errors occurred!")
-```
 
-#### Key Points:
-1. **`try` Block:** Contains the code that might raise an exception.
-2. **`except` Block:** Handles exceptions that occur in the `try` block. You can specify the exception type(s) to catch.
-3. **`else` Block:** Runs only if no exceptions occur in the `try` block.
-4. **Optional:** You can use multiple `except` clauses for handling different exceptions.
-
-#### Example:
-
-```python
+#Example: 
 try:
     num = int(input("Enter a number: "))
     result = 10 / num
@@ -1485,16 +1548,9 @@ except ZeroDivisionError:
     print("Division by zero is not allowed.")
 else:
     print(f"The result is {result}.")
-```
-
-**Interaction Example:**
-```
+# O/P: 
 Enter a number: 5
 The result is 2.0
-```
-
-**If an exception occurs:**
-```
 Enter a number: 0
 Division by zero is not allowed.
 ```
@@ -1528,7 +1584,7 @@ def initlog(*args):
 
 ## `match` Statements 
 
-The `match` statement in Python enables structured pattern matching, offering a powerful way to handle various data scenarios. This feature is inspired by languages like Rust and Haskell and is more versatile than traditional `switch` statements in languages like C, Java, or JavaScript.
+The `match` statement in Python **enables structured pattern matching**, offering a powerful way to handle various data scenarios. This feature is inspired by languages like Rust and Haskell and is more versatile than traditional `switch` statements in languages like C, Java, or JavaScript.
 
 ### Basic Syntax and Operation
 A `match` statement takes an expression and compares its value to successive patterns, executing the first matching `case` block. Patterns can include literals, variables, tuples, objects, and more.
@@ -1546,7 +1602,7 @@ def http_error(status):
         case _:
             return "Something's wrong with the internet"
 ```
-Here, the `_` serves as a wildcard, matching any value not explicitly handled by other cases.
+Here, the `_` serves as a **wildcard**, matching any value not explicitly handled by other cases.
 
 #### Combining Patterns with `|`
 Use the `|` operator to match multiple literals:
@@ -1599,7 +1655,7 @@ def where_is(point):
 ```
 
 ### Using `__match_args__`
-The `__match_args__` attribute specifies the order of attributes for positional matching.
+The `__match_args__` attribute specifies the **order of attributes** for positional matching.
 ```python
 class Point:
     __match_args__ = ('x', 'y')
@@ -1639,7 +1695,7 @@ match points:
 ```
 
 ### Using Guards with `if`
-Guards can add conditions to patterns, filtering matches further.
+Guards can **add conditions to patterns**, filtering matches further.
 
 #### Example: Guard in Pattern
 ```python
@@ -1651,250 +1707,260 @@ match point:
 ```
 
 ### Additional Features of `match`
-1. **Sequence Patterns:**
-   - Match arbitrary sequences like lists or tuples (not iterators or strings).
-   - Support extended unpacking with `*`:
-     ```python
-     case [x, y, *rest]:
-         print(f"First: {x}, Second: {y}, Rest: {rest}")
-     ```
+#### Sequence Patterns:
+Match arbitrary sequences like lists or tuples (not iterators or strings). Support extended unpacking with `*`:
+ ```python
+ case [x, y, *rest]:
+     print(f"First: {x}, Second: {y}, Rest: {rest}")
+ ```
 
-2. **Mapping Patterns:**
-   - Match dictionaries by keys:
-     ```python
-     case {"bandwidth": b, "latency": l}:
-         print(f"Bandwidth={b}, Latency={l}")
-     ```
+#### Mapping Patterns:
+Match dictionaries by keys:
+ ```python
+ case {"bandwidth": b, "latency": l}:
+     print(f"Bandwidth={b}, Latency={l}")
+ ```
 
-3. **Capturing Subpatterns with `as`:**
-   - Capture parts of a pattern:
-     ```python
-     case (Point(x1, y1), Point(x2, y2) as p2):
-         print(f"Second point: {p2}")
-     ```
+#### Capturing Subpatterns with `as`:
+Capture parts of a pattern:
+```python
+case (Point(x1, y1), Point(x2, y2) as p2):
+   print(f"Second point: {p2}")
+```
 
-4. **Literal Comparison:**
-   - Most literals are compared by equality.
-   - `True`, `False`, and `None` are compared by identity.
+#### Literal Comparison:
+Most **literals are compared by equality**. `True`, `False`, and `None` are compared by identity.
 
-5. **Named Constants:**
-   - Prevent interpretation as capture variables using dotted names:
-     ```python
-     from enum import Enum
+#### Named Constants:
+Prevent interpretation as capture variables using dotted names:
+```python
+from enum import Enum
 
-     class Color(Enum):
-         RED = 'red'
-         GREEN = 'green'
-         BLUE = 'blue'
+class Color(Enum):
+   RED = 'red'
+   GREEN = 'green'
+   BLUE = 'blue'
 
-     match color:
-         case Color.RED:
-             print("I see red!")
-         case Color.GREEN:
-             print("Grass is green")
-         case Color.BLUE:
-             print("I'm feeling the blues :(")
-     ```
+match color:
+   case Color.RED:
+       print("I see red!")
+   case Color.GREEN:
+       print("Grass is green")
+   case Color.BLUE:
+       print("I'm feeling the blues :(")
+```
 
 ## Function
 
 ### Key Features of Defining Functions
 
-1. **Basic Syntax**:  
-   - The `def` keyword introduces a function definition.  
-   - The function name is followed by parentheses containing a comma-separated list of parameters.  
-   - The function body is indented and may include a **docstring** as its first statement to document the function.
+#### Basic Syntax:  
+- The `def` keyword introduces a function definition.  
+- The function name is followed by parentheses containing a comma-separated list of parameters.  
+- The function body is indented and may include a **docstring** as its first statement to document the function.
 
-   Example:
-   ```python
-   def fib(n):
-       """Print Fibonacci series less than n."""
-       a, b = 0, 1
-       while a < n:
-           print(a, end=' ')
-           a, b = b, a + b
-       print()
-   ```
+```python
+def fib(n):
+   """Print Fibonacci series less than n."""
+   a, b = 0, 1
+   while a < n:
+       print(a, end=' ')
+       a, b = b, a + b
+   print()
+```
 
-2. **Calling Functions**:  
-   Functions are executed when called, e.g., `fib(2000)`.
+##### Calling Functions:  
+Functions are executed when called, e.g., `fib(2000)`.
 
-3. **Docstrings**:  
-   A function can have an optional docstring (enclosed in triple quotes) to describe its purpose. Docstrings are good practice and help in generating documentation or for interactive use.
+##### Docstrings:  
+ A function can have an optional docstring (enclosed in triple quotes) to describe its purpose. Docstrings are good practice and **help in generating documentation** or for interactive use.
 
 ---
 
 ### Variable Scope and Symbol Tables
 
-1. **Local Symbol Table**:  
-   - Each function call creates a new local symbol table for its variables.  
-   - Variables are first looked up in the local table, then in enclosing functions' tables, global scope, and finally in built-in names.
+#### Local Symbol Table:  
+Each function call creates a new local symbol table for its variables. Variables are first looked up in the local table, then in enclosing functions' tables, global scope, and finally in built-in names.
 
-2. **Global and Nonlocal Variables**:  
-   - To assign to global variables, use the `global` statement.  
-   - For variables in enclosing functions, use the `nonlocal` statement.
+#### Global Variables
+The `global` keyword is used **declare** that you want to modify a variable defined at the global (module) level inside a function.
 
-     * **Global Variables Example**
+```python
+# Global variable
+counter = 0
 
-      The `global` keyword is used when you want to modify a variable defined at the global (module) level inside a function.
+def increment():
+    global counter  # Declare that we want to modify the global variable
+    counter += 1
+    print(f"Counter inside function: {counter}")
 
-      ```python
-      # Global variable
-      counter = 0
+increment()
+increment()
+print(f"Counter outside function: {counter}")
 
-      def increment():
-          global counter  # Declare that we want to modify the global variable
-          counter += 1
-          print(f"Counter inside function: {counter}")
+# Output
+Counter inside function: 1
+Counter inside function: 2
+Counter outside function: 2
+```
 
-      increment()
-      increment()
-      print(f"Counter outside function: {counter}")
-      ```
+Without the `global` statement, the function would create a new local variable `counter`, and the global `counter` would remain unchanged.
 
-      **Output**:
-      ```
-      Counter inside function: 1
-      Counter inside function: 2
-      Counter outside function: 2
-      ```
+#### Nonlocal Variables:
+The `nonlocal` keyword is used when you need to modify a variable from an enclosing (non-global) scope, such as in a nested function.
 
-      Without the `global` statement, the function would create a new local variable `counter`, and the global `counter` would remain unchanged.
+```python
+def outer_function():
+    count = 0  # Enclosing variable
 
-      ---
+    def inner_function():
+        nonlocal count  # Declare that we want to modify the enclosing variable
+        count += 1
+        print(f"Count inside inner function: {count}")
 
-     * **Nonlocal Variables Example**
+    inner_function()
+    inner_function()
+    print(f"Count in outer function: {count}")
 
-      The `nonlocal` keyword is used when you need to modify a variable from an enclosing (non-global) scope, such as in a nested function.
+outer_function()
 
-      ```python
-      def outer_function():
-          count = 0  # Enclosing variable
+# Output
+Count inside inner function: 1
+Count inside inner function: 2
+Count in outer function: 2
+```
 
-          def inner_function():
-              nonlocal count  # Declare that we want to modify the enclosing variable
-              count += 1
-              print(f"Count inside inner function: {count}")
+Without the `nonlocal` statement, `count` inside `inner_function` would be treated as a local variable, and modifying it would result in an error since it's referenced before assignment.
 
-          inner_function()
-          inner_function()
-          print(f"Count in outer function: {count}")
+#### Combining both Global and NonLocal
 
-      outer_function()
-      ```
+You can use both `global` and `nonlocal` in different parts of a nested function hierarchy.
 
-      **Output**:
-      ```
-      Count inside inner function: 1
-      Count inside inner function: 2
-      Count in outer function: 2
-      ```
+```python
+# Example
+x = 10  # Global variable
 
-      Without the `nonlocal` statement, `count` inside `inner_function` would be treated as a local variable, and modifying it would result in an error since it's referenced before assignment.
+def outer_function():
+    x = 5  # Enclosing variable
 
-      ---
+    def inner_function():
+        global x  # Modifies the global x
+        x += 1
+        print(f"Global x modified: {x}")
 
-     * **Combining Both**
+    def another_inner_function():
+        nonlocal x  # Modifies the enclosing x
+        x += 1
+        print(f"Enclosing x modified: {x}")
 
-      You can use both `global` and `nonlocal` in different parts of a nested function hierarchy.
+    inner_function()
+    another_inner_function()
 
-      ```python
-      x = 10  # Global variable
+outer_function()
+print(f"Global x outside: {x}")
 
-      def outer_function():
-          x = 5  # Enclosing variable
+# Output
+Global x modified: 11
+Enclosing x modified: 6
+Global x outside: 11
+```
+---
 
-          def inner_function():
-              global x  # Modifies the global x
-              x += 1
-              print(f"Global x modified: {x}")
-
-          def another_inner_function():
-              nonlocal x  # Modifies the enclosing x
-              x += 1
-              print(f"Enclosing x modified: {x}")
-
-          inner_function()
-          another_inner_function()
-
-      outer_function()
-      print(f"Global x outside: {x}")
-      ```
-
-      **Output**:
-      ```
-      Global x modified: 11
-      Enclosing x modified: 6
-      Global x outside: 11
-      ```
-
-
-3. **Argument Passing**:  
-   - Arguments are passed by **object reference** (commonly called "call by value" where the value is a reference to the object).  
-   - Mutable objects can be modified within the function.
+### Argument Passing:  
+Arguments are passed by **object reference** (commonly called "call by value" where the value is a reference to the object). Mutable objects can be modified within the function.
 
 ---
 
-### Functions as Objects
+### Functions are First Class Entities
 
-1. **Function Objects**:  
-   - Functions are objects and can be assigned to other names, enabling aliasing.  
-   Example:
-   ```python
-   f = fib
-   f(100)  # Calls the same function as fib(100)
-   ```
+Functions are first-class entities in Python, meaning they have the following properties:
 
-2. **Return Values**:  
-   - Functions without a `return` statement return `None`.  
-   - Explicitly returning `None` or falling off the end of the function behaves the same.  
+#### They themselves are Objects
+```python
+def add(x, y):
+    return x + y
+type(add)
+# Output
+<class 'function'>
+```
+
+#### They can be assigned to variables
+Functions can be treated as values and assigned to variables, which can then be used to call the function.
+
+```python
+def greet(name):
+   return f"Hello, {name}!"
+
+say_hello = greet  # Assign the function to a variable
+print(say_hello("Naveen"))  # Output: Hello, Naveen!
+```
+
+#### They can be passed as arguments to other functions: 
+
+```python
+def execute_function(func, value):
+   return func(value)
+
+print(execute_function(len, "Python"))  # Output: 6
+```
+
+#### They can be returned from other functions:
+Functions can be returned as values from other functions, enabling higher-order functions.
+
+```python
+def outer_function(prefix):
+   def inner_function(name):
+       return f"{prefix}, {name}!"
+   return inner_function
+
+greet = outer_function("Hi")
+print(greet("Naveen"))  # Output: Hi, Naveen!
+```
+
+#### They can be stored in data structures like lists or dictionaries:
+Functions can be elements of collections such as lists or values in dictionaries.
+
+```python
+def add(x, y):
+   return x + y
+
+def subtract(x, y):
+   return x - y
+
+operations = {'add': add, 'subtract': subtract}
+print(operations['add'](5, 3))       # Output: 8
+print(operations['subtract'](5, 3))  # Output: 2
+```
+
+This flexibility enables functional programming paradigms and powerful abstractions in Python.
 
 ---
 
 ### Returning Values
+Every function returns a value, even if it does not explicitly include a return statement. If no return statement is specified, the function implicitly returns None. Explicitly returning None or allowing the function to reach the end without a return statement has the same effect.
 
-1. **Returning a Value**:  
-   Use the `return` statement to return a value from a function.
-   ```python
-   def fib2(n):
-       """Return a list containing Fibonacci series up to n."""
-       result = []
-       a, b = 0, 1
-       while a < n:
-           result.append(a)
-           a, b = b, a + b
-       return result
-   ```
-
-2. **Calling and Using Return Values**:  
-   The result of the function can be stored and manipulated.
-   ```python
-   f100 = fib2(100)
-   print(f100)  # Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
-   ```
-
----
+Unlike some programming languages, Python does not distinguish between functions and procedures (which typically do not return a value). Every function in Python is guaranteed to return something, ensuring consistency and flexibility in its design.
 
 ### Notable Python Features Demonstrated
 
-1. **Method Calls**:  
-   - The `append()` method adds elements to a list efficiently.
-   - Example:
-     ```python
-     result.append(a)
-     ```
-     This is equivalent to `result = result + [a]` but more efficient.
+#### Method Calling:  
+In Python, we have Methods, apart from function since it is object oriented programming language. For example, he `append()` method adds elements to a list efficiently.
 
-2. **Returning Multiple Values**:  
-   - Python allows returning multiple values as a tuple.  
-     ```python
-     def example():
-         return 1, 2, 3
-     x, y, z = example()
-     ```
+```python
+result.append(a)
+```
+This is equivalent to `result = result + [a]` but more efficient.
 
-3. **Call by Object Reference**:  
-   - If a mutable object (e.g., a list) is passed as an argument, modifications inside the function are reflected outside.
+#### Returning Multiple Values:  
+Python allows returning multiple values as a tuple.  
+```python
+def example():
+   return 1, 2, 3
+x, y, z = example()
+```
+
+#### Call by Object Reference:  
+If a mutable object (e.g., a list) is passed as an argument, modifications inside the function are reflected outside.
 
 ---
 
