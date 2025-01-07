@@ -1513,8 +1513,6 @@ Loop completed without a break.
 
 The `else` block does not execute if the loop is terminated by a `break`. This behavior is similar to the `else` clause in a `try` statement, which executes only if no exception occurs.
 
-Here's the syntax for a `try...except...else` block in Python:
-
 ```python
 # Syntax
 try:
@@ -2547,20 +2545,16 @@ Namespaces are one honking great idea -- let's do more of those!
 
 Python lists are versatile, mutable sequences that can hold an ordered collection of items. 
 
----
-
-### **List Methods Overview**
-
 The following table summarizes the key methods available for Python lists:
 
 | **Method**            | **Description**                                                                                       | **Return Type**  | **Example Usage**                                    |
 |------------------------|-------------------------------------------------------------------------------------------------------|-------------------|-----------------------------------------------------|
-| `list.append(x)`      | Adds `x` to the end of the list.                                                                      | `None`           | `a.append(10)`                                      |
-| `list.extend(iterable)` | Appends all elements from `iterable` to the list.                                                   | `None`           | `a.extend([4, 5, 6])`                              |
+| `list.append(x)`      | Adds `x` to the end of the list. Similar to `a[len(a):] = [x]`.                                         | `None`           | `a.append(10)`                                      |
+| `list.extend(iterable)` | Appends all elements from `iterable` to the list. Similar to `a[len(a):] = iterable`.                | `None`           | `a.extend([4, 5, 6])`                              |
 | `list.insert(i, x)`   | Inserts `x` at position `i`.                                                                          | `None`           | `a.insert(1, "item")`                              |
 | `list.remove(x)`      | Removes the first occurrence of `x`. Raises `ValueError` if `x` is not found.                         | `None`           | `a.remove("item")`                                 |
 | `list.pop(i)`         | Removes and returns the element at position `i` (last item if `i` is omitted). Raises `IndexError`.   | `Element`        | `a.pop(2)`                                         |
-| `list.clear()`        | Removes all elements from the list.                                                                   | `None`           | `a.clear()`                                        |
+| `list.clear()`        | Removes all elements from the list. Similar to `list[:] = []`.                                                                 | `None`           | `a.clear()`                                        |
 | `list.index(x, start, end)` | Returns the index of the first occurrence of `x` in the list. Searches within `[start:end]`.      | `int`            | `a.index("item", 1, 5)`                            |
 | `list.count(x)`       | Counts the number of occurrences of `x` in the list.                                                  | `int`            | `a.count(10)`                                      |
 | `list.sort(*, key=None, reverse=False)` | Sorts the list in-place. Accepts optional `key` for custom sorting and `reverse`.      | `None`           | `a.sort(reverse=True)`                             |
@@ -2569,24 +2563,91 @@ The following table summarizes the key methods available for Python lists:
 
 ---
 
-### **Detailed Examples**
+Let's look at how some of these methods work: 
 
-Here's how some of the methods work with examples:
+### `list.append()`
+Add item to end of the list. 
 
-#### **Counting Elements**
+```python
+>>> list = [1,2,3,4]
+>>> list.append(5)
+>>> list
+[1, 2, 3, 4, 5]
+
+
+>>> list += 6
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object is not iterable
+
+# Append alternatives - Concatenation
+>>> list += [6]
+>>> list
+[1, 2, 3, 4, 5, 6]
+
+# Append alternatives - Slicing
+>>> list[len(list):] = [7]
+>>> list
+[1, 2, 3, 4, 5, 6, 7]
+>>> 
+```
+
+### `list.extend()`
+
+Add bunch of items to the end of list. 
+
+```python
+>>> list
+[1, 2, 3, 4, 5, 6, 7]
+>>> list.extend([8,9])
+>>> list
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+# Extend can take any iterable.
+>>> list.extend("Hello")
+>>> list
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 'H', 'e', 'l', 'l', 'o']
+
+# Extend alternatives - Slicing
+>>> list[len(list):] = "World"
+>>> list
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd']
+>>> 
+```
+
+### `list.insert(i, x)`
+Insert the element `x` at index `i`.
+
+```python
+>>> list.insert(0, 0)
+>>> list
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd']
+
+>>> list.insert(10, 10)
+>>> list
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd']
+
+# Handles out of index gracefully.
+>>> list.insert(len(list) +5, 'some_value')
+>>> list
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'H', 'e', 'l', 'l', 'o', 'W', 'o', 'r', 'l', 'd', 'some_value']
+>>> 
+```
+
+#### `list.count(x)` 
 ```python
 fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi', 'apple', 'banana']
 print(fruits.count('apple'))  # Output: 2
 print(fruits.count('tangerine'))  # Output: 0
 ```
 
-#### **Finding Indices**
+#### `list.index(x, start_index, end_index)` 
 ```python
 print(fruits.index('banana'))  # Output: 3
 print(fruits.index('banana', 4))  # Search starting at position 4. Output: 6
 ```
 
-#### **Reversing and Sorting**
+#### `list.reverse()` and `list.sort(*, key=None, reverse=False)`
 ```python
 fruits.reverse()
 print(fruits)  # Output: ['banana', 'apple', 'kiwi', 'banana', 'pear', 'apple', 'orange']
@@ -2595,7 +2656,7 @@ fruits.sort()
 print(fruits)  # Output: ['apple', 'apple', 'banana', 'banana', 'grape', 'kiwi', 'orange', 'pear']
 ```
 
-#### **Popping and Appending**
+#### `list.pop(index)`
 ```python
 fruits.append('grape')
 print(fruits)  # Adds 'grape' to the list.
@@ -2604,9 +2665,8 @@ last_item = fruits.pop()
 print(last_item)  # Removes and returns 'pear'.
 ```
 
----
 
-### **Important Notes**
+### Note
 
 1. **Methods Without Return Values:**
    - Methods like `insert`, `remove`, `sort`, `reverse`, and `append` modify the list in place and return `None`. This design ensures clarity when dealing with mutable structures.
@@ -2621,46 +2681,13 @@ print(last_item)  # Removes and returns 'pear'.
 
 ---
 
-### **Sample Code to Explore List Methods**
-The following code demonstrates the usage of most list methods:
-
-```python
-# Example List
-fruits = ['orange', 'apple', 'pear', 'banana', 'kiwi', 'apple', 'banana']
-
-# Count occurrences
-print(fruits.count('apple'))  # Output: 2
-
-# Index search
-print(fruits.index('banana'))  # Output: 3
-
-# Reverse the list
-fruits.reverse()
-print(fruits)
-
-# Append and Pop
-fruits.append('grape')
-print(fruits)
-print(fruits.pop())  # Removes 'grape'
-
-# Sort the list
-fruits.sort()
-print(fruits)
-
-# Clear the list
-fruits.clear()
-print(fruits)  # Output: []
-```
-
----
-
-### **Using Lists as Stacks**
+### Using Lists as Stacks
 
 A **stack** operates on a Last-In, First-Out (LIFO) principle. Python lists support stack operations with the following methods:
-- **`append()`**: Adds an item to the top of the stack.
+- **`append()`**: Adds an item to the top of the stack. 
 - **`pop()`**: Removes and returns the item from the top of the stack.
+The are efficient since they occur at the end of the list. Hence list is very suitable data structure for implementing Stacks. 
 
-#### **Example**
 ```python
 stack = [3, 4, 5]
 stack.append(6)  # Add 6 to the stack
@@ -2675,13 +2702,7 @@ stack.pop()      # Removes and returns 5
 print(stack)     # Output: [3, 4]
 ```
 
-#### **Key Characteristics**
-- Operations (`append` and `pop`) are efficient since they occur at the end of the list.
-- Suitable for use cases where LIFO order is needed.
-
----
-
-### **Using Lists as Queues**
+### Using Lists as Queues
 
 A **queue** operates on a First-In, First-Out (FIFO) principle. While Python lists can be used as queues:
 - **`pop(0)`**: Removes and returns the first element.
@@ -2690,11 +2711,29 @@ A **queue** operates on a First-In, First-Out (FIFO) principle. While Python lis
 However, **lists are not ideal for queues** due to inefficiency:
 - **Removing from the beginning (`pop(0)`)** requires shifting all subsequent elements, which is slow for large lists.
 
-#### **Recommended Alternative: `collections.deque`**
-- Designed for fast appends and pops at both ends.
-- Efficient for queue implementations.
+```python
+queue = [3, 4, 5]
+queue.append(6)  # Add 6 to the stack
+queue.append(7)  # Add 7 to the stack
+print(queue)     # Output: [3, 4, 5, 6, 7]
 
-#### **Example with `deque`**
+queue.pop(0)      # Removes and returns 3
+print(queue)     # Output: [4, 5, 6, 7]
+
+queue.pop()      # Removes and returns 4
+queue.pop()      # Removes and returns 5
+print(queue)     # Output: [6, 7]
+```
+
+#### Recommended Alternative: `collections.deque`
+Pronunced as **deck**, it is designed for fast appends and pops at both ends. Efficient for queue implementations. Here are some `deque` methods: 
+* `append(x)`
+* `appendleft(x)`
+* `pop(i)`
+* `popleft(i)`
+* `extend(iterable)`
+* `extendleft(iterable)` inserted in reverse order. 
+
 ```python
 from collections import deque
 
@@ -2707,31 +2746,12 @@ queue.popleft()  # Removes and returns 'John'
 print(queue)     # Output: deque(['Michael', 'Terry', 'Graham'])
 ```
 
-#### **Key Characteristics**
-- Efficient for FIFO operations.
-- Supports both appends and pops from either end of the queue.
-
 ---
 
-### **Comparison of Stack and Queue**
+### List Comprehensions and Nested List Comprehensions
 
-| **Feature**         | **Stack**                     | **Queue (List)**                | **Queue (`deque`)**             |
-|----------------------|-------------------------------|----------------------------------|----------------------------------|
-| **Order**           | Last-In, First-Out (LIFO)    | First-In, First-Out (FIFO)      | First-In, First-Out (FIFO)      |
-| **Primary Methods** | `append()`, `pop()`           | `append()`, `pop(0)`            | `append()`, `popleft()`         |
-| **Performance**     | Fast for `append` and `pop`   | Slow for `pop(0)`               | Fast for both ends              |
-| **Ideal Use Case**  | Stacks or LIFO structures     | Small, occasional FIFO queues   | Large, frequent FIFO queues     |
+List comprehensions offer a concise, readable way to construct lists, applying operations or filters to elements from other sequences or iterables. It consists of brackets containing an expression followed by a `for` clause, then zero or more `for` or `if` clasues.
 
----
-
-### **Detailed Summary: List Comprehensions and Nested List Comprehensions**
-
----
-
-### **List Comprehensions**
-List comprehensions offer a concise, readable way to construct lists, applying operations or filters to elements from other sequences or iterables.
-
-#### **Syntax**
 ```python
 [expression for item in iterable if condition]
 ```
@@ -2741,78 +2761,73 @@ List comprehensions offer a concise, readable way to construct lists, applying o
 
 ---
 
-#### **Examples and Use Cases**
+#### Example: Creating a List of Squares
+```python
+squares = [x**2 for x in range(10)]
+print(squares)  # Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+```
 
-##### **Basic Examples**
-1. **Creating a List of Squares:**
-   ```python
-   squares = [x**2 for x in range(10)]
-   print(squares)  # Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-   ```
+#### Example: Combining Elements from Two Lists (With a Condition)
+```python
+combs = [(x, y) for x in [1, 2, 3] for y in [3, 1, 4] if x != y]
+print(combs)  
+# Output: [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]
+```
 
-2. **Combining Elements from Two Lists (With a Condition):**
-   ```python
-   combs = [(x, y) for x in [1, 2, 3] for y in [3, 1, 4] if x != y]
-   print(combs)  
-   # Output: [(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]
-   ```
+#### Examples: Operation on list Elements
+**Doubling Elements:**
+```python
+vec = [-4, -2, 0, 2, 4]
+doubled = [x * 2 for x in vec]
+print(doubled)  # Output: [-8, -4, 0, 4, 8]
+```
 
-##### **Operations on List Elements**
-1. **Doubling Elements:**
-   ```python
-   vec = [-4, -2, 0, 2, 4]
-   doubled = [x * 2 for x in vec]
-   print(doubled)  # Output: [-8, -4, 0, 4, 8]
-   ```
+**Filtering Negative Numbers:**
+```python
+filtered = [x for x in vec if x >= 0]
+print(filtered)  # Output: [0, 2, 4]
+```
 
-2. **Filtering Negative Numbers:**
-   ```python
-   filtered = [x for x in vec if x >= 0]
-   print(filtered)  # Output: [0, 2, 4]
-   ```
+**Applying a Function:**
+```python
+abs_values = [abs(x) for x in vec]
+print(abs_values)  # Output: [4, 2, 0, 2, 4]
+```
 
-3. **Applying a Function:**
-   ```python
-   abs_values = [abs(x) for x in vec]
-   print(abs_values)  # Output: [4, 2, 0, 2, 4]
-   ```
+**Calling Methods:**
+```python
+freshfruit = [' banana', ' loganberry ', 'passion fruit ']
+stripped = [fruit.strip() for fruit in freshfruit]
+print(stripped)  # Output: ['banana', 'loganberry', 'passion fruit']
+```
 
-4. **Calling Methods:**
-   ```python
-   freshfruit = [' banana', ' loganberry ', 'passion fruit ']
-   stripped = [fruit.strip() for fruit in freshfruit]
-   print(stripped)  # Output: ['banana', 'loganberry', 'passion fruit']
-   ```
+#### Example: Creating Tuples
+```python
+squares_tuples = [(x, x**2) for x in range(6)]
+print(squares_tuples)  
+# Output: [(0, 0), (1, 1), (2, 4), (3, 9), (4, 16), (5, 25)]
+```
 
-##### **Complex Examples**
-1. **Creating Tuples:**
-   ```python
-   squares_tuples = [(x, x**2) for x in range(6)]
-   print(squares_tuples)  
-   # Output: [(0, 0), (1, 1), (2, 4), (3, 9), (4, 16), (5, 25)]
-   ```
+#### Exmaple: Flattening Nested Lists
+```python
+vec = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [num for sublist in vec for num in sublist]
+print(flattened)  # Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
 
-2. **Flattening Nested Lists:**
-   ```python
-   vec = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-   flattened = [num for sublist in vec for num in sublist]
-   print(flattened)  # Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-   ```
-
-3. **Using Mathematical Functions:**
-   ```python
-   from math import pi
-   rounded_pi = [str(round(pi, i)) for i in range(1, 6)]
-   print(rounded_pi)  # Output: ['3.1', '3.14', '3.142', '3.1416', '3.14159']
-   ```
+#### Example: Using Mathematical Functions
+```python
+from math import pi
+rounded_pi = [str(round(pi, i)) for i in range(1, 6)]
+print(rounded_pi)  # Output: ['3.1', '3.14', '3.142', '3.1416', '3.14159']
+```
 
 ---
 
-### **Nested List Comprehensions**
+
 Nested list comprehensions allow processing nested structures, such as lists of lists.
 
-#### **Example: Matrix Transposition**
-##### **Matrix Representation:**
+#### Example: Matrix Transposition
 ```python
 matrix = [
     [1, 2, 3, 4],
@@ -2821,14 +2836,14 @@ matrix = [
 ]
 ```
 
-##### **Using Nested List Comprehension:**
+##### Nested List Comprehension
 ```python
 transposed = [[row[i] for row in matrix] for i in range(4)]
 print(transposed)
 # Output: [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
 ```
 
-##### **Equivalent Code Without List Comprehension:**
+##### Equivalent Code Without List Comprehension:
 ```python
 transposed = []
 for i in range(4):
@@ -2839,7 +2854,7 @@ for i in range(4):
 print(transposed)
 ```
 
-##### **Using Built-In Functions:**
+##### Using Built-In Functions:
 The `zip()` function simplifies matrix transposition:
 ```python
 transposed = list(zip(*matrix))
@@ -2849,7 +2864,7 @@ print(transposed)
 
 ---
 
-#### **Key Considerations**
+#### Key Considerations
 1. **Parentheses for Tuples:**
    When creating tuples in a comprehension, enclose them in parentheses to avoid syntax errors:
    ```python
@@ -2857,7 +2872,7 @@ print(transposed)
    ```
 
 2. **Performance:**
-   - List comprehensions are faster and more readable than loops.
+   - List comprehensions are **faster** and **more readable** for simpler cases than loops.
    - Avoid excessive nesting for maintainability; use built-ins like `zip()` when possible.
 
 3. **Readability:**
@@ -2865,83 +2880,79 @@ print(transposed)
 
 ---
 
-#### **Comparison Table: List Comprehensions and Nested Loops**
+## The `del` Statement
 
-| **Feature**                     | **List Comprehension**                      | **Nested Loops**                               |
-|----------------------------------|---------------------------------------------|-----------------------------------------------|
-| **Syntax**                      | `[expression for x in iterable if cond]`    | Explicit loops and conditions                 |
-| **Readability**                 | Concise, more readable for simple cases     | Clear for complex or multi-step processes     |
-| **Performance**                 | Faster in most cases                        | Slightly slower for large datasets            |
-| **Use Cases**                   | Quick data transformation or filtering      | Complex workflows or multi-step logic         |
+The `del` statement in Python provides a flexible way to remove elements from lists, slices of lists, or even entire variables. Unlike the `pop()` method, which removes an element and returns its value, `del` **removes elements without returning anything**. This makes it ideal for scenarios where returning a value is unnecessary.
 
+`del` statement are anlogous with `list.pop()` and `list[start:end] = []`.
+
+### Key Features and Use Cases
+
+#### 1. Removing an Item by Index
+The `del` statement removes an element from a list based on its **index**. 
+```python
+a = [-1, 1, 66.25, 333, 333, 1234.5]
+del a[0]  # Removes the first element
+print(a)  # Output: [1, 66.25, 333, 333, 1234.5]
+```
+
+
+#### 2. Removing Slices
+It can also delete multiple elements by specifying a **slice**.
+
+```python
+a = [1, 66.25, 333, 333, 1234.5]
+del a[2:4]  # Removes elements from index 2 to 3
+print(a)  # Output: [1, 66.25, 1234.5]
+```
+
+
+#### 3. Clearing the Entire List
+Assigning an empty slice effectively clears all elements of the list.
+
+```python
+a = [1, 66.25, 1234.5]
+del a[:]  # Removes all elements
+print(a)  # Output: []
+```
 ---
 
-## The `del` Statement**
+#### 4. Deleting Entire Variables
+The `del` statement can delete an entire variable, making it unavailable for further use.
 
----
+```python
+del a  # Deletes the variable `a`
+# Accessing `a` now would raise a NameError
+```
 
-The `del` statement in Python provides a flexible way to remove elements from lists, slices of lists, or even entire variables. Unlike the `pop()` method, which removes an element and returns its value, `del` removes elements without returning anything. This makes it ideal for scenarios where returning a value is unnecessary.
+#### 5. Deleting Variables vs. Collection Types
 
----
+#### Case 1: Deleting a Variable
+When you use `del` on a variable, it removes the variable but **does not affect the object it references** if other variables still hold references to it.
 
-### **Key Features and Use Cases**
+The reference remains unaffected. 
+```python
+>>> list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'H', 'e', 'l', 'l', 'o']
+>>> another_list = list  # Both `list` and `another_list` reference the same object.
+>>> del another_list     # Deletes only the `another_list` variable, not the object.
+>>> list                 # The object remains accessible via `list`.
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'H', 'e', 'l', 'l', 'o']
+```
 
-#### 1. **Removing an Item by Index**
-- The `del` statement removes an element from a list based on its **index**.
-- Example:
-  ```python
-  a = [-1, 1, 66.25, 333, 333, 1234.5]
-  del a[0]  # Removes the first element
-  print(a)  # Output: [1, 66.25, 333, 333, 1234.5]
-  ```
+#### Case 2: Deleting Collection Contents
+If you use `del` with slicing (e.g., `del variable[:]`), it removes the contents of the collection while keeping the object itself intact. This affects all variables referencing the same object.
 
----
+The varialbe itself remains unaffected. 
+```python
+>>> another_list = list  # Both `list` and `another_list` reference the same object.
+>>> del another_list[:]  # Clears the contents of the object.
+>>> another_list         # The `another_list` is now empty.
+[]
+>>> list                 # The original reference (`list`) is also affected.
+[]
+```
 
-#### 2. **Removing Slices**
-- It can also delete multiple elements by specifying a **slice**.
-- Example:
-  ```python
-  a = [1, 66.25, 333, 333, 1234.5]
-  del a[2:4]  # Removes elements from index 2 to 3
-  print(a)  # Output: [1, 66.25, 1234.5]
-  ```
-
-- Slices provide a powerful way to handle contiguous ranges of elements without using loops.
-
----
-
-#### 3. **Clearing the Entire List**
-- Assigning an empty slice effectively clears all elements of the list.
-- Example:
-  ```python
-  a = [1, 66.25, 1234.5]
-  del a[:]  # Removes all elements
-  print(a)  # Output: []
-  ```
-
----
-
-#### 4. **Deleting Entire Variables**
-- The `del` statement can delete an entire variable, making it unavailable for further use.
-- Example:
-  ```python
-  del a  # Deletes the variable `a`
-  # Accessing `a` now would raise a NameError
-  ```
-
----
-
-### **Key Differences Between `del` and Other Methods**
-
-| **Feature**            | **`del` Statement**                              | **`pop()` Method**                       | **Assignment (`a[:] = []`)**            |
-|-------------------------|-------------------------------------------------|------------------------------------------|------------------------------------------|
-| **Purpose**             | Remove items or slices; delete variables.       | Remove an item and return its value.     | Clear all elements of a list.           |
-| **Returns a Value?**    | No                                              | Yes                                      | No                                       |
-| **Scope**               | Can delete entire variables.                    | Limited to removing specific elements.   | Limited to list clearing.               |
-
----
-
-### **Advantages of Using `del`**
+### Advantages of Using `del`
 1. **Flexibility**: 
    - Can handle individual elements, slices, or the entire list.
    - Works on non-list objects, such as deleting variables.
@@ -2952,186 +2963,173 @@ The `del` statement in Python provides a flexible way to remove elements from li
 3. **Clear Intent**: 
    - Explicitly communicates the intention to delete an item, slice, or variable.
 
----
-
-### **Practical Considerations**
+### Practical Considerations
 - **Safety**: Use `del` cautiously when deleting slices or variables, as unintended deletions may lead to runtime errors.
 - **Readability**: In cases where the list must be cleared, `a[:] = []` is a more explicit alternative than `del a[:]`.
 
 ---
 
-### **Examples for Context**
-1. **Use in a Function:**
-   ```python
-   def remove_middle(lst):
-       del lst[len(lst) // 2]
-   numbers = [10, 20, 30, 40, 50]
-   remove_middle(numbers)
-   print(numbers)  # Output: [10, 20, 40, 50]
-   ```
+## Tuples
 
-2. **Efficient List Management:**
-   ```python
-   a = [1, 2, 3, 4, 5]
-   del a[1:4]  # Remove a slice
-   print(a)  # Output: [1, 5]
-   ```
+Tuples are one of Python's sequence data types, alongside lists and strings. While they share certain properties with other sequences, like indexing and slicing, they have distinct features and use cases
 
-3. **Variable Deletion:**
-   ```python
-   x = 100
-   del x
-   # Trying to print `x` now will raise NameError
-   ```
+### Definition and Syntax
+A tuple is a collection of values separated by commas. For example, 
+```python
+t = 12345, 54321, 'hello!'
+print(t[0])  # Output: 12345
+print(t)     # Output: (12345, 54321, 'hello!')
+```
+Parentheses are optional when defining tuples, but they are often required for clarity or in larger expressions.
 
----
+### Immutability
+Tuples are immutable, meaning their elements cannot be modified after creation. For example:
+```python
+t[0] = 88888  # Raises TypeError
+```
 
-## Tuples and Sequences
+### Heterogeneous and Nested Elements
+Tuples often hold heterogeneous data (elements of different types), while lists typical hold homogenous elements. They also support nesting: 
+```python
+u = t, (1, 2, 3, 4, 5)
+print(u)  # Output: ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
+```
 
-Tuples are one of Python's sequence data types, alongside lists and strings. While they share certain properties with other sequences, like indexing and slicing, they have distinct features and use cases.
+### Mutable Objects in Tuples
+Tuples can contain mutable objects, such as lists:
+```python
+v = ([1, 2, 3], [3, 2, 1])
+print(v)  # Output: ([1, 2, 3], [3, 2, 1])
 
----
+# Making tuples mutable by making it hold lmutable objects
+>>> l1 = [1,2]
+>>> l2 = [3,4]
+>>> t1 = (l1,l2)
+>>> t1
+([1, 2], [3, 4])
+>>> l1[1] = 5
+>>> t1
+([1, 5], [3, 4])
 
-### **Key Features of Tuples**
+```
+### Empty Tuples
+Defined using an empty pair of parentheses:
+```python
+empty = ()
+print(len(empty))  # Output: 0
+```
 
-1. **Definition and Syntax:**
-   - A tuple is a collection of values separated by commas.
-   - Example:
-     ```python
-     t = 12345, 54321, 'hello!'
-     print(t[0])  # Output: 12345
-     print(t)     # Output: (12345, 54321, 'hello!')
-     ```
-   - Parentheses are optional when defining tuples, but they are often required for clarity or in larger expressions.
+### Singleton Tuples (Tuples with One Element)
+Require a trailing comma:
+```python
+singleton = 'hello',
+print(singleton)  # Output: ('hello',)
+```
 
-2. **Immutability:**
-   - Tuples are immutable, meaning their elements cannot be modified after creation.
-   - Example:
-     ```python
-     t[0] = 88888  # Raises TypeError
-     ```
+### Tuple Packing
+Packing multiple values into a tuple:
+```python
+t = 12345, 54321, 'hello!'
+```
 
-3. **Heterogeneous and Nested Elements:**
-   - Tuples often hold heterogeneous data (elements of different types).
-   - They support nesting:
-     ```python
-     u = t, (1, 2, 3, 4, 5)
-     print(u)  # Output: ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
-     ```
+### Sequence Unpacking
+Extracting elements from a sequence into variables:
+```python
+x, y, z = t
+print(x, y, z)  # Output: 12345 54321 hello!
+```
+Requires the number of variables on the left to match the number of elements in the sequence.
 
-4. **Mutable Objects in Tuples:**
-   - Tuples can contain mutable objects, such as lists:
-     ```python
-     v = ([1, 2, 3], [3, 2, 1])
-     print(v)  # Output: ([1, 2, 3], [3, 2, 1])
-     ```
-
----
-
-### **Differences Between Tuples and Lists**
-
-| **Aspect**            | **Tuples**                               | **Lists**                          |
-|-----------------------|------------------------------------------|------------------------------------|
-| **Mutability**        | Immutable                                | Mutable                           |
-| **Purpose**           | Heterogeneous data; fixed structure      | Homogeneous data; dynamic changes |
-| **Access**            | By unpacking or indexing                | By iteration or indexing          |
-
----
-
-### **Special Cases**
-
-1. **Empty Tuples:**
-   - Defined using an empty pair of parentheses:
-     ```python
-     empty = ()
-     print(len(empty))  # Output: 0
-     ```
-
-2. **Singleton Tuples (Tuples with One Element):**
-   - Require a trailing comma:
-     ```python
-     singleton = 'hello',
-     print(singleton)  # Output: ('hello',)
-     ```
-
----
-
-### **Tuple Packing and Unpacking**
-
-1. **Tuple Packing:**
-   - Packing multiple values into a tuple:
-     ```python
-     t = 12345, 54321, 'hello!'
-     ```
-
-2. **Sequence Unpacking:**
-   - Extracting elements from a sequence into variables:
-     ```python
-     x, y, z = t
-     print(x, y, z)  # Output: 12345 54321 hello!
-     ```
-   - Requires the number of variables on the left to match the number of elements in the sequence.
-
-3. **Multiple Assignment:**
-   - Combines packing and unpacking:
-     ```python
-     x, y, z = 12345, 54321, 'hello!'
-     ```
+### Multiple Assignment
+Multiple assignment is just a combination of tuple packing and unpacking:
+```python
+x, y, z = 12345, 54321, 'hello!'
+```
 
 ---
 
 ## Sets
-
----
 
 **Sets** in Python are an **unordered collection of unique elements**. They are particularly useful for:
 - Membership testing.
 - Removing duplicate entries.
 - Performing mathematical set operations like union, intersection, difference, and symmetric difference.
 
----
 
-### **Key Features**
+### Creation:
+#### Using curly braces:
+Use `{}` for non-empty sets.
+```python
+basket = {'apple', 'orange', 'banana'}
+```
 
-1. **Creation:**
-   - **Using curly braces:** `{}` for non-empty sets.
-   - **Using `set()` function:** For empty sets or dynamic construction.
-     ```python
-     basket = {'apple', 'orange', 'banana'}
-     empty_set = set()
-     ```
+#### Using `set()` function:
+For empty sets or dynamic construction.
+```python
+empty_set = set()
+```
 
-2. **Properties:**
-   - **Unordered:** The order of elements is not guaranteed.
-   - **Unique elements:** Automatically removes duplicates.
-     ```python
-     basket = {'apple', 'orange', 'apple'}
-     print(basket)  # Output: {'apple', 'orange'}
-     ```
+### Properties:
 
-3. **Membership Testing:**
-   - Fast testing using `in` or `not in`:
-     ```python
-     'orange' in basket  # True
-     'grape' in basket   # False
-     ```
+The order of elements is not guaranteed, **unordered**, contains only **unique elements**.
+```python
+basket = {'apple', 'orange', 'apple'}
+print(basket)  # Output: {'orange', 'apple'}
+```
 
-4. **Mathematical Operations:**
-   - **Union (`|`):** Combines all unique elements from both sets.
-   - **Intersection (`&`):** Common elements in both sets.
-   - **Difference (`-`):** Elements in the first set but not the second.
-   - **Symmetric Difference (`^`):** Elements in either set but not both.
+### Membership Testing:
+Fast testing using `in` or `not in`:
+```python
+'orange' in basket  # True
+'grape' in basket   # False
+```
 
-5. **Set Comprehensions:**
-   - Similar to list comprehensions, but for sets.
-     ```python
-     a = {x for x in 'abracadabra' if x not in 'abc'}
-     print(a)  # Output: {'r', 'd'}
-     ```
+### Mathematical Operations:
 
----
+#### Union (`|`):
+Combines all unique elements from both sets.  
+Example:  
+```python
+set1 = {1, 2, 3}  
+set2 = {3, 4, 5}  
+result = set1 | set2  # {1, 2, 3, 4, 5}
+```
 
-### **Set Methods Table**
+#### Intersection (`&`):  
+Common elements in both sets.  
+Example:  
+```python
+set1 = {1, 2, 3}  
+set2 = {3, 4, 5}  
+result = set1 & set2  # {3}
+```
+
+#### Difference (`-`):  
+Elements in the first set but not the second.  
+Example:  
+```python
+set1 = {1, 2, 3}  
+set2 = {3, 4, 5}  
+result = set1 - set2  # {1, 2}
+```
+
+#### Symmetric Difference (`^`):  
+Elements in either set but not both.  
+Example:  
+```python
+set1 = {1, 2, 3}  
+set2 = {3, 4, 5}  
+result = set1 ^ set2  # {1, 2, 4, 5}
+```
+
+### Set Comprehensions:
+Similar to list comprehensions, but for sets.
+```python
+a = {x for x in 'abracadabra' if x not in 'abc'}
+print(a)  # Output: {'r', 'd'}
+```
+
+### Set Methods 
 
 | **Method**               | **Description**                                              | **Return Type**  |
 |--------------------------|--------------------------------------------------------------|------------------|
@@ -3155,77 +3153,56 @@ Tuples are one of Python's sequence data types, alongside lists and strings. Whi
 
 ---
 
-### **Examples of Mathematical Operations**
-
-1. **Union:**
-   ```python
-   a = {1, 2, 3}
-   b = {3, 4, 5}
-   print(a | b)  # Output: {1, 2, 3, 4, 5}
-   ```
-
-2. **Intersection:**
-   ```python
-   print(a & b)  # Output: {3}
-   ```
-
-3. **Difference:**
-   ```python
-   print(a - b)  # Output: {1, 2}
-   ```
-
-4. **Symmetric Difference:**
-   ```python
-   print(a ^ b)  # Output: {1, 2, 4, 5}
-   ```
 
 ## Dictionaries
 
----
-
-**Dictionaries** in Python are **mutable, unordered collections** of key-value pairs where:
-- **Keys**: Must be unique and immutable (e.g., strings, numbers, tuples with immutable elements).
+**Dictionaries** are **mutable, unordered collections** of key-value pairs where:
+- **Keys**: Must be unique and immutable (e.g., strings, numbers, uples with immutable elements).
 - **Values**: Can be of any data type and do not need to be unique.
 
-Dictionaries are often referred to as "associative arrays" or "hash maps" in other programming contexts.
+Dictionaries are often referred to as "**associative arrays**" or "**hash maps**" in other programming contexts.
 
----
 
-### **Key Features**
+### Creation:
+#### Empty Dictionary
+Using `{}` or `dict()`
 
-1. **Creation:**
-   - Using `{}`: To create an empty dictionary or initialize key-value pairs.
-   - Using `dict()`: To construct a dictionary dynamically.
-     ```python
-     tel = {'jack': 4098, 'sape': 4139}
-     empty_dict = {}
-     dynamic_dict = dict(sape=4139, guido=4127, jack=4098)
-     ```
+```python
+empty_dict = {}
+empty_dict = dict()
+```
 
-2. **Basic Operations:**
-   - Adding/Updating: `d[key] = value` assigns a value to a key. Overwrites if the key exists.
-   - Deleting: `del d[key]` removes a key-value pair.
-   - Checking Existence: `key in d` checks if a key exists.
+#### Non-empty Dictionary
+Enclosing key-value pairs within `{}`. Or using `dict()` to create dictionary dynamically.
+```python
+tel = {'jack': 4098, 'sape': 4139}
+dynamic_dict = dict(sape=4139, guido=4127, jack=4098)
+a_dict = dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
+```
 
-3. **Key Constraints:**
-   - Keys must be immutable (e.g., strings, numbers, tuples with immutable elements).
-   - Lists and other mutable types cannot be used as keys.
+### Basic Operations
+- Adding/Updating: `d[key] = value` assigns a value to a key. Overwrites if the key exists.
+- Deleting: `del d[key]` removes a key-value pair.
+- Checking Existence: `key in d` checks if a key exists.
 
-4. **Accessing Data:**
-   - Retrieve value by key: `d[key]`.
-   - Get all keys: `list(d)`.
-   - Get sorted keys: `sorted(d)`.
+### Key Constraints
+- Keys must be immutable (e.g., strings, numbers, tuples with immutable elements).
+- Lists and other mutable types cannot be used as keys.
 
-5. **Dictionary Comprehensions:**
-   - Use expressions to create dictionaries dynamically:
-     ```python
-     {x: x**2 for x in (2, 4, 6)}
-     # Output: {2: 4, 4: 16, 6: 36}
-     ```
+### Accessing Data
+- Retrieve value by key: `d[key]`.
+- Get all keys: `list(d)`.
+- Get sorted keys: `sorted(d)`.
 
----
+### Dictionary Comprehensions
+Use expressions to create dictionaries dynamically:
+```python
+{x: x**2 for x in (2, 4, 6)}
+# Output: {2: 4, 4: 16, 6: 36}
+```
 
-### **Table: Dictionary Methods**
+
+### Dictionary Methods
 
 | **Method**                          | **Description**                                                                 | **Return Type**       |
 |-------------------------------------|---------------------------------------------------------------------------------|-----------------------|
@@ -3234,259 +3211,337 @@ Dictionaries are often referred to as "associative arrays" or "hash maps" in oth
 | `fromkeys(iterable, value=None)`    | Creates a new dictionary with keys from the iterable and values set to `value`. | `dict`                |
 | `get(key, default=None)`            | Returns the value for `key` if it exists; otherwise, returns `default`.         | Value Type or Default |
 | `items()`                           | Returns a view object of key-value pairs.                                       | `dict_items`          |
+| `values()`                          | Returns a view object of all values.                                            | `dict_values`         |
 | `keys()`                            | Returns a view object of all keys.                                              | `dict_keys`           |
 | `pop(key, default=None)`            | Removes the specified key and returns the corresponding value.                 | Value Type or Default |
 | `popitem()`                         | Removes and returns the last inserted key-value pair as a tuple.               | `(key, value)` tuple  |
 | `setdefault(key, default=None)`     | Returns the value for `key` if it exists; otherwise, inserts `key` with `default`. | Value Type           |
 | `update([other])`                   | Updates the dictionary with key-value pairs from another dictionary or iterable. | `None`                |
-| `values()`                          | Returns a view object of all values.                                            | `dict_values`         |
 
 ---
-
-### **Examples**
-
-1. **Creating and Accessing:**
-   ```python
-   tel = {'jack': 4098, 'sape': 4139}
-   tel['guido'] = 4127  # Add key-value pair
-   print(tel['jack'])   # Access value
-   ```
-
-2. **Deleting:**
-   ```python
-   del tel['sape']
-   ```
-
-3. **Checking Existence:**
-   ```python
-   'guido' in tel  # True
-   'jack' not in tel  # False
-   ```
-
-4. **Using Comprehensions:**
-   ```python
-   squares = {x: x**2 for x in (2, 4, 6)}
-   print(squares)  # {2: 4, 4: 16, 6: 36}
-   ```
 
 ## Looping Techniques
 
 Python provides versatile tools for iterating over collections, enabling clear and concise iteration patterns for different use cases.
 
----
+### `.items()`
 
-### **1. Looping Through Dictionaries**
-- **Retrieve keys and values simultaneously**:
-  Use the `.items()` method to loop through key-value pairs of a dictionary.
-  ```python
-  knights = {'gallahad': 'the pure', 'robin': 'the brave'}
-  for k, v in knights.items():
-      print(k, v)
-  ```
-  **Output**:
-  ```
-  gallahad the pure
-  robin the brave
-  ```
+Use the `.items()` method to loop through key-value pairs of a dictionary.
+```python
+knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+for k, v in knights.items():
+    print(k, v)
 
----
+# Output
+gallahad the pure
+robin the brave
+```
 
-### **2. Looping Through Sequences with Index**
-- **Retrieve index and value**:
-  Use the `enumerate()` function to get the index and corresponding value in a sequence.
-  ```python
-  for i, v in enumerate(['tic', 'tac', 'toe']):
-      print(i, v)
-  ```
-  **Output**:
-  ```
-  0 tic
-  1 tac
-  2 toe
-  ```
+### `enumerate(sequnce)`
+Use the `enumerate()` function to get the index and corresponding value in a sequence.
+```python
+for i, v in enumerate(['tic', 'tac', 'toe']):
+    print(i, v)
 
----
+# Output
+0 tic
+1 tac
+2 toe
+```
 
-### **3. Looping Over Multiple Sequences Simultaneously**
-- **Pair elements from two or more sequences**:
-  Use the `zip()` function to combine sequences element-wise and iterate over the paired results.
-  ```python
-  questions = ['name', 'quest', 'favorite color']
-  answers = ['lancelot', 'the holy grail', 'blue']
-  for q, a in zip(questions, answers):
-      print(f'What is your {q}? It is {a}.')
-  ```
-  **Output**:
-  ```
-  What is your name? It is lancelot.
-  What is your quest? It is the holy grail.
-  What is your favorite color? It is blue.
-  ```
 
----
+### `zip()`
+Use the `zip()` function to combine sequences element-wise and iterate over the paired results.
+```python
+questions = ['name', 'quest', 'favorite color']
+answers = ['lancelot', 'the holy grail', 'blue']
+for q, a in zip(questions, answers):
+    print(f'What is your {q}? It is {a}.')
 
-### **4. Looping in Reverse**
-- **Iterate in reverse order**:
-  Use the `reversed()` function to loop over a sequence from the end to the beginning.
-  ```python
-  for i in reversed(range(1, 10, 2)):
-      print(i)
-  ```
-  **Output**:
-  ```
-  9
-  7
-  5
-  3
-  1
-  ```
+# Output
+What is your name? It is lancelot.
+What is your quest? It is the holy grail.
+What is your favorite color? It is blue.
+```
 
----
 
-### **5. Looping in Sorted Order**
-- **Iterate over a sequence in sorted order**:
-  Use the `sorted()` function to loop through elements in ascending order without altering the original sequence.
-  ```python
-  basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
-  for i in sorted(basket):
-      print(i)
-  ```
-  **Output**:
-  ```
-  apple
-  apple
-  banana
-  orange
-  orange
-  pear
-  ```
+### `reversed(sequence)`
+Use the `reversed()` function to loop over a sequence from the end to the beginning.
+```python
+for i in reversed(range(1, 10, 2)):
+    print(i)
 
-- **Loop over unique, sorted elements**:
-  Combine `sorted()` with `set()` to remove duplicates and iterate in sorted order.
-  ```python
-  for f in sorted(set(basket)):
-      print(f)
-  ```
-  **Output**:
-  ```
-  apple
-  banana
-  orange
-  pear
-  ```
+# Output
+9
+7
+5
+3
+1
+```
 
----
 
-### **6. Safely Modifying a List While Looping**
-- **Avoid modifying a list during iteration**:
-  Instead, create a new list for filtered or modified elements.
-  ```python
-  import math
-  raw_data = [56.2, float('NaN'), 51.7, 55.3, 52.5, float('NaN'), 47.8]
-  filtered_data = []
-  for value in raw_data:
-      if not math.isnan(value):
-          filtered_data.append(value)
-  print(filtered_data)
-  ```
-  **Output**:
-  ```
-  [56.2, 51.7, 55.3, 52.5, 47.8]
-  ```
+### `sorted()`
+Use the `sorted()` function to loop through elements in ascending order without altering the original sequence.
+```python
+basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+for i in sorted(basket):
+    print(i)
 
----
+# Output
+apple
+apple
+banana
+orange
+orange
+pear
+```
 
-### **Key Techniques**
+### `sorted(set(sequnce))`
+Combine `sorted()` with `set()` to remove duplicates and iterate in sorted order.
+```python
+for f in sorted(set(basket)):
+    print(f)
 
-| **Technique**                     | **Function/Method Used** | **Purpose**                                               | **Example Output**                                     |
-|------------------------------------|---------------------------|-----------------------------------------------------------|-------------------------------------------------------|
-| Looping through dictionary items  | `.items()`                | Retrieve key-value pairs.                                 | `gallahad the pure`                                   |
-| Looping with index in a sequence  | `enumerate()`             | Get index and value simultaneously.                      | `0 tic`                                              |
-| Pairing multiple sequences         | `zip()`                   | Iterate over two or more sequences in parallel.          | `What is your name? It is lancelot.`                 |
-| Reversing a sequence               | `reversed()`              | Loop over a sequence in reverse order.                   | `9, 7, 5, 3, 1`                                      |
-| Sorting elements                   | `sorted()`                | Iterate in sorted order without altering the original.   | `apple, apple, banana, orange, orange, pear`         |
-| Removing duplicates and sorting    | `set()` + `sorted()`      | Loop over unique elements in sorted order.               | `apple, banana, orange, pear`                        |
-| Filtering a list                   | Manual filtering          | Safely create a new list by filtering elements.           | `[56.2, 51.7, 55.3, 52.5, 47.8]`                    |
+# Output
+apple
+banana
+orange
+pear
+```
 
 ## More on Conditions
 
 In Python, conditions used in `while` and `if` statements can involve various operators beyond just comparisons.
 
----
+### Membership Operators: `in` and `not in`
 
-### **1. Membership Operators: `in` and `not in`**
-- The `in` and `not in` operators are used to test whether a value exists (or does not exist) in a container (like a list, string, or set). 
+#### `in` Operator:
+Checks if a value exists in a container. For example, 
 
----
+```python
+# Example with a list
+fruits = ['apple', 'banana', 'cherry']
+result = 'apple' in fruits  # True
 
-### **2. Identity Operators: `is` and `is not`**
-- The `is` and `is not` operators are used to check if two variables refer to the same object in memory, not just if their values are equal.
+# Example with a string
+text = "Hello, World!"
+result = 'Hello' in text  # True
 
----
+# Example with a set
+numbers = {1, 2, 3, 4, 5}
+result = 3 in numbers  # True
+```
 
-### **3. Chained Comparisons**
-- Comparisons can be chained together. For example:
-  ```python
-  a < b == c
-  ```
-  This checks if `a` is less than `b` **and** `b` equals `c`.
+#### `not in` Operator:
+Checks if a value does not exist in a container. For example, 
 
----
+```python
+# Example with a list
+fruits = ['apple', 'banana', 'cherry']
+result = 'grape' not in fruits  # True
 
-### **4. Combining Comparisons with Boolean Operators: `and`, `or`, and `not`**
-- **Logical Operators**: 
-  - `and`, `or`, and `not` combine comparisons.
-  - `and` requires all conditions to be true.
-  - `or` requires at least one condition to be true.
-  - `not` negates a Boolean value.
-  - **Operator Precedence**: 
-    - `not` has higher precedence than `and`, which has higher precedence than `or`.
-    - Parentheses can be used to control the evaluation order.
-  - **Short-Circuiting**: 
-    - The evaluation stops as soon as the result is determined (left to right).
-    - For example, in `A and B and C`, if `B` is false, `C` isn't evaluated because the result is already false.
-  - **Return Value**: The last evaluated argument is returned by `and` and `or` when they are used as general values (not just Booleans).
+# Example with a string
+text = "Hello, World!"
+result = 'Python' not in text  # True
+
+# Example with a set
+numbers = {1, 2, 3, 4, 5}
+result = 6 not in numbers  # True
+```
+
+### Identity Operators: `is` and `is not`
+
+#### `is` Operator:
+Checks if two variables refer to the same object in memory. For example, 
   
----
+```python
+x = [1, 2, 3]
+y = x  # y references the same object as x
+z = [1, 2, 3]  # z is a different object with the same values
+result1 = x is y  # True
+result2 = x is z  # False
+```
 
-### **5. Assigning Results of Comparisons**
-- You can assign the result of a Boolean expression to a variable.
-  ```python
-  string1, string2, string3 = '', 'Trondheim', 'Hammer Dance'
-  non_null = string1 or string2 or string3
-  print(non_null)  # 'Trondheim'
-  ```
-  - The expression returns the first non-empty value from the sequence.
+#### `is not` Operator:
+Checks if two variables do not refer to the same object in memory. For example, 
+
+```python
+x = [1, 2, 3]
+y = [1, 2, 3]  # y is a different object with the same values as x
+result = x is not y  # True
+
+# Example with integers (small integers are cached by Python, so this may behave differently)
+a = 100
+b = 100
+result = a is b  # True (both refer to the same cached object)
+```
+
+### Chained Comparisons
+Comparisons can be chained together. For example:
+```python
+a < b == c
+```
+This checks if `a` is less than `b` **and** `a < b` equals `c`.
+
+
+### Combining Comparisons with Boolean Operators: `and`, `or`, and `not`
+
+#### Logical Operators 
+- `and`, `or`, and `not` combine comparisons.
+- `and` requires all conditions to be true.
+- `or` requires at least one condition to be true.
+- `not` negates a Boolean value.
   
----
+#### Operator Precedence
+- `not` has higher precedence than `and`, which has higher precedence than `or`.
+- Parentheses can be used to control the evaluation order.
+  
+#### Short-Circuiting
 
-### **6. The Walrus Operator (`:=`)**
-- In Python, assignment inside expressions must use the **walrus operator (`:=`)**. This helps avoid mistakes like using `=` (assignment) when `==` (comparison) was intended.
+- The evaluation stops as soon as the result is determined (left to right).
+- For example, in `A and B and C`, if `B` is false, `C` isn't evaluated because the result is already false.
+  
+#### Return Value
+The last evaluated argument is returned by `and` and `or` **when they are used as general values** (not just Booleans).
+  
 
----
+### Assigning Results of Comparisons
+You can assign the result of a Boolean expression to a variable.
+```python
+string1, string2, string3 = '', 'Trondheim', 'Hammer Dance'
+non_null = string1 or string2 or string3
+print(non_null)  # Trondheim
+```
+The expression returns the **first non-empty value** from the sequence.
+  
+
+### The Walrus Operator (`:=`)
+
+The **walrus operator (`:=`)** allows you to assign a value to a variable as part of an expression. It is useful for reducing redundancy in code, especially in conditions or loops.
+
+#### Example 1: Using `:=` in a `while` loop
+```python
+# Without walrus operator
+n = 10
+while n > 0:
+    print(n)
+    n -= 1
+
+# With walrus operator
+n = 10
+while (n := n - 1) > 0:
+    print(n)
+```
+
+#### Example 2: Using `:=` in an `if` condition
+```python
+# Without walrus operator
+value = input("Enter a value: ")
+if len(value) > 5:
+    print(f"The input '{value}' has more than 5 characters.")
+
+# With walrus operator
+if (value := input("Enter a value: ")) and len(value) > 5:
+    print(f"The input '{value}' has more than 5 characters.")
+```
+
+#### Example 3: Simplifying list comprehensions
+```python
+# Without walrus operator
+numbers = [1, 2, 3, 4, 5, 6]
+squared_even = [n * n for n in numbers if n % 2 == 0]
+
+# With walrus operator
+squared_even = [square for n in numbers if (square := n * n) and n % 2 == 0]
+```
+
+The **walrus operator** combines assignment and usage, making code cleaner and often more efficient!
+
 
 ## Comparing Sequences and Other Types
 
 Python allows comparing sequences (like lists, tuples, and strings) with each other. The comparison follows **lexicographical order**.
 
----
 
-### **1. Lexicographical Ordering**
-- Sequences are compared item by item. The first pair of unequal items determines the comparison outcome. If items are equal, the next items are compared, and so on.
-- If one sequence is a prefix of the other (e.g., `[1, 2]` vs `[1, 2, 3]`), the shorter sequence is considered smaller.
+### Lexicographical Ordering
+Sequences are compared item by item. The **first pair of unequal items determines the comparison outcome**. If items are equal, the next items are compared, and so on. If one sequence is a prefix of the other (e.g., `[1, 2]` vs `[1, 2, 3]`), the shorter sequence is considered smaller.
 
 Examples of comparisons:
 - `(1, 2, 3) < (1, 2, 4)` (True)
 - `('ABC' < 'C' < 'Pascal' < 'Python')` (True)
 - `(1, 2, 3) == (1.0, 2.0, 3.0)` (True)
 
----
-
-### **2. Comparing Sequences with Different Types**
+### Comparing Sequences with Different Types
 - Sequences of different types can be compared if they have appropriate comparison methods (e.g., numbers). For example, `0 == 0.0`.
 - If comparisons between unrelated types are attempted, Python raises a `TypeError`.
 
---- 
+
+## `map()` Method in Python
+
+The `map()` function in Python is a built-in function used to apply a function to every item in an iterable (like a list, tuple, or set) and return a map object (an iterator). It is particularly useful for transforming data in a concise and readable manner.
+
+### Syntax:
+```python
+map(function, iterable, ...)
+```
+- **`function`**: A function to apply to each item in the iterable.
+- **`iterable`**: An iterable like a list, tuple, etc. You can pass multiple iterables if the function accepts multiple arguments.
+
+### Characteristics:
+1. Returns a **map object**, which is **an iterator**.
+2. You can convert the map object to a list, tuple, or other iterable types.
+3. Works **efficiently with large datasets** because it **doesn't generate the entire result in memory (lazy evaluation)**.
+
+
+### Example 1: Using `map()` with a single iterable
+```python
+# Function to square a number
+def square(num):
+    return num * num
+
+numbers = [1, 2, 3, 4, 5]
+result = map(square, numbers)
+
+# Convert the map object to a list
+print(list(result))  # Output: [1, 4, 9, 16, 25]
+```
+
+### Example 2: Using `map()` with a lambda function
+```python
+numbers = [1, 2, 3, 4, 5]
+result = map(lambda x: x * x, numbers)
+print(list(result))  # Output: [1, 4, 9, 16, 25]
+```
+
+### Example 3: Using `map()` with multiple iterables
+```python
+# Function to add two numbers
+def add(a, b):
+    return a + b
+
+list1 = [1, 2, 3]
+list2 = [4, 5, 6]
+result = map(add, list1, list2)
+
+# Convert the map object to a list
+print(list(result))  # Output: [5, 7, 9]
+```
+
+### Example 4: Using `map()` with strings
+```python
+# Convert a list of strings to uppercase
+names = ['alice', 'bob', 'charlie']
+result = map(str.upper, names)
+print(list(result))  # Output: ['ALICE', 'BOB', 'CHARLIE']
+```
+
+### Key Points:
+- `map()` is often combined with `lambda` for inline, anonymous functions.
+- For simple transformations, list comprehensions may be more Pythonic:
+  ```python
+  # Using list comprehension
+  squared = [x * x for x in numbers]
+  ```
 
 
 # Modules
