@@ -7,6 +7,7 @@
 * [Data Structures](#data-structures)
 * [Modules](#Modules)
 * [Input and Output](#input-and-output)
+* [Errors And Exception](#errors-and-exception)
 
 # Introduction
 
@@ -5435,32 +5436,20 @@ with open('log.json', 'a', encoding='utf-8') as f:
 
 # Errors and Exception
 
-## **Errors in Python: Syntax Errors and Exceptions**
+Error are inevitable during the development process. They provide useful feedback to help developers identify and fix issues in their code. Errors in Python are generally classified into two types: **Syntax Errors** and **Exceptions**. 
 
-In Python, errors are inevitable during the development process. They provide useful feedback to help developers identify and fix issues in their code. Errors in Python are generally classified into two types: **Syntax Errors** and **Exceptions**. This section focuses on **Syntax Errors**, the most basic type of error.
+## Syntax Errors (Parsing Errors)
 
----
-
-## Syntax Errors
-
-### **What Are Syntax Errors?**
-
-- **Definition**: A **Syntax Error** occurs when Python's parser encounters a line of code that violates the grammar rules of the Python language. These errors prevent the code from being executed because the interpreter cannot understand the malformed structure.
-- **Common Name**: Syntax errors are often referred to as **parsing errors**.
-
----
-
-### **How Syntax Errors Are Displayed**
+**Syntax Error** occurs when Python's parser encounters a line of code that violates the grammar rules of the Python language. These errors prevent the code from being executed because the interpreter cannot understand the malformed structure.
 
 When a syntax error occurs, Python provides the following information:
 1. **File Name**: Indicates where the error occurred.
 2. **Line Number**: Shows the specific line where the error was detected.
 3. **Error Message**: Describes the issue (e.g., `SyntaxError: invalid syntax`).
-4. **Visual Cue**: The parser repeats the offending line with an arrow (`^^^^^`) pointing to the part of the code that caused the error.
+4. **Visual Cue**: The parser echoes the problematic line, highlighting the potential issue with an arrow (`^^^^^`) pointing to the code segment likely responsible for the error. This error might arise from a missing token preceding the highlighted one.
 
----
 
-### **Example 1: Missing Colon in a `while` Loop**
+**Example: Missing Colon in a `while` Loop**
 
 ```python
 # Incorrect Code
@@ -5485,172 +5474,28 @@ while True:
     print('Hello world')
 ```
 
----
-
-### **Common Causes of Syntax Errors**
-
-#### 1. **Missing Colons**
-   - Control flow statements like `if`, `while`, `for`, and `def` require a colon at the end of the line.
-   - **Example**:
-     ```python
-     if x > 0
-         print("Positive number")
-     ```
-     **Error**: `SyntaxError: invalid syntax`  
-     **Fix**:
-     ```python
-     if x > 0:
-         print("Positive number")
-     ```
-
-#### 2. **Unmatched or Missing Parentheses**
-   - Parentheses are essential for function calls, mathematical expressions, and certain data structures.
-   - **Example**:
-     ```python
-     print('Hello world'
-     ```
-     **Error**:
-     ```plaintext
-     SyntaxError: unexpected EOF while parsing
-     ```
-     **Fix**:
-     ```python
-     print('Hello world')
-     ```
-
-#### 3. **Improper Indentation**
-   - Python is strict about indentation, as it defines the block structure of the code.
-   - **Example**:
-     ```python
-     def greet():
-     print("Hello")
-     ```
-     **Error**:
-     ```plaintext
-     IndentationError: expected an indented block
-     ```
-     **Fix**:
-     ```python
-     def greet():
-         print("Hello")
-     ```
-
-#### 4. **Using Reserved Keywords Incorrectly**
-   - Python has reserved keywords like `if`, `while`, `for`, etc., which cannot be used as variable names or in unintended ways.
-   - **Example**:
-     ```python
-     class = "MyClass"
-     ```
-     **Error**:
-     ```plaintext
-     SyntaxError: invalid syntax
-     ```
-     **Fix**:
-     ```python
-     class_name = "MyClass"
-     ```
-
-#### 5. **Unclosed Quotes**
-   - Strings must be enclosed in matching single or double quotes.
-   - **Example**:
-     ```python
-     print("Hello world)
-     ```
-     **Error**:
-     ```plaintext
-     SyntaxError: EOL while scanning string literal
-     ```
-     **Fix**:
-     ```python
-     print("Hello world")
-     ```
-
----
-
-### **Tips for Debugging Syntax Errors**
-
-1. **Read the Error Message Carefully**:
-   - Look at the file name, line number, and the highlighted portion of the code to identify the source of the problem.
-
-2. **Trace Backward**:
-   - Sometimes, the actual issue occurs earlier in the code than the location of the error. For example, a missing closing parenthesis or quote might cause issues later in the code.
-
-3. **Use Code Editors or IDEs**:
-   - Modern code editors like VS Code, PyCharm, and Jupyter provide syntax highlighting and real-time error checking to help catch syntax errors before running the code.
-
-4. **Keep Code Readable**:
-   - Proper indentation, spacing, and clear naming conventions make errors easier to spot.
-
----
-
-### **Advanced Example: A Multi-Line Syntax Error**
-
-```python
-# Incorrect Code
-if True:
-    print("This is correct"
-    print("But this line has an issue")
-```
-
-**Error Output:**
-```plaintext
-  File "<stdin>", line 3
-    print("But this line has an issue")
-        ^
-SyntaxError: invalid syntax
-```
-
-**Explanation**:
-- The first `print` statement is missing a closing parenthesis.
-- The parser detects the error when it encounters the second `print` statement.
-
-**Correct Code:**
-```python
-if True:
-    print("This is correct")
-    print("And this line is fine now")
-```
-
----
-
-### **Understanding Exceptions in Python**
-
-Even when Python code is syntactically correct, it can still fail at runtime due to unforeseen issues. These runtime errors are called **exceptions**. Exceptions represent conditions that a program may encounter during execution, such as division by zero, invalid variable usage, or type mismatches. Unlike syntax errors, exceptions are errors in logic or operations that occur during runtime.
-
----
-
 ## Exceptions
 
-### **What Are Exceptions?**
+Even when Python code is syntactically correct, it can still fail at runtime due to unforeseen issues. These runtime errors are called **exceptions**. Exceptions represent conditions that a program may encounter during execution, such as division by zero, invalid variable usage, or type mismatches. Unlike syntax errors, exceptions are errors in logic or operations that occur during runtime.
 
 - **Definition**: Exceptions are runtime errors detected during the execution of a program. They disrupt the normal flow of a program.
 - **Fatality**: While exceptions can cause a program to crash, Python provides mechanisms to handle them gracefully using exception handling.
 - **Default Behavior**: When an exception is not handled, Python prints an error message and terminates the program.
 
----
-
-### **Basic Anatomy of an Exception**
-
-When an exception occurs, Python provides:
-1. **Error Type**: The type of the exception (e.g., `ZeroDivisionError`, `NameError`).
-2. **Error Message**: Details about what caused the exception.
-3. **Traceback**: A stack traceback showing the sequence of code execution that led to the error.
 
 ---
 
-### **Examples of Common Exceptions**
+### Some Common Exceptions
 
-#### **1. ZeroDivisionError**
+#### 1. ZeroDivisionError
 
 Occurs when attempting to divide by zero.
 
 ```python
 # Code
 10 * (1 / 0)
-```
 
-**Output**:
-```plaintext
+# Outputs
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 10 * (1/0)
@@ -5672,17 +5517,15 @@ else:
 
 ---
 
-#### **2. NameError**
+#### 2. NameError
 
 Occurs when attempting to use a variable or name that has not been defined.
 
 ```python
 # Code
 4 + spam * 3
-```
 
-**Output**:
-```plaintext
+# Output
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
 4 + spam * 3
@@ -5701,7 +5544,7 @@ print(4 + spam * 3)
 
 ---
 
-#### **3. TypeError**
+#### 3. TypeError
 
 Occurs when an operation is performed on incompatible types.
 
@@ -5730,9 +5573,9 @@ print('2' + str(2))  # Converts 2 to string before concatenation
 
 ---
 
-### **Key Components of an Exception Message**
+### Key Components of an Exception Message
 
-#### Example:
+Consider the following example to understand the exception message components.
 ```plaintext
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
@@ -5750,13 +5593,15 @@ ZeroDivisionError: division by zero
 
 3. **Error Type**:
    - Describes the category of the error (`ZeroDivisionError`).
+   - The string printed as the exception type is the name of the built-in exception that occurred. This is true for all built-in exceptions, but need not be true for user-defined exceptions (although it is a useful convention). 
+   - Standard exception names are built-in identifiers (not reserved keywords).
 
 4. **Error Message**:
    - Provides additional details about the cause (`division by zero`).
 
 ---
 
-### **Built-In Exception Types**
+### Built-In Exception Types
 
 Python has a wide variety of built-in exceptions, such as:
 - **ArithmeticError**: For errors in arithmetic operations (e.g., `ZeroDivisionError`, `OverflowError`).
@@ -5765,57 +5610,45 @@ Python has a wide variety of built-in exceptions, such as:
 - **ValueError**: When an operation receives an argument of the right type but an inappropriate value.
 - **IOError**: For input/output operations that fail.
 
-A full list of exceptions is available in Python's official documentation.
-
 ---
 
-### **Handling Exceptions**
-
-Although this section focuses on exceptions themselves, Python offers tools to handle them, such as `try-except` blocks. For example:
+## User Interrupted Exception
+Look at the following example, which asks the user for input until a valid integer has been entered, but allows the user to interrupt the program (using **Control-C** or whatever the operating system supports); note that a user-generated interruption is signalled by raising the **KeyboardInterrupt exception**.
 
 ```python
-try:
-    result = 10 / 0
-except ZeroDivisionError:
-    print("Cannot divide by zero!")
+while True:
+    try:
+        x = int(input("Please enter a number: "))
+        break
+    except ValueError:
+        print("Oops! That was no valid number. Try again...")
+
+Please enter a number: asd2
+Oops! That was no valid number. Try again...
+^C 
+KeyboardInterrupt
 ```
-
----
-
-### **Key Takeaways**
-
-1. **Exceptions Are Runtime Errors**:
-   - Unlike syntax errors, exceptions occur when code runs into logical or operational issues during execution.
-
-2. **Helpful Feedback**:
-   - Python provides a detailed traceback, error type, and message to identify and resolve exceptions.
-
-3. **Prevention and Handling**:
-   - Exceptions can often be avoided by validating inputs and ensuring logic is sound.
-   - Exception handling mechanisms (e.g., `try-except`) allow graceful error recovery.
-
-By understanding exceptions and their error messages, you can diagnose and fix problems in your code effectively.
 
 ## Handling Exceptions
 
-In Python, errors detected during the execution of a program are called **exceptions**. These errors can disrupt the normal flow of a program. However, Python provides powerful tools to **handle** exceptions and prevent programs from crashing unexpectedly. Through structured exception handling, you can catch specific errors and take appropriate action, rather than allowing them to stop the program.
+Exception handling is done using the `try`, `except`, and optionally, the `else` and `finally` blocks.
+
+### Basic Structure of Exception Handling
+
+#### 1. `try` Block:  
+You place the code that might raise an exception inside the `try` block. This is the code you want to execute.
+#### 2. `except` Block: 
+If an exception occurs in the `try` block, the code inside the `except` block is executed. You can specify the type of exception you want to catch (e.g., `ValueError`, `ZeroDivisionError`). At most only `except` handle is executed. 
+#### 3. `else` Block: 
+The code in the `else` block is executed only if **no exception occurs** in the `try` block.
+#### 4. `finally` Block: 
+This block is executed no matter what, whether an exception occurred or not. It's often used for cleanup tasks, such as closing files or releasing resources.
 
 ---
 
-### **Basic Structure of Exception Handling**
+### Example: Asking User for Input Until a Valid Integer is Entered
 
-In Python, exception handling is done using the `try`, `except`, and optionally, the `else` and `finally` blocks. Here's an overview of how this works:
-
-1. **`try` Block**: You place the code that might raise an exception inside the `try` block. This is the code you want to execute.
-2. **`except` Block**: If an exception occurs in the `try` block, the code inside the `except` block is executed. You can specify the type of exception you want to catch (e.g., `ValueError`, `ZeroDivisionError`).
-3. **`else` Block**: The code in the `else` block is executed only if no exception occurs in the `try` block.
-4. **`finally` Block**: This block is executed no matter what, whether an exception occurred or not. It's often used for cleanup tasks, such as closing files or releasing resources.
-
----
-
-### **Example: Asking User for Input Until a Valid Integer is Entered**
-
-Here is an example where the program repeatedly asks for input until the user enters a valid integer. The `try-except` block handles the `ValueError` exception, which occurs if the user enters something other than an integer.
+The program repeatedly asks for input until the user enters a valid integer. The `try-except` block handles the `ValueError` exception, which occurs if the user enters something other than an integer.
 
 ```python
 while True:
@@ -5826,14 +5659,9 @@ while True:
         print("Oops! That was no valid number. Try again...")
 ```
 
-**Explanation**:
-- The program attempts to convert the user's input to an integer using `int()`.
-- If the input is not a valid integer, a `ValueError` is raised, and the `except` block handles it by printing a message and continuing the loop.
-- If the input is valid, the `break` statement exits the loop.
-
 ---
 
-### **Multiple `except` Clauses**
+### Multiple `except` Clauses
 
 You can handle different types of exceptions separately using multiple `except` clauses.
 
@@ -5847,13 +5675,9 @@ except ZeroDivisionError:
     print("Oops! Division by zero is not allowed.")
 ```
 
-**Explanation**:
-- If a `ValueError` occurs (invalid input), the first `except` block is executed.
-- If a `ZeroDivisionError` occurs (input is zero), the second `except` block is executed.
-
 ---
 
-### **Catching Multiple Exceptions in One Clause**
+### Catching Multiple Exceptions in One Clause
 
 You can catch multiple exceptions in a single `except` clause by specifying them in a tuple.
 
@@ -5871,7 +5695,7 @@ except (ValueError, ZeroDivisionError) as e:
 
 ---
 
-### **Catching Specific and General Exceptions**
+### Catching Specific and General Exceptions
 
 You can catch a specific exception or a general `Exception` that handles multiple exceptions. It is generally good practice to catch specific exceptions to handle different error types more appropriately.
 
@@ -5893,9 +5717,11 @@ except Exception as e:
 
 ---
 
-### **Exception Hierarchy and Inheritance**
+### Exception Hierarchy and Inheritance
 
-Exceptions in Python are organized in a hierarchy, with `BaseException` at the top. Most exceptions inherit from `Exception`, but some exceptions like `SystemExit` and `KeyboardInterrupt` are directly derived from `BaseException` and are typically used for program termination.
+Exceptions in Python are organized in a hierarchy, with `BaseException` at the top. `Exception` is a subclass of `BaseException`. Exceptions that needs to be handled with `try-catch` inherit from `Exception`, but some exceptions like `SystemExit` (raised by `sys.exit()`) and `KeyboardInterrupt` are directly derived from `BaseException` and are typically used for program termination. 
+
+
 
 ```python
 class B(Exception):
@@ -5931,9 +5757,9 @@ B
 
 ---
 
-### **Accessing Exception Arguments**
+### Accessing Exception Arguments
 
-Exceptions can have associated arguments, which provide additional details about the error. You can access these arguments via the `args` attribute of the exception instance.
+Exceptions can have associated arguments, which provide additional details about the error. You can access these arguments via the **`args` attribute** of the exception instance.
 
 ```python
 try:
@@ -5950,13 +5776,15 @@ except Exception as inst:
 **Explanation**:
 - The exception is raised with two arguments, `'spam'` and `'eggs'`.
 - The `args` attribute holds these arguments as a tuple.
-- You can also use `__str__()` to print the exception message directly.
+- You can also use **`__str__()`** to print the exception message directly.
 
 ---
 
-### **Using the `else` Block**
+### Using the `else` Block
 
 The `else` block runs only if no exception occurs in the `try` block. This is useful when you have code that should only execute after successful execution of the `try` block.
+
+The use of the else clause is better than adding additional code to the try clause because it **avoids accidentally catching an exception that wasn't raised by the code being protected** by the `try … except` statement.
 
 ```python
 for arg in sys.argv[1:]:
@@ -5975,51 +5803,21 @@ for arg in sys.argv[1:]:
 
 ---
 
-### **Re-Raising Exceptions**
-
-You can catch an exception, handle it (e.g., logging), and then re-raise it to allow higher-level handlers to manage it.
-
-```python
-try:
-    f = open('myfile.txt')
-    s = f.readline()
-    i = int(s.strip())
-except OSError as err:
-    print("OS error:", err)
-except ValueError:
-    print("Could not convert data to an integer.")
-except Exception as err:
-    print(f"Unexpected {err=}, {type(err)=}")
-    raise
-```
-
-**Explanation**:
-- The `OSError` and `ValueError` exceptions are handled locally, and an appropriate message is printed.
-- If any other unexpected exception occurs, it is logged, and then re-raised to allow other handlers (if any) to process it.
-
----
-
-### **Conclusion**
-
-Exception handling in Python allows you to catch and manage errors in a controlled way, ensuring that your program can recover from issues or gracefully terminate. By using `try-except` blocks, you can specify exactly which exceptions to handle, how to handle them, and how to ensure the program continues to run or terminates cleanly.
-
 ## Raising Exception
 
 
-In Python, you can manually trigger exceptions using the `raise` statement. This allows you to force a specific exception to occur, either by raising a predefined exception or creating a new instance of an exception class.
+You can manually trigger exceptions using the `raise` statement. This allows you to force a specific exception to occur, either by raising a predefined exception or creating a new instance of an exception class.
 
 ---
 
-### **Raising a Custom Exception**
+### Raising a Custom Exception
 
 You can raise an exception directly by specifying the exception type and an optional message. For example:
 
 ```python
 raise NameError('HiThere')
-```
 
-**Output:**
-```plaintext
+# Outputs
 NameError: HiThere
 ```
 
@@ -6027,28 +5825,23 @@ In this case, a `NameError` exception is raised with the message `'HiThere'`.
 
 ---
 
-### **Raising an Exception Class**
+### Raising an Exception Class
 
-Instead of passing an exception instance, you can pass an exception class (a subclass of `BaseException`). When an exception class is passed to `raise`, it is automatically instantiated (created) with no arguments:
+Instead of passing an exception instance, you can pass an `Exception` class (a subclass of `BaseException`). When an exception class is passed to `raise`, it is automatically instantiated (created) with no arguments:
 
 ```python
 raise ValueError
-```
 
-This is shorthand for:
-
-```python
+# tha above is shorthand for below: 
 raise ValueError()
-```
 
-**Output:**
-```plaintext
+# Output: 
 ValueError
 ```
 
 ---
 
-### **Re-Raising an Exception**
+### Re-Raising an Exception
 
 If you are handling an exception within an `except` block but want to allow it to propagate further, you can re-raise the exception using `raise` without specifying an exception. This is useful when you want to log the exception or perform some actions before passing it on.
 
@@ -6058,10 +5851,9 @@ try:
 except NameError:
     print('An exception flew by!')
     raise
-```
 
-**Output:**
-```plaintext
+
+# Output
 An exception flew by!
 Traceback (most recent call last):
 File "<stdin>", line 2, in <module>
@@ -6077,15 +5869,13 @@ In this example:
 
 ## Exception Chaining
 
-### **Summary of Exception Chaining in Python**
-
 Exception chaining allows you to propagate exceptions in Python and link multiple exceptions together to provide clearer context. This is done using the `raise` statement with the `from` clause, which helps indicate that an exception was caused by another.
 
 ---
 
-### **Basic Example of Exception Chaining**
+### Basic Example of Exception Chaining
 
-When an exception is raised inside an `except` block while handling another exception, the original exception is automatically attached to the new exception. This is called exception chaining. For example:
+When an exception is raised inside an `except` block while handling another exception, the **original exception is automatically attached to the new exception**. This is called exception chaining. For example:
 
 ```python
 try:
@@ -6115,9 +5905,9 @@ In this case:
 
 ---
 
-### **Using the `from` Clause to Explicitly Chain Exceptions**
+### Using the `from` Clause to Explicitly Chain Exceptions
 
-You can explicitly indicate that an exception is caused by another using the `from` clause:
+You can **explicitly indicate** that an exception is caused by another using the `from` clause for readability:
 
 ```python
 def func():
@@ -6127,10 +5917,8 @@ try:
     func()
 except ConnectionError as exc:
     raise RuntimeError('Failed to open database') from exc
-```
 
-**Output:**
-```plaintext
+# Output
 Traceback (most recent call last):
 File "<stdin>", line 2, in <module>
 func()
@@ -6150,7 +5938,7 @@ In this example:
 
 ---
 
-### **Disabling Automatic Exception Chaining**
+### Disabling Automatic Exception Chaining
 
 You can also disable automatic exception chaining by using `from None`. This prevents the original exception from being shown in the traceback:
 
@@ -6159,10 +5947,8 @@ try:
     open('database.sqlite')
 except OSError:
     raise RuntimeError from None
-```
 
-**Output:**
-```plaintext
+# Output
 Traceback (most recent call last):
 File "<stdin>", line 4, in <module>
 raise RuntimeError from None
@@ -6172,29 +5958,17 @@ RuntimeError
 In this case:
 - The original `OSError` is not displayed, and only the `RuntimeError` is shown, without the chaining information.
 
----
-
-### **Conclusion**
-
-- **Automatic Exception Chaining:** When an exception occurs within an `except` block, the original exception is automatically attached to the new one.
-- **Explicit Chaining with `from`:** You can use the `from` clause to explicitly link exceptions, providing a clear chain of causality.
-- **Disabling Chaining with `from None`:** You can suppress the display of the original exception by using `from None`, which makes the traceback less verbose but removes the context of the original error.
-
 --- 
 
 ## User Defined Exception
-
-### **Summary of User-defined Exceptions in Python**
 
 In Python, you can define your own exceptions by creating custom exception classes. These classes should typically inherit from the built-in `Exception` class (or its subclasses). User-defined exceptions can be used to signal specific error conditions in a program, allowing for more precise and informative error handling.
 
 ---
 
-### **Defining a User-defined Exception**
+### Defining a User-defined Exception
 
-To create a custom exception, you define a class that inherits from `Exception`. This class can have additional attributes or methods to provide more information about the exception.
-
-**Example:**
+To create a custom exception, you define a class that inherits from `Exception`. This class can have additional attributes or methods to provide more information about the exception. This custom exception class is just like any other class, but it is kept simple, only offering a number of attributs that allow information about the error to be extracted by handlers for the exception. 
 
 ```python
 class MyCustomError(Exception):
@@ -6207,10 +5981,8 @@ try:
     raise MyCustomError("Something went wrong", 500)
 except MyCustomError as e:
     print(f"Error: {e.message}, Code: {e.code}")
-```
 
-**Output:**
-```plaintext
+# Output
 Error: Something went wrong, Code: 500
 ```
 
@@ -6222,9 +5994,9 @@ In this example:
 
 ---
 
-### **Naming Conventions**
+### Naming Conventions
 
-While you can choose any name for your custom exception class, it is a common practice to name exception classes with an "Error" suffix, similar to Python's built-in exceptions. This helps to make it clear that the class represents an error condition.
+While you can choose any name for your custom exception class, it is a common practice to **name exception classes with an "Error" suffix**, similar to Python's built-in exceptions. This helps to make it clear that the class represents an error condition.
 
 For example, you could define:
 - `InvalidInputError`
@@ -6233,48 +6005,46 @@ For example, you could define:
 
 ---
 
-### **Use of User-defined Exceptions**
+### Use of User-defined Exceptions
 
 User-defined exceptions are often used in larger programs or libraries where certain error conditions need to be signaled in a way that is specific to the program's domain or functionality. For example, a module interacting with a database might define its own exceptions to signal database-related issues.
 
 ---
 
-### **Conclusion**
-
-- **Creating User-defined Exceptions:** You can create custom exceptions by defining a class that inherits from the `Exception` class.
-- **Attributes:** Custom exceptions can have attributes like `message` and `code` to provide additional information about the error.
-- **Naming:** Exception classes are typically named with an "Error" suffix to clearly indicate they represent errors.
-- **Use in Programs:** These exceptions allow for more specific error handling in large programs, making error conditions easier to understand and address.
-
 ## Defining Clean-up Actions
 
-### **Summary of Defining Clean-up Actions in Python**
-
-The `finally` clause in Python's `try` statement is used to define clean-up actions that must be executed under all circumstances. Regardless of whether an exception occurs or not, the `finally` clause ensures that certain actions (like resource cleanup) are always carried out.
+The `finally` clause in Python's `try` statement is **used to define clean-up actions** that must be executed under all circumstances. Regardless of whether an exception occurs or not, the `finally` clause ensures that certain actions (like resource cleanup) are always carried out.
 
 ---
 
-### **How the `finally` Clause Works**
+### How the `finally` Clause Works
 
-1. **Guaranteed Execution:** The code within the `finally` block will always be executed, even if the `try` block raises an exception or if a `return`, `break`, or `continue` statement is encountered in the `try` or `except` block.
+1. **Guaranteed Execution:** The code within the `finally` block will always be executed, even if the `try` block raises an exception or if a `return`, `break`, `continue`, or `raise` statement is encountered in the `try` or `except` block.
 2. **Exception Handling:** If an exception occurs in the `try` block and is caught in the `except` block, the `finally` block will execute before control moves outside the `try` statement. If no exception is handled, the `finally` block still runs.
 3. **Return, Break, Continue:** 
-   - If a `return`, `break`, or `continue` statement is executed in the `try` or `except` block, the `finally` block will execute right before.
+   - If a `return`, `break`, `raise` or `continue` statement is executed in the `try` or `except` block, the `finally` block will execute right before.
    - If a `return` statement is in the `finally` block, it will override any return statement from the `try` block.
+   - If the `finally` clause executes a `break`, `continue` or `return` statement, exceptions are **not** re-raised.
+
+???
+If an exception occurs during the execution of the `try` clause, it may be handled by an `except` clause. If the exception is not handled, it is re-raised after the `finally` clause has been executed.
+
+- An exception can also occur during the execution of an `except` or `else` clause. In such cases, the exception is re-raised after the `finally` clause has been executed.  
+- If the `finally` clause executes a `break`, `continue`, or `return` statement, exceptions are not re-raised.  
+- If the `try` statement encounters a `break`, `continue`, or `return` statement, the `finally` clause will execute just before the `break`, `continue`, or `return` statement is executed.  
+- If the `finally` clause contains a `return` statement, its return value will take precedence over any return value from the `try` clause.
 
 ---
 
-### **Examples of Using `finally` Clause**
-
-**Example 1: Basic Use of `finally`**
+#### Example 1: Basic Use of `finally`
 ```python
 try:
     raise KeyboardInterrupt
 finally:
     print('Goodbye, world!')
-```
-**Output:**
-```plaintext
+
+
+# Output
 Goodbye, world!
 Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
@@ -6284,7 +6054,7 @@ KeyboardInterrupt
 
 ---
 
-**Example 2: Handling Exceptions and Cleanup**
+#### Example 2: Handling Exceptions and Cleanup
 ```python
 def divide(x, y):
     try:
@@ -6298,9 +6068,8 @@ def divide(x, y):
 
 divide(2, 1)
 divide(2, 0)
-```
-**Output:**
-```plaintext
+
+# Output
 result is 2.0
 executing finally clause
 division by zero!
@@ -6310,7 +6079,7 @@ executing finally clause
 
 ---
 
-**Example 3: Return Statement in `finally`**
+#### Example 3: Return Statement in `finally`
 ```python
 def bool_return():
     try:
@@ -6319,16 +6088,15 @@ def bool_return():
         return False
 
 print(bool_return())
-```
-**Output:**
-```plaintext
+
+# Output
 False
 ```
-- In this case, the `return False` from the `finally` block overrides the `return True` from the `try` block.
+- In this case, the `return False` from the `finally` block **overrides** the `return True` from the `try` block.
 
 ---
 
-**Example 4: Unhandled Exception after `finally`**
+#### Example 4: Unhandled Exception after `finally`
 ```python
 def divide(x, y):
     try:
@@ -6341,9 +6109,8 @@ def divide(x, y):
         print("executing finally clause")
 
 divide("2", "1")
-```
-**Output:**
-```plaintext
+
+# Output
 executing finally clause
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
@@ -6354,9 +6121,33 @@ TypeError: unsupported operand type(s) for /: 'str' and 'str'
 
 ---
 
-### **Real-World Use Cases of `finally`**
+#### Example 5: reraising Exception after `finally`
+Wwhen you reraise an error inside an `except` block in Python, the corresponding `finally` block will still execute before the error propagates further. The `finally` block is always executed, regardless of whether an exception was handled or re-raised, making it useful for cleanup actions.
 
-In real applications, the `finally` block is often used to ensure that external resources, such as files, network connections, or database connections, are released properly, even if an error occurs during their use.
+
+```python
+try:
+    print("In try block")
+    raise ValueError("An error occurred")
+except ValueError as e:
+    print(f"Caught an error: {e}")
+    raise  # Reraises the exception
+finally:
+    print("In finally block")
+
+# Output
+In try block
+Caught an error: An error occurred
+In finally block
+Traceback (most recent call last):
+  ...
+ValueError: An error occurred
+```
+---
+
+### Real-World Use Cases of `finally`
+
+In real applications, the `finally` block is often used to ensure that external resources, such as files, network connections, or database connections, **are released properly**, even if an error occurs during their use.
 
 **Example: Resource Cleanup**
 ```python
@@ -6369,89 +6160,119 @@ finally:
 
 ---
 
-### **Conclusion**
+### When does `finally` not get executed?
 
-- The `finally` block is essential for performing clean-up actions in a Python program.
-- It always runs, regardless of whether an exception was raised or handled.
-- It is especially useful for resource management, ensuring that things like file handles or network connections are properly closed, even in the event of an error.
+The `finally` clause in Python is almost always executed, but there are rare cases where it might not be executed. These include:
+
+#### 1. Process Termination
+If the Python process is forcibly terminated while the `try` or `except` block is still running, the `finally` clause will not execute. Examples include:
+- Using `os._exit()` or a similar function to terminate the process.
+- A `SIGKILL` signal or equivalent forcefully terminates the Python process.
+
+```python
+import os
+try:
+   print("In try block")
+   os._exit(1)  # Forcefully exit
+finally:
+   print("In finally block")  # This won't execute
+```
+
+#### 2. Power Outage or System Crash
+If the program is interrupted by a power failure, operating system crash, or other catastrophic events, the `finally` block will not execute.
+
+#### 3. Infinite Loop or Non-terminating Code
+If there is an infinite loop or a blocking operation in the `try` or `except` block, the `finally` block may never execute because the program does not progress.
+
+```python
+try:
+   while True:  # Infinite loop
+       pass
+finally:
+   print("In finally block")  # This won't execute
+```
+
+#### 4. Deadlocks
+If the code in the `try` block causes a deadlock, the `finally` block will not execute because the program gets stuck.
+
+#### 5. Interpreter Crash
+If the Python interpreter itself crashes due to an internal error or a bug, the `finally` clause will not execute.
+
+#### 6. Hardware Interruption
+If the program is running in an environment where the hardware malfunctions (e.g., a failing disk or memory issue), the `finally` block might not execute.
+
+---
 
 ## Predefined cleanup action
-
-### **Summary of Predefined Clean-up Actions in Python**
 
 In Python, some objects have predefined clean-up actions, ensuring that resources they manage (like files) are properly released when they are no longer needed, regardless of whether the operation was successful or not. The `with` statement is used to handle such objects efficiently, ensuring they are cleaned up automatically.
 
 ---
 
-### **Problem with Manual Resource Management**
+### Problem with Manual Resource Management
 
 In certain scenarios, when you manually manage resources like files, there is a risk of leaving them open longer than necessary, especially if an exception occurs or the code finishes execution unexpectedly. For example:
 
-**Example 1: File Handling Without Cleanup**
+**Example: File Handling Without Cleanup**
 ```python
 for line in open("myfile.txt"):
     print(line, end="")
 ```
-- **Problem:** The file is left open after the code finishes executing. In simple scripts, this might not cause noticeable issues, but in larger applications, it can result in memory leaks or resource contention.
+**Problem:** The file is left open after the code finishes executing. In simple scripts, this might not cause noticeable issues, but in larger applications, it can result in memory leaks or resource contention.
 
 ---
 
-### **Using `with` Statement for Automatic Cleanup**
+### Using `with` Statement for Automatic Cleanup
 
 The `with` statement ensures that the objects involved are cleaned up immediately after use, making it a more reliable way to manage resources like files.
 
-**Example 2: File Handling with `with` Statement**
+**Example: File Handling with `with` Statement**
 ```python
 with open("myfile.txt") as f:
     for line in f:
         print(line, end="")
 ```
-- **Explanation:** The `with` statement automatically handles the opening and closing of the file. The file is closed as soon as the block of code inside the `with` statement finishes execution, even if an error occurs during the process.
+**Explanation:** The `with` statement automatically handles the opening and closing of the file. The file is closed as soon as the block of code inside the `with` statement finishes execution, even if an error occurs during the process.
 
 ---
 
-### **How `with` Works**
+### How `with` Works
 
-1. **Context Manager:** The `with` statement works with context managers. A context manager is an object that defines the `__enter__()` and `__exit__()` methods, which are responsible for setting up and cleaning up the resource, respectively.
-2. **Automatic Cleanup:** When the code within the `with` block completes (successfully or due to an exception), the `__exit__()` method is automatically called, which ensures that any cleanup tasks (like closing a file) are executed.
+1. **Context Manager:** The `with` statement works with context managers. A context manager is an object that defines the **`__enter__()` and `__exit__()` methods**, which are responsible for setting up and cleaning up the resource, respectively.
+2. **Automatic Cleanup:** When the code within the `with` block completes (successfully or due to an exception), the `__exit__()` method **is automatically called**, which ensures that any cleanup tasks (like closing a file) are executed.
 
 ---
 
-### **Real-World Use Cases of `with`**
+### Real-World Use Cases of `with`
 
-- **File Handling:** Ensures that files are closed after reading or writing, even if an exception occurs.
-  
-  **Example:**
-  ```python
-  with open("data.txt", "r") as file:
-      data = file.read()
-      # process the data
-  # No need to manually close the file, it's handled by the 'with' block
-  ```
+**File Handling:** Ensures that files are closed after reading or writing, even if an exception occurs.
+```python
+with open("data.txt", "r") as file:
+   data = file.read()
+   # process the data
+# No need to manually close the file, it's handled by the 'with' block
+```
 
-- **Database Connections:** Automatically close database connections after a query is executed.
+**Database Connections:** Automatically close database connections after a query is executed.
   
-  **Example:**
-  ```python
-  with db_connection.cursor() as cursor:
-      cursor.execute("SELECT * FROM users")
-      result = cursor.fetchall()
-  # Connection is automatically closed when the block is done
-  ```
+```python
+with db_connection.cursor() as cursor:
+   cursor.execute("SELECT * FROM users")
+   result = cursor.fetchall()
+# Connection is automatically closed when the block is done
+```
 
 ---
 
 ## Raising and Handling Multiple Unrelated Exceptions
 
-### **Summary of Raising and Handling Multiple Unrelated Exceptions**
-
 In some cases, you may need to handle multiple exceptions that occur simultaneously, such as when dealing with parallel tasks in concurrency frameworks or when wanting to continue execution while collecting multiple errors. Python provides a way to raise and handle multiple unrelated exceptions through the `ExceptionGroup` class, introduced in newer versions of Python.
 
 ---
 
-### **Raising Multiple Unrelated Exceptions with `ExceptionGroup`**
+### Raising Multiple Unrelated Exceptions with `ExceptionGroup`
 
-The `ExceptionGroup` is a special type of exception that allows multiple unrelated exceptions to be raised together. It takes a list of exception instances and wraps them in a single exception, making it possible to raise them all at once.
+The `ExceptionGroup` is a special type of exception that allows multiple unrelated exceptions to be raised together. It takes a list of **exception instances** (only instances and not raw exceptions) and wraps them in a single exception, making it possible to raise them all at once.
 
 **Example: Raising an Exception Group**
 ```python
@@ -6460,34 +6281,33 @@ def f():
     raise ExceptionGroup('there were problems', excs)
 
 f()
-```
-- **Output:**
-  ```
-  + Exception Group Traceback (most recent call last):
-  |
-  File "<stdin>", line 1, in <module>
-  |
-  f()
-  |
-  ~^^
-  |
-  File "<stdin>", line 3, in f
-  |
-  raise ExceptionGroup('there were problems', excs)
-  | ExceptionGroup: there were problems (2 sub-exceptions)
-  +-+---------------- 1 ----------------
-  | OSError: error 1
-  +---------------- 2 ----------------
-  | SystemError: error 2
-  +------------------------------------
+
+# Output
++ Exception Group Traceback (most recent call last):
+|
+File "<stdin>", line 1, in <module>
+|
+f()
+|
+~^^
+|
+File "<stdin>", line 3, in f
+|
+raise ExceptionGroup('there were problems', excs)
+| ExceptionGroup: there were problems (2 sub-exceptions)
++-+---------------- 1 ----------------
+| OSError: error 1
++---------------- 2 ----------------
+| SystemError: error 2
++------------------------------------
   ```
 - **Explanation:** The `ExceptionGroup` contains two sub-exceptions: an `OSError` and a `SystemError`. Both exceptions are raised together under the same exception group.
 
 ---
 
-### **Handling Multiple Unrelated Exceptions**
+### Handling Multiple Unrelated Exceptions
 
-When catching exceptions from an `ExceptionGroup`, you can use the `except*` clause, which allows you to selectively handle only the exceptions of a specific type from the group. The `except*` clause processes sub-exceptions of a given type, leaving others to propagate to other handlers or be reraised.
+When catching exceptions from an `ExceptionGroup`, you can use the `except*` clause, which allows you to selectively handle only the exceptions of a specific type from the group. The `except*` clause **processes sub-exceptions of a given type, leaving others to propagate** to other handlers or be reraised.
 
 **Example: Handling Specific Exceptions in an Exception Group**
 ```python
@@ -6513,38 +6333,38 @@ except* OSError as e:
     print("There were OSErrors")
 except* SystemError as e:
     print("There were SystemErrors")
+
+### Output
+There were OSErrors
+There were SystemErrors
++ Exception Group Traceback (most recent call last):
+|
+File "<stdin>", line 2, in <module>
+|
+f()
+|
+~^^
+|
+File "<stdin>", line 2, in f
+|
+raise ExceptionGroup(
+|
+...<12 lines>...
+|
+)
+| ExceptionGroup: group1 (1 sub-exception)
++-+---------------- 1 ----------------
+| ExceptionGroup: group2 (1 sub-exception)
++-+---------------- 1 ----------------
+| RecursionError: 4
++------------------------------------
 ```
-- **Output:**
-  ```
-  There were OSErrors
-  There were SystemErrors
-  + Exception Group Traceback (most recent call last):
-  |
-  File "<stdin>", line 2, in <module>
-  |
-  f()
-  |
-  ~^^
-  |
-  File "<stdin>", line 2, in f
-  |
-  raise ExceptionGroup(
-  |
-  ...<12 lines>...
-  |
-  )
-  | ExceptionGroup: group1 (1 sub-exception)
-  +-+---------------- 1 ----------------
-  | ExceptionGroup: group2 (1 sub-exception)
-  +-+---------------- 1 ----------------
-  | RecursionError: 4
-  +------------------------------------
-  ```
-- **Explanation:** In this example, we have an `ExceptionGroup` with a nested exception group. The `except*` clauses catch `OSError` and `SystemError` separately from the group, and the program prints messages indicating the specific errors.
+
+**Explanation:** In this example, we have an `ExceptionGroup` with a nested exception group. The `except*` clauses catch `OSError` and `SystemError` separately from the group, and the program prints messages indicating the specific errors.
 
 ---
 
-### **Use Case: Collecting Multiple Errors**
+### Use Case: Collecting Multiple Errors
 
 You can also use `ExceptionGroup` to collect multiple errors over time, such as in testing scenarios, where multiple tests may fail and you want to raise them all at once.
 
@@ -6564,21 +6384,15 @@ if excs:
 
 ---
 
-### **Conclusion**
-
-The `ExceptionGroup` allows you to group and raise multiple unrelated exceptions simultaneously, providing a powerful tool for handling multiple errors that may occur concurrently or across different parts of a program. By using the `except*` clause, you can selectively handle specific exceptions from the group, making the process of handling multiple errors more structured and flexible.
-
 ## Enriching Exceptions with Notes
-
-### **Summary of Enriching Exceptions with Notes**
 
 In Python, exceptions can be enhanced by adding extra information after they have been raised and caught. This can be useful for providing additional context about the error, such as where and why it occurred, especially when handling multiple exceptions or when debugging.
 
-Python exceptions have a method called `add_note(note)` which allows you to append a string to the exception's notes list. These notes are included in the standard traceback output, appearing after the exception message in the order they were added.
+Python exceptions have a method called `add_note(note)` which allows you to append a string to the exception's notes list. These notes are included in the standard traceback output, **appearing after the exception message in the order they were added**.
 
 ---
 
-### **Example: Adding Notes to an Exception**
+### Adding Notes to an Exception
 
 You can add one or more notes to an exception after it is caught using `add_note()`.
 
@@ -6589,23 +6403,22 @@ except Exception as e:
     e.add_note('Add some information')
     e.add_note('Add some more information')
     raise
+
+
+# Output
+Traceback (most recent call last):
+File "<stdin>", line 2, in <module>
+raise TypeError('bad type')
+TypeError: bad type
+Add some information
+Add some more information
 ```
 
-- **Output:**
-  ```
-  Traceback (most recent call last):
-  File "<stdin>", line 2, in <module>
-  raise TypeError('bad type')
-  TypeError: bad type
-  Add some information
-  Add some more information
-  ```
-
-- **Explanation:** After raising a `TypeError`, we add two notes to the exception. These notes are printed along with the exception details in the traceback.
+**Explanation:** After raising a `TypeError`, we add two notes to the exception. These notes are printed along with the exception details in the traceback.
 
 ---
 
-### **Example: Adding Notes to Multiple Exceptions in an Exception Group**
+### Adding Notes to Multiple Exceptions in an Exception Group
 
 When handling multiple exceptions (for example, in a loop), you can add context to each exception by using `add_note()`. This is particularly useful when raising an `ExceptionGroup` that contains multiple exceptions with additional information.
 
@@ -6622,65 +6435,59 @@ for i in range(3):
         excs.append(e)
 
 raise ExceptionGroup('We have some problems', excs)
+
+# Output
++ Exception Group Traceback (most recent call last):
+|
+File "<stdin>", line 1, in <module>
+|
+raise ExceptionGroup('We have some problems', excs)
+| ExceptionGroup: We have some problems (3 sub-exceptions)
++-+---------------- 1 ----------------
+| Traceback (most recent call last):
+|
+File "<stdin>", line 3, in <module>
+f()
+|
+~^^
+|
+File "<stdin>", line 2, in f
+|
+raise OSError('operation failed')
+| OSError: operation failed
+| Happened in Iteration 1
++---------------- 2 ----------------
+| Traceback (most recent call last):
+|
+File "<stdin>", line 3, in <module>
+f()
+|
+~^^
+|
+File "<stdin>", line 2, in f
+|
+raise OSError('operation failed')
+| OSError: operation failed
+| Happened in Iteration 2
++---------------- 3 ----------------
+| Traceback (most recent call last):
+|
+File "<stdin>", line 3, in <module>
+f()
+|
+~^^
+|
+File "<stdin>", line 2, in f
+|
+raise OSError('operation failed')
+| OSError: operation failed
+| Happened in Iteration 3
++------------------------------------
 ```
 
-- **Output:**
-  ```
-  + Exception Group Traceback (most recent call last):
-  |
-  File "<stdin>", line 1, in <module>
-  |
-  raise ExceptionGroup('We have some problems', excs)
-  | ExceptionGroup: We have some problems (3 sub-exceptions)
-  +-+---------------- 1 ----------------
-  | Traceback (most recent call last):
-  |
-  File "<stdin>", line 3, in <module>
-  f()
-  |
-  ~^^
-  |
-  File "<stdin>", line 2, in f
-  |
-  raise OSError('operation failed')
-  | OSError: operation failed
-  | Happened in Iteration 1
-  +---------------- 2 ----------------
-  | Traceback (most recent call last):
-  |
-  File "<stdin>", line 3, in <module>
-  f()
-  |
-  ~^^
-  |
-  File "<stdin>", line 2, in f
-  |
-  raise OSError('operation failed')
-  | OSError: operation failed
-  | Happened in Iteration 2
-  +---------------- 3 ----------------
-  | Traceback (most recent call last):
-  |
-  File "<stdin>", line 3, in <module>
-  f()
-  |
-  ~^^
-  |
-  File "<stdin>", line 2, in f
-  |
-  raise OSError('operation failed')
-  | OSError: operation failed
-  | Happened in Iteration 3
-  +------------------------------------
-  ```
-
-- **Explanation:** In this example, three `OSError` exceptions are raised inside a loop. Each exception is enriched with a note that indicates the iteration number when the error occurred. These notes are included in the traceback, making it easier to understand the context of each error within the group.
+**Explanation:** In this example, three `OSError` exceptions are raised inside a loop. Each exception is enriched with a note that indicates the iteration number when the error occurred. These notes are included in the traceback, making it easier to understand the context of each error within the group.
 
 ---
-
-### **Conclusion**
-
-The `add_note()` method is useful for adding contextual information to exceptions after they are caught. This helps improve the clarity of error messages, especially when handling multiple exceptions or debugging complex scenarios. Notes are included in the traceback output, making it easier to trace the cause and context of errors.
 
 # Classes
 
