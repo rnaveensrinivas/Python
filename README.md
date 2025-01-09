@@ -6,6 +6,7 @@
 * [More Control Flow Tools in Pyton](#more-control-flow-tools-in-python)
 * [Data Structures](#data-structures)
 * [Modules](#Modules)
+* [Input and Output](#input-and-output)
 
 # Introduction
 
