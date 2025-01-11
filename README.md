@@ -8,6 +8,7 @@
 * [Modules](#Modules)
 * [Input and Output](#input-and-output)
 * [Errors And Exception](#errors-and-exception)
+* [Classes](#classes)
 
 # Introduction
 
@@ -6491,49 +6492,49 @@ raise OSError('operation failed')
 
 # Classes
 
-Classes in Python allow bundling data and functionality together to create new types of objects. A class defines the structure and behavior of its instances, which can have attributes (to store data) and methods (to modify data or perform actions). Python's class system is relatively simple compared to other languages like C++ and Modula-3, yet it supports all the core features of Object-Oriented Programming (OOP).
+Classes allow **bundling data and functionality together** to create **new type** of objects. A class defines the structure and behavior of its instances, which can have attributes (to store data) and methods (to modify data or perform actions). Python's class system is relatively simple compared to other languages like C++ and Modula-3, yet it supports all the core features of Object-Oriented Programming (OOP).
 
-- **Class Features:**
-  - **Inheritance:** A class can inherit from one or more base classes, allowing for method overrides and access to base class methods.
-  - **Data Members:** Class instances can contain arbitrary data, which can be modified by the class's methods.
-  - **Dynamic Nature:** Classes in Python are created at runtime, and they can be modified after creation, providing flexibility.
-  - **Method Binding:** Methods have an explicit first argument (typically named `self`) which refers to the object instance calling the method, unlike C++ where the object is implicitly passed.
+### Class Features:
+- **Inheritance:** A class can inherit from one or more base classes, allowing for method overrides and access to base class methods.
+- **Data Members:** Class instances can contain arbitrary data, which can be modified by the class's methods. Coming from C++, all class memebers are **public**, and all methods are **virtual**. 
+- **Dynamic Nature:** Classes in Python are created at runtime, and they can be modified after creation, providing flexibility.
+- **Method Binding:** Methods have an explicit first argument (typically named `self`) which refers to the object instance calling the method, unlike C++ where the object is implicitly passed.
 
-### **Comparison with Other Languages:**
+### Comparison with Other Languages:
 - **C++ and Modula-3:** Python's class mechanism borrows features from both C++ and Modula-3, like supporting multiple base classes and redefining operators. Unlike C++, Python allows built-in types to be used as base classes.
 - **Smalltalk:** In Python, classes themselves are objects, similar to how Smalltalk treats classes. This enables dynamic behaviors like renaming or importing classes at runtime.
 
-### **Aliasing in Python:**
-- **Objects and Names:** Multiple names can refer to the same object, a concept known as aliasing. This is often unnoticed with immutable objects (like numbers or strings), but it plays a significant role with mutable objects (like lists or dictionaries).
+### Aliasing in Python:
+Multiple names can refer to the same object, a concept known as aliasing. This is often unnoticed with immutable objects (like numbers or strings), but it plays a significant role with mutable objects (like lists or dictionaries). Aliases behave like **pointers**.
+
+Assignment do not copy data, they just bind names to objects. 
   
-  **Example of Aliasing:**
-  ```python
-  a = [1, 2, 3]
-  b = a  # b is an alias for a
-  b[0] = 10  # Modifies the object a points to
-  print(a)  # Output: [10, 2, 3]
-  ```
+```python
+a = [1, 2, 3]
+b = a  # b is an alias for a
+b[0] = 10  # Modifies the object a points to
+print(a)  # Output: [10, 2, 3]
+```
 
-- **Implications of Aliasing:**
-  - **Efficient Argument Passing:** When objects are passed to functions, only a reference (pointer) to the object is passed, making the process efficient. Changes to mutable objects inside functions affect the original object.
-  - **No Need for Multiple Argument Passing Mechanisms:** Unlike languages like Pascal that require separate mechanisms for passing by reference or value, Python's aliasing allows simple passing of objects.
-
-### **Conclusion:**
-Python's class system is a powerful and flexible tool for object-oriented programming, allowing dynamic behavior and efficient memory management. The concept of aliasing can be advantageous when working with mutable objects, making Python's object handling efficient and straightforward.
+**Implications of Aliasing:**
+- **Efficient Argument Passing:** When objects are passed to functions, only a reference (pointer) to the object is passed, making the process efficient. Changes to mutable objects inside functions affect the original object.
+- **No Need for Multiple Argument Passing Mechanisms:** Unlike languages like Pascal that require separate mechanisms for passing by reference or value, Python's aliasing allows simple passing of objects.
 
 ## Python Scopes and Namespaces
 
-In Python, **scopes** and **namespaces** are essential concepts for managing the visibility and accessibility of variables and objects in different parts of a program. Understanding how these concepts work is crucial, especially when dealing with advanced features like classes and nested functions.
+In Python, **scopes** and **namespaces** are essential concepts for managing the visibility and accessibility of variables and objects in different parts of a program. 
 
-#### 1. **Namespaces**
+### Namespaces
 A **namespace** is essentially a mapping from names to objects. It determines which object corresponds to a given name in the current context. Common examples of namespaces include:
 - **Built-in Namespace**: Contains names of built-in functions (e.g., `abs()`, `len()`) and exceptions.
 - **Global Namespace**: Refers to the global variables defined at the module level.
 - **Local Namespace**: Refers to the local variables inside a function.
 
-Namespaces are typically implemented as Python dictionaries, though this detail is abstracted away for most users. Importantly, namespaces in different contexts are independent of each other. For example, two different modules may define a function `maximize`, but they will not conflict with each other because the function `maximize` belongs to different namespaces.
+Namespaces are typically **implemented as Python dictionaries**, though this detail is abstracted away for most users. Importantly, namespaces in different contexts are independent of each other. For example, two different modules may define a function `maximize`, but they will not conflict with each other because the function `maximize` belongs to different namespaces.
 
-An **attribute** refers to a name following a dot notation (e.g., `z.real` where `real` is an attribute of object `z`). When accessing names in modules, such as `modname.funcname`, it is essentially an attribute access, where `modname` refers to a module object, and `funcname` is an attribute of that object.
+An **attribute** refers to a name following a dot notation (e.g., `z.real` where `real` is an attribute of object `z`). When accessing names in modules, such as `modname.funcname`, it is essentially an **attribute access**, where `modname` refers to a module object, and `funcname` is an attribute of that object.
+
+Module objects have a secret read-only attribute called __dict__ which returns the dictionary used to implement the module's namespace; the name __dict__ is an attribute but not a global name. Obviously, using this violates the abstraction of namespace implementation, and should be restricted to things like post-mortem debuggers.
 
 Attributes can be **read-only** or **writable**. For instance:
 ```python
@@ -6541,15 +6542,17 @@ modname.the_answer = 42  # writable attribute
 del modname.the_answer   # delete the attribute
 ```
 
-#### 2. **Namespaces and Their Lifetime**
-- **Built-in Namespace**: Created when the Python interpreter starts up and exists throughout the program's execution.
-- **Global Namespace**: Created when a module is imported and persists until the interpreter quits.
+Each module get's their own **global** and **local** namespaces. If you execute Python script containing top level statements, then the name of the module `__name__` would be `__main__`. This `__main__` module will have it's own global and local namespace. Built-in functions like `print` and `len` reside in a separate module called builtins, which will again have it's own global and local namespace. 
+
+#### Namespaces' Lifetime
+- **Built-in Namespace**: Created when the Python interpreter starts up and exists throughout the program's execution (never deleted).
+- **Global Namespace**: Created when a module is imported and persists until the interpreter quits (stays as long as built-in).
 - **Local Namespace**: Created when a function is called and destroyed when the function returns or raises an unhandled exception.
 
 Recursive function calls will create a **new local namespace** for each call, meaning each invocation has its own local namespace.
 
-#### 3. **Scopes**
-A **scope** is a region in the program where a namespace is directly accessible. The scope determines where a variable or function can be accessed. There are four types of scopes, which Python searches in the following order:
+### Scopes
+A **scope** is a region in the program where a namespace is directly accessible. The scope determines where a variable or function can be accessed. Python uses **static scoping**. There are four types of scopes, which Python searches in the following order:
 1. **Innermost Scope (Local scope)**: The current function or block where the name is accessed.
 2. **Enclosing Function Scopes**: The scopes of any functions that enclose the current function.
 3. **Global Scope**: The global namespace of the current module.
@@ -6557,13 +6560,13 @@ A **scope** is a region in the program where a namespace is directly accessible.
 
 Python resolves names dynamically at runtime by searching these scopes from the innermost to the outermost. If a variable is not found in the innermost scope, Python checks progressively more outer scopes.
 
-#### 4. **Global and Nonlocal Declarations**
+#### Global and Nonlocal Declarations
 - The `global` keyword tells Python that a variable should be bound to the **global scope** (module level). This means that assignments to that variable will modify the global variable, not create a local one.
+  - You cannot create a global variable, if it doesn't exists (exists, imply that at least a reference of the varialbe should be present) in global scope. 
 - The `nonlocal` keyword tells Python that a variable is in an **enclosing scope** (i.e., not the local or global scope), and any assignment to this variable will modify the variable in that enclosing scope, rather than creating a new local variable.
 
 Without these keywords, assignments will always create variables in the innermost scope.
 
-#### 5. **Example of Scopes and Namespaces**
 Consider the following example, which demonstrates how Python's scoping rules affect variable assignments and how `global` and `nonlocal` work:
 
 ```python
@@ -6607,15 +6610,11 @@ In global scope: global spam
 - The `global` and `nonlocal` keywords control whether variables refer to the global or enclosing scopes, respectively, rather than being confined to the local scope.
 - Assignments in Python do not copy data but bind names to objects in the current scope.
 
-These concepts are foundational for understanding Python's behavior, especially when working with functions, modules, and classes, as they define how variables and functions interact across different parts of a program.
-
 ## A first look at classes
 
-### Summary of "A First Look at Classes" (9.3)
+**Classes** in Python brings new syntax, object types, and semantics. It enables users to create custom types that can model real-world entities by encapsulating data and functionality.
 
-The introduction to **classes** in Python brings new syntax, object types, and semantics. It enables users to create custom types that can model real-world entities by encapsulating data and functionality.
-
-#### 1. **Class Definition Syntax**
+### 1. Class Definition Syntax
 A class is defined using the `class` keyword followed by a class name and a colon. The body of the class can contain statements, including function definitions and other code. Here's the basic syntax:
 ```python
 class ClassName:
@@ -6635,7 +6634,7 @@ if some_condition:
         def greet(self):
             print("Hello!")
 ```
-This will only define `MyClass` if `some_condition` is `True`.
+This will only define `MyClass` if `some_condition` is `True`. The scope of the class is restricted to the conditional construct. 
 
 Inside a class, **function definitions** (methods) are common, but you can also use other statements, like variable assignments or print statements, although it is less common. When a class definition is entered:
 - A **new namespace** is created for the class.
@@ -6654,7 +6653,7 @@ In this example, when `MyClass` is defined:
 - `MyClass.i` will reference the integer `12345`.
 - `MyClass.f` will reference the method `f(self)`.
 
-#### 2. **Class Objects**
+### 2. Class Objects
 Once the class is defined, it can be treated like an object, and **class objects** support two operations:
 1. **Attribute References**: Access class attributes and methods using the standard attribute syntax `obj.name`.
 2. **Instantiation**: Creating an instance (object) of the class using function notation.
@@ -6670,7 +6669,7 @@ print(MyClass.i)  # Accessing class attribute
 print(MyClass.f)  # Accessing class method (this is a function object)
 ```
 
-#### 3. **Instantiating a Class**
+### 3. Instantiating a Class
 Class instantiation works like calling a function. When you call a class (e.g., `MyClass()`), it creates an **instance** of the class.
 
 ```python
@@ -6678,8 +6677,8 @@ x = MyClass()  # Create a new instance of MyClass
 ```
 This creates a new **instance object** that is assigned to the variable `x`. At this point, `x` is an instance of `MyClass`.
 
-#### 4. **The `__init__()` Method**
-Many classes want to initialize their instances with custom state. The `__init__()` method is the **initializer** method for the class. When a class defines an `__init__()` method, Python automatically calls this method after creating an empty object during instantiation.
+### 4. The `__init__()` Method
+Many classes want to initialize their instances with custom state. The `__init__()` method is the **initializer** method (constructor) for the class. When a class defines an `__init__()` method, Python automatically calls this method after creating an empty object during instantiation.
 
 - `__init__()` is a special method in Python, and it can take parameters to initialize the object's state.
   
@@ -6694,7 +6693,7 @@ print(x.data)  # Outputs: []
 ```
 In this example, when `x` is instantiated, the `__init__()` method initializes the `data` attribute as an empty list.
 
-#### 5. **`__init__()` with Arguments**
+### 5. `__init__()` with Arguments
 You can make the `__init__()` method more flexible by accepting arguments. These arguments are passed during instantiation and can be used to customize the object's initial state.
 
 **Example:**
@@ -6720,11 +6719,11 @@ In this example, the `Complex` class represents complex numbers with `realpart` 
 
 Classes encapsulate both data (attributes) and behavior (methods) into a single entity, allowing for better organization and abstraction in programming.
 
-### Summary of "Instance Objects" (9.3.3)
+## Instance Objects
 
 Instance objects in Python represent individual objects created from a class. They can hold attributes (both data and methods) that can be accessed or modified, enabling unique behavior and state for each object.
 
-#### 1. **Instance Attributes: Data Attributes**
+### 1. Instance Attributes: Data Attributes
 - **Data Attributes** are similar to “instance variables” in languages like Smalltalk or “data members” in C++. They are attributes unique to each instance of a class and are created when first assigned, similar to local variables.
 - **Dynamic Creation**: You don't need to declare data attributes in advance. They are created on-the-fly when you assign them to an instance.
 
@@ -6732,7 +6731,7 @@ Instance objects in Python represent individual objects created from a class. Th
 ```python
 class MyClass:
     def __init__(self):
-        self.counter = 0
+        self.name = "Ram"
 
 x = MyClass()
 x.counter = 1  # Creating the 'counter' data attribute dynamically
@@ -6746,7 +6745,7 @@ del x.counter  # Deleting the attribute
   - The while loop modifies `x.counter` and eventually prints `16`.
   - The `del x.counter` line removes the attribute from the instance.
 
-#### 2. **Instance Attributes: Methods**
+### 2. Instance Attributes: Methods
 - **Methods** are functions that "belong" to an instance object. They are essentially bound functions that can operate on the instance's data and are defined within the class.
 - **Calling Methods**: When calling a method on an instance (e.g., `x.f()`), the method behaves like a normal function, but with one special feature: the **instance object** (`x`) is automatically passed as the **first argument** (usually named `self`).
 
@@ -6761,7 +6760,7 @@ print(x.greet())  # Output: Hello, world!
 ```
 - `greet(self)` is a method of the class. When called on `x`, `x` is passed as the `self` argument.
 
-#### 3. **Method Objects**
+### 3. Method Objects
 - **Method Object**: When referencing a method without calling it (e.g., `x.f`), Python returns a "method object," which is a function that has already been bound to the instance.
 - You can store this method object and call it later. The method still knows which instance it is bound to.
 
@@ -6778,8 +6777,10 @@ while True:
 ```
 - Here, `xf` is a method object bound to the `x` instance. Calling `xf()` prints `"Hello, world!"` indefinitely.
 
-#### 4. **Calling Methods**
-- When calling a method like `x.f()`, Python translates this into a function call with the instance as the first argument: `MyClass.f(x)()`.
+> Here is something cool, you make x.f point to some other function!
+
+### 4. Calling Methods
+- When calling a method like `x.f()`, Python translates this into a function call with the instance as the first argument: `MyClass.f(x)`.
 - **Method Binding**: The method is a function that is bound to the instance (`x`) and is called with the instance (`x`) as the first argument.
 
 **Example:**
@@ -6793,10 +6794,10 @@ print(x.greet("Alice"))  # Output: Hello, Alice!
 ```
 - Here, the call `x.greet("Alice")` is internally translated to `MyClass.greet(x, "Alice")`, where `x` is passed as the first argument (`self`).
 
-#### 5. **Class and Instance Variables**
+### 5. Class and Instance Variables
 - **Instance Variables**: These are attributes unique to each instance, defined inside the `__init__()` method. They store data that can vary from one instance to another.
   
-- **Class Variables**: These are shared across all instances of the class. They are defined within the class but outside the `__init__()` method. They are useful for storing data that is common to all instances.
+- **Class Variables**: These are shared across all instances of the class. They are **defined within the class but outside the `__init__()` method**. They are useful for storing data that is common to all instances.
 
 **Example of Class and Instance Variables:**
 ```python
@@ -6820,7 +6821,7 @@ print(e.name)  # Output: Buddy
 ```
 - `kind` is a **class variable** shared by all instances, while `name` is an **instance variable**, unique to each `Dog` object.
 
-#### 6. **Mutable Objects in Class Variables**
+### 6. Mutable Objects in Class Variables
 - **Pitfall with Mutable Class Variables**: If you use mutable objects (like lists or dictionaries) as class variables, they will be shared among all instances. This can lead to unintended behavior.
 
 **Example of Shared Class Variables with Mutable Objects:**
@@ -6845,7 +6846,7 @@ print(e.tricks)  # Output: ['roll over', 'play dead']
 ```
 - Here, the `tricks` list is shared across all instances, meaning that adding a trick for one `Dog` instance affects all instances. This is usually not the desired behavior.
 
-#### 7. **Correct Design with Instance Variables**
+### 7. Correct Design with Instance Variables
 To avoid the shared mutable object issue, it's better to use instance variables to store mutable data. Each instance will then have its own separate list or dictionary.
 
 **Correct Design with Instance Variables:**
@@ -6877,11 +6878,11 @@ print(e.tricks)  # Output: ['play dead']
 - **Method Objects**: Methods can be stored and called later, just like function objects.
 - **Pitfall with Mutable Class Variables**: Mutable objects like lists or dictionaries should not be used as class variables if they are meant to be unique to each instance.
 
-## "Random Remarks" (9.4)
+## Some Remarks
 
-This section discusses some important points regarding attributes, methods, and conventions in Python classes. It provides insights into the behavior of instance and class attributes, method conventions, and some additional aspects related to how Python handles classes and objects.
+Let's look at some important points regarding attributes, methods, and conventions in Python classes. Looking into the behavior of instance and class attributes, method conventions, and some additional aspects related to how Python handles classes and objects.
 
-#### 1. **Instance vs. Class Attributes**
+### 1. Instance vs. Class Attributes
 - **Priority of Instance Attributes**: If an attribute with the same name exists in both the instance and the class, the instance attribute takes priority during attribute lookup.
 
 **Example:**
@@ -6899,7 +6900,7 @@ print(w2.purpose, w2.region)  # Output: storage east
 ```
 - Here, `w2.region` is overridden at the instance level, so it prints `'east'` while the class attribute `purpose` remains `'storage'`.
 
-#### 2. **Data Attributes and Methods**
+### 2. Data Attributes and Methods
 - **Access to Data Attributes**: Data attributes are accessible both by methods within the class and by users (clients) of the object. However, Python does not enforce **data hiding** (like private attributes in other languages). It's up to conventions to ensure safe usage.
   
 - **Data Integrity**: Methods maintain control over the state of an object, and clients can add data attributes to an instance. However, if the client overwrites data attributes, it may break invariants or assumptions made by the methods.
@@ -6924,11 +6925,22 @@ print(c.count)  # Output: 100
 ```
 - The client can overwrite the `count` attribute, potentially disrupting the intended behavior of the `increment` and `reset` methods.
 
-#### 3. **No Shorthand for Accessing Data Attributes**
-- Python does not provide shorthand syntax for accessing instance variables from within methods. This design choice improves code readability and reduces confusion between local variables and instance variables.
+### 3. No Shorthand for Accessing Data Attributes
+- Python does not provide shorthand syntax for accessing instance variables from within methods. This design choice improves code readability and reduces confusion between local variables and instance variables. 
+- If you want to access instance variables, you will have to use `self` key word. 
+**Example**: 
+```python
+class MyClass: 
+    def __init__(self):
+        self.variable_1 = 1
 
-#### 4. **The `self` Convention**
-- **The `self` argument**: The first argument of a method is conventionally named `self`. This is just a naming convention, and Python doesn't enforce it. However, following this convention improves the readability and maintainability of the code, especially for others working with your code or using code analysis tools.
+    def a_method(self): 
+        variable_1 = 2 # local variable
+        self.variable_1 = 2 # instance variable
+```
+
+### 4. The `self` Convention
+- **The `self` argument**: The first argument of a method is conventionally named `self`. This is just a naming convention, and **Python doesn't enforce it**. However, following this convention improves the readability and maintainability of the code, especially for others working with your code or using code analysis tools.
 
 **Example:**
 ```python
@@ -6944,7 +6956,7 @@ print(p.greet())  # Output: Hello, Alice!
 ```
 - `self` is a reference to the instance of the class and allows methods to access instance variables.
 
-#### 5. **Function Objects as Methods**
+### 5. Function Objects as Methods
 - A **function object** can be assigned as a class attribute and will become a method for instances of that class. This can be done even if the function is defined outside the class.
 
 **Example:**
@@ -6963,8 +6975,8 @@ print(h(C()))  # Output: Hello, World!
 ```
 - Here, `f1` is assigned to `f` inside the class `C`, and `f1` becomes a method of `C`. Similarly, `h` is assigned `C.g` and can be called as `h()`.
 
-#### 6. **Calling Methods within Other Methods**
-- **Method Calling**: Methods can call other methods by using `self` to reference other methods within the same class.
+### 6. Calling Methods within Other Methods
+- **Method Calling**: Methods can call other methods by **using `self`** to reference other methods within the same class.
 
 **Example:**
 ```python
@@ -6985,8 +6997,10 @@ print(b.data)  # Output: [5, 5]
 ```
 - In the `addtwice` method, the `add` method is called twice to add the same value `5` to the `data` list.
 
-#### 7. **Global Names in Methods**
+### 7. Global Names in Methods
 - Methods can reference **global variables** in the same way as functions. The global scope is the module containing the method definition, but the class itself is not considered part of the global scope.
+
+??? Do we access global variables using `global` keyword?
 
 **Example:**
 ```python
@@ -7001,9 +7015,10 @@ obj.print_x()  # Output: 10
 ```
 - In this case, `x` is a global variable accessed by the `print_x` method of `MyClass`.
 
-#### 8. **Object Classes and Types**
+### 8. Object Classes and Types
 - Every object in Python is an instance of a **class** (also called its **type**). This can be accessed via the `__class__` attribute, which returns the class of the object.
 
+??? does `type()` method use `__class__` internally?
 **Example:**
 ```python
 class MyClass:
@@ -7025,7 +7040,7 @@ print(obj.__class__)  # Output: <class '__main__.MyClass'>
 
 ## Inheritance 
 
-#### 1. **Basic Inheritance Syntax**
+### 1. Basic Inheritance Syntax
 Inheritance is a core feature of object-oriented programming that allows a class (derived class) to inherit properties and behaviors (methods) from another class (base class). In Python, a class is defined as a derived class by specifying the base class(es) in parentheses:
 
 **Syntax:**
@@ -7051,7 +7066,7 @@ print(dog.speak())  # Output: Woof
 ```
 In this example, `Dog` inherits from `Animal`. The method `speak()` is overridden in the `Dog` class.
 
-#### 2. **Attribute Lookup in Inheritance**
+### 2. Attribute Lookup in Inheritance
 When an attribute (or method) is requested from an instance, Python looks for it in the derived class first. If it's not found, the search continues up the inheritance chain to the base class, and so on, until the attribute is found or the search reaches the top of the chain.
 
 - **Method Resolution Order (MRO)**: This mechanism ensures that the correct method is invoked when a method is called. Python follows a depth-first, left-to-right approach for attribute lookup.
@@ -7074,7 +7089,7 @@ print(c.speak())  # Output: B speaks
 ```
 Here, `C` inherits from `B`, and `B` overrides the `speak()` method from `A`. Since `C` doesn't override `speak()`, the method from class `B` is called.
 
-#### 3. **Overriding Methods**
+### 3. Overriding Methods
 In Python, a method in a derived class can **override** a method in the base class. This means that the derived class can define its own version of the method, replacing the one from the base class.
 
 **Example:**
@@ -7092,8 +7107,8 @@ print(dog.sound())  # Output: Woof
 ```
 In this case, `Dog` overrides the `sound()` method from `Animal`. When `dog.sound()` is called, it uses the version from `Dog`, not from `Animal`.
 
-#### 4. **Calling Base Class Methods**
-Sometimes, a derived class might want to **extend** (rather than completely replace) the functionality of a method from the base class. In such cases, it can call the method from the base class using `BaseClassName.method(self, ...)`.
+### 4. Calling Base Class Methods
+Sometimes, a derived class might want to **extend** (rather than completely replace) the functionality of a method from the base class. In such cases, it can call the method from the base class using `super().method(self, ...)`.
 
 **Example:**
 ```python
@@ -7110,7 +7125,7 @@ print(dog.sound())  # Output: Animal sound and Woof
 ```
 Here, `Dog` extends `sound()` from `Animal` by calling the base class method with `super()`, and appending additional behavior.
 
-#### 5. **The `isinstance()` Function**
+### 5. The `isinstance()` Function
 Python provides the built-in function `isinstance()` to check whether an object is an instance of a given class or a subclass of it.
 
 **Example:**
@@ -7128,7 +7143,7 @@ print(isinstance(d, Animal))  # Output: True
 - `isinstance(d, Dog)` returns `True` because `d` is an instance of `Dog`.
 - `isinstance(d, Animal)` also returns `True` because `Dog` is a subclass of `Animal`.
 
-#### 6. **The `issubclass()` Function**
+#### 6. The `issubclass()` Function
 `issubclass()` checks whether a class is a subclass of another class. It returns `True` if the first class is a subclass of the second.
 
 **Example:**
@@ -7139,7 +7154,7 @@ print(issubclass(Dog, str))     # Output: False
 - `issubclass(Dog, Animal)` returns `True` because `Dog` is a subclass of `Animal`.
 - `issubclass(Dog, str)` returns `False` because `Dog` is not a subclass of `str`.
 
-#### 7. **Multiple Inheritance**
+### 7. Multiple Inheritance
 Python supports **multiple inheritance**, meaning a derived class can inherit from more than one base class. The derived class inherits attributes and methods from all its base classes. The syntax for defining a class with multiple base classes is as follows:
 
 **Syntax:**
@@ -7169,7 +7184,7 @@ print(c.greet())  # Output: Hello from B
 ```
 - `C` inherits from both `A` and `B`. It can access methods from both parent classes.
 
-#### 8. **Method Resolution Order (MRO) in Multiple Inheritance**
+### 8. Method Resolution Order (MRO) in Multiple Inheritance
 In multiple inheritance, the **Method Resolution Order (MRO)** determines the order in which the classes are searched for attributes and methods. This order ensures that each class in the inheritance chain is only accessed once, and that classes are not revisited during the search.
 
 Python uses a **dynamic algorithm** to calculate the MRO, which is based on the **C3 Linearization** algorithm. This allows for cooperative multiple inheritance, meaning that methods from parent classes can be called in a predictable order.
@@ -7196,7 +7211,7 @@ d.method()  # Output: Method from B
 ```
 - In this example, `D` inherits from both `B` and `C`. The MRO ensures that the method from `B` is called first, not `C`, even though both `B` and `C` inherit from `A`. This is a result of the C3 linearization of the MRO.
 
-#### 9. **Dynamic Changes in MRO**
+### 9. Dynamic Changes in MRO
 The MRO can be checked at runtime using the `mro()` method or the `__mro__` attribute of a class.
 
 **Example:**
@@ -7217,14 +7232,12 @@ print(D.mro())  # Output: [<class '__main__.D'>, <class '__main__.B'>, <class '_
 
 ## Private Variables
 
-### In-depth Summary of Private Variables in Python (Section 9.6)
-
 In Python, the concept of **private variables** does not exist in the same way as in many other object-oriented programming languages like Java or C++. Instead, Python follows conventions and uses a technique called **name mangling** to provide limited support for private variables. Here's a detailed explanation of how private variables work in Python, with examples.
 
-#### 1. **No True Private Variables**
-In Python, there are no actual "private" instance variables that are completely inaccessible from outside the object. Any instance variable (or method) can be accessed by code outside the class if the variable or method is public.
+### 1. No True Private Variables
+In Python, there are no actual "private" instance variables that are completely inaccessible from outside the object. Any instance variable (or method) can be accessed by code outside the class if the variable or method is private.
 
-However, Python follows a **convention** to indicate that certain variables should be treated as "private." This convention is based on the use of a leading underscore (`_`) in the variable or method name. The underscore is a signal to developers that the variable or method is intended for internal use within the class and should not be accessed directly from outside the class. This is not enforced by Python, but it helps maintain clean code and prevents accidental misuse.
+However, Python follows a **convention** to indicate that certain variables should be treated as "private." This convention is based on the use of **a leading underscore (`_`)** in the variable or method name. The underscore is a signal to developers that the variable or method is intended for internal use within the class and should not be accessed directly from outside the class. This is not enforced by Python, but it helps maintain clean code and prevents accidental misuse.
 
 **Example:**
 ```python
@@ -7237,7 +7250,7 @@ print(obj._private_variable)  # Not an error, but should not be done
 ```
 In this example, `_private_variable` is conventionally private, but Python will not stop you from accessing it. It's just considered "non-public" and subject to change without notice.
 
-#### 2. **Name Mangling for Private Variables**
+### 2. Name Mangling for Private Variables
 Python provides a feature called **name mangling** to support a limited form of private variables. This is useful when you want to avoid name clashes between class members, especially in cases involving inheritance and subclasses.
 
 If a variable is prefixed with **at least two leading underscores** and **at most one trailing underscore** (e.g., `__variable`), Python automatically **mangles** the name by internally renaming it to include the class name. This prevents accidental overrides or clashes with names in subclasses.
@@ -7258,9 +7271,9 @@ obj = MyClass()
 # However, name mangling allows access through the mangled name
 print(obj._MyClass__private_variable)  # Output: 100
 ```
-Here, `__private_variable` is name-mangled to `_MyClass__private_variable`. While this doesn't make it truly private, it makes accidental access more difficult by altering the variable's name internally.
+Here, `__private_variable` is name-mangled to `_MyClass__private_variable`. While this doesn't make it truly private, it **makes accidental access more difficult** by altering the variable's name internally.
 
-#### 3. **Why Name Mangling is Useful**
+### 3. Why Name Mangling is Useful
 Name mangling primarily helps avoid **name conflicts** in the case of inheritance. When you have a base class and subclasses, name mangling ensures that attributes or methods that are supposed to be private to a class will not be accidentally overridden by subclasses with the same name.
 
 **Example with Inheritance:**
@@ -7296,7 +7309,7 @@ In this example:
 - The `MappingSubclass` overrides the `update()` method, but the `__update` method from the base class remains intact due to name mangling. The base class method is accessed using `_Mapping__update`.
 - This allows `MappingSubclass` to add its own `update()` method without breaking the original functionality of `Mapping`.
 
-#### 4. **Limited Privacy and Debugging**
+### 4. Limited Privacy and Debugging
 Even though Python provides name mangling, **privacy** is not strictly enforced. It is still possible to access or modify a mangled variable, which can be useful for debugging or special cases where direct access is needed. However, this should be done with caution.
 
 **Example:**
@@ -7311,7 +7324,7 @@ print(obj._MyClass__private_var)  # Output: 50
 ```
 While this is technically allowed, directly accessing a mangled variable defeats the purpose of making it private, and it can lead to unintended consequences if the variable name changes.
 
-#### 5. **Considerations in Special Cases**
+### 5. Considerations in Special Cases
 - **`exec()` and `eval()`**: Code executed using `exec()` or `eval()` does not follow the same name-mangling rules because the invoking class is not considered the current class in that scope. This means that the mangling will not apply to code executed in this manner, which could result in unexpected behaviors.
   
 **Example:**
@@ -7345,18 +7358,16 @@ print(getattr(obj, "_MyClass__private_var"))  # Output: 200
 print(obj.__dict__)  # Output: {'_MyClass__private_var': 200}
 ```
 
-#### 6. **Conclusion**
+### 6. Key takeaways
 - **Private variables** in Python are not truly private but are instead indicated through naming conventions (using `_` for non-public variables).
 - **Name mangling** allows limited privacy, mainly to avoid name conflicts in inheritance scenarios. It helps prevent accidental overrides of private methods or attributes in subclasses.
 - Python's approach to private variables is more about **convention** than enforcement, and it relies on developers respecting the intended privacy rather than strict language features.
 
 ## Odds and Ends
 
-### Detailed Summary of "9.7 Odds and Ends"
+Let's look at some additional, useful Python concepts, including the idiomatic approach to creating simple data types using **dataclasses**, the concept of **abstract data types**, and details about **instance methods**. Here's a breakdown of these topics with examples to illustrate each concept.
 
-Section 9.7 covers some additional, useful Python concepts, including the idiomatic approach to creating simple data types using **dataclasses**, the concept of **abstract data types**, and details about **instance methods**. Here's a breakdown of these topics with examples to illustrate each concept.
-
-#### 1. **Using Dataclasses for Bundling Data**
+### 1. Using Dataclasses for Bundling Data
 
 In Python, a common task is bundling together a few related data items, which is similar to the "record" in Pascal or "struct" in C. The idiomatic way to handle such data structures in Python is to use **dataclasses**.
 
@@ -7388,7 +7399,7 @@ print(john.salary)  # Output: 1000
 
 This is an efficient and Pythonic way to represent simple objects that just need to hold data, similar to structs or records in other languages.
 
-#### 2. **Emulating Abstract Data Types with Classes**
+### 2. Emulating Abstract Data Types with Classes
 
 Sometimes, you may need to write code that expects a certain abstract data type (ADT). Rather than creating an entirely new class that implements the ADT from scratch, you can use an existing class that **emulates** the expected methods of that ADT.
 
@@ -7431,7 +7442,7 @@ print_file_content(buffer)  # Output: Hello, world!
 
 This technique can be useful when you want to write functions that work with a variety of objects, as long as they implement a specific interface (i.e., set of methods).
 
-#### 3. **Instance Method Objects and Their Attributes**
+### 3. Instance Method Objects and Their Attributes
 
 In Python, **instance methods** are bound methods. When you call an instance method on an object, Python automatically passes the instance as the first argument to the method (typically named `self`).
 
@@ -7466,7 +7477,7 @@ method()  # Output: Hello from MyClass
 
 This can be helpful if you need to analyze or manipulate the method's behavior or the instance it is bound to.
 
-#### 4. **Summary of Key Points**
+#### 4. Key Points
 - **Dataclasses** provide an easy and efficient way to define classes that store simple data. They automatically generate methods like `__init__()`, `__repr__()`, and comparison methods.
 - Python allows classes to **emulate abstract data types** by providing the required methods, making it possible to use custom objects in places where standard data types like file objects are expected.
 - **Instance methods** have special attributes such as `__self__` (the bound instance) and `__func__` (the original function), which can be useful for introspection and advanced use cases.
@@ -7475,11 +7486,9 @@ This section provides useful techniques for handling data and methods efficientl
 
 ## Iterators
 
-### Detailed Summary of "9.8 Iterators"
+Let's look at **iterators**, and then explaining how Python's `for` loops work and how to create custom iterators in classes. Iterators are an essential part of Python that unify the process of accessing elements in containers (like lists, tuples, strings, etc.) in a consistent and convenient manner. This section discusses how Python handles iteration and shows you how to define your own iterators.
 
-Section 9.8 introduces the concept of **iterators** in Python, explaining how Python's `for` loops work and how to create custom iterators in your own classes. Iterators are an essential part of Python that unify the process of accessing elements in containers (like lists, tuples, strings, etc.) in a consistent and convenient manner. This section discusses how Python handles iteration and shows you how to define your own iterators.
-
-#### 1. **Iteration in Python**
+### 1. Iteration in Python
 
 In Python, many container objects (like lists, tuples, dictionaries, and strings) can be looped over using the `for` loop. This is made possible through the concept of **iterators**.
 
@@ -7511,7 +7520,7 @@ for line in open("myfile.txt"):
   - In each case, the `for` statement automatically calls the `iter()` function on the container (e.g., list, tuple, dictionary, string, or file).
   - The `iter()` function returns an **iterator object**, which is an object that follows the **iterator protocol**. This protocol includes two key methods: `__iter__()` and `__next__()`.
 
-#### 2. **How the Iterator Protocol Works**
+### 2. How the Iterator Protocol Works
 
 The iterator protocol is the underlying mechanism that enables iteration in Python. It involves two main methods:
 - `__iter__()`: This method returns the iterator object itself.
@@ -7535,7 +7544,7 @@ print(next(it))  # Raises StopIteration exception
   - The `next()` function is then used to retrieve each character in the string one by one.
   - After all elements have been accessed, calling `next()` raises a `StopIteration` exception, signaling that there are no more elements to retrieve.
 
-#### 3. **Creating Custom Iterators**
+### 3. Creating Custom Iterators
 
 Python allows you to define your own iterators by implementing the `__iter__()` and `__next__()` methods in a class. This is useful when you want to iterate over a custom sequence or implement non-trivial iteration logic.
 
@@ -7580,7 +7589,7 @@ s
   - The `__next__()` method returns the next element in the sequence, and when the index reaches 0, it raises `StopIteration`, signaling the end of the iteration.
   - The `for` loop automatically calls `iter()` to get the iterator and then calls `__next__()` on each iteration.
 
-#### 4. **How Iterators Work Behind the Scenes**
+### 4. How Iterators Work Behind the Scenes
 
 When you use a `for` loop, it abstracts away the details of the iteration. The loop is essentially doing the following:
 1. It calls `iter()` on the container to get an iterator object.
@@ -7588,7 +7597,7 @@ When you use a `for` loop, it abstracts away the details of the iteration. The l
 
 This allows Python to handle iteration over a variety of objects (like lists, strings, or even custom objects) in a consistent manner.
 
-#### 5. **Summary of Key Points**
+### Key Points
 - **Iterators** are objects that implement the `__iter__()` and `__next__()` methods. They are used to access elements in a container one by one.
 - Python's `for` loop automatically handles iteration by calling `iter()` and `__next__()`.
 - Custom iterators can be created by defining a class with `__iter__()` and `__next__()` methods, enabling custom iteration logic.
@@ -7598,18 +7607,14 @@ Iterators are a powerful and flexible tool in Python, enabling both simple and c
 
 ## Generators
 
-### Detailed Summary of "9.9 Generators" and "9.10 Generator Expressions"
+Generators in Python are a special type of iterable that allow you to generate values one at a time as needed, instead of storing all values in memory at once. They are more **memory efficient** and easier to write than traditional class-based iterators. A generator is written like a normal function but uses the `yield` keyword to return data.
 
-#### 1. **Generators**
-
-Generators in Python are a special type of iterable that allow you to generate values one at a time as needed, instead of storing all values in memory at once. They are more memory efficient and easier to write than traditional class-based iterators. A generator is written like a normal function but uses the `yield` keyword to return data.
-
-##### **How Generators Work**
+### How Generators Work
 - When you call a generator function, it doesn't execute the function immediately. Instead, it returns a generator object, which can be iterated over.
 - The function's execution is paused when `yield` is encountered, and the value specified by `yield` is returned to the caller.
 - When `next()` is called again on the generator, it resumes execution from where it left off, remembering all of its local variables and the execution state.
   
-##### **Example: Basic Generator**
+#### Example: Basic Generator
 
 ```python
 def reverse(data):
@@ -7635,12 +7640,12 @@ g
   - On subsequent calls to `next()`, the function resumes from the last `yield`, continuing until all characters are returned.
   - This is more efficient than manually maintaining an index or creating a separate iterator class.
 
-##### **Benefits of Generators**
+### Benefits of Generators
 - **Compact and Clear:** Generators are easy to write because they avoid the need for explicit `__iter__()` and `__next__()` methods (as seen in class-based iterators).
 - **Automatic State Management:** The state of the generator is saved automatically between `yield` calls, making it simpler to write than using instance variables.
 - **Memory Efficiency:** Since generators yield one item at a time and don't store the entire sequence in memory, they are more memory-efficient than creating lists.
 
-##### **Generator Termination:**
+#### Generator Termination:
 - When the generator function runs out of values to yield, it automatically raises the `StopIteration` exception, which is handled by the iteration mechanism (`for` loop).
   
 ```python
@@ -7653,16 +7658,16 @@ print(next(gen))  # 'g'
 print(next(gen))  # Raises StopIteration
 ```
 
-#### 2. **Generator Expressions**
+### Generator Expressions
 
 Generator expressions are a compact way to create generators without writing a full generator function. They are similar to list comprehensions, but they use parentheses `()` instead of square brackets `[]`. These expressions are particularly useful when you want to pass a generator to a function immediately.
 
-##### **Syntax of Generator Expressions:**
+**Syntax of Generator Expressions:**
 - They consist of a single expression followed by an optional `for` loop and `if` statement.
 - Instead of returning a complete list, they return an iterator, which can be consumed lazily (one item at a time).
 
-##### **Examples of Generator Expressions:**
 
+**Examples of Generator Expressions:**
 1. **Sum of Squares**
    ```python
    sum(i*i for i in range(10))
@@ -7714,11 +7719,11 @@ Generator expressions are a compact way to create generators without writing a f
 
    - **Explanation:** This generator expression reverses the string `data` by generating each character from the end to the beginning.
 
-##### **Advantages of Generator Expressions:**
+#### Advantages of Generator Expressions:
 - **Compactness:** Generator expressions are shorter and more concise than defining full generator functions.
 - **Memory Efficiency:** Like full generators, they do not store all the values in memory, making them more memory-efficient than list comprehensions, especially when dealing with large datasets.
   
-##### **Comparison with List Comprehensions:**
+#### Comparison with List Comprehensions:
 - **List Comprehension:** Creates a full list in memory.
   ```python
   [i*i for i in range(10)]  # Creates a list in memory
@@ -7728,7 +7733,7 @@ Generator expressions are a compact way to create generators without writing a f
   (i*i for i in range(10))  # Returns an iterator, not a list
   ```
 
-#### 3. **Summary**
+#### Key points in Generators
 
 - **Generators** allow for efficient, lazy iteration over data by using the `yield` statement. They automatically handle state between `yield` calls and raise `StopIteration` when the sequence is exhausted.
 - **Generator Expressions** provide a more compact and memory-efficient way to create generators in a single line, similar to list comprehensions but with parentheses. They are particularly useful when a generator is passed directly to a function.
