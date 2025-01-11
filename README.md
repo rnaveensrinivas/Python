@@ -6,9 +6,13 @@
 * [More Control Flow Tools in Pyton](#more-control-flow-tools-in-python)
 * [Data Structures](#data-structures)
 * [Modules](#Modules)
+* [Packages](#packages)
 * [Input and Output](#input-and-output)
 * [Errors And Exception](#errors-and-exception)
 * [Classes](#classes)
+* [Brief Tour of the Standard Library](#brief-tour-of-the-standard-library)
+* [Virtual Environments and Packages](#virtual-environments-and-packages)
+* [Floating-Point Arithmetic: Issues and Limitations](#floating-point-approximation-and-display)
 
 # Introduction
 
@@ -7944,28 +7948,6 @@ Python's "batteries included" philosophy is evident in the rich set of modules a
 
 These modules simplify complex tasks like remote procedure calls, email handling, and database interactions.
 
-## Summary Table of Key Modules
-
-| Module             | Functionality                                             |
-|--------------------|------------------------------------------------------------|
-| `os`               | Operating system interactions (e.g., file management)      |
-| `shutil`           | Higher-level file operations (e.g., copy, move files)     |
-| `glob`             | File matching with wildcards                              |
-| `sys`              | Command-line arguments, stdin, stdout, stderr             |
-| `argparse`         | Command-line argument parsing                              |
-| `re`               | Regular expression matching                               |
-| `math`             | Mathematical functions (e.g., trigonometry, logarithms)   |
-| `random`           | Random number generation                                  |
-| `statistics`       | Basic statistical operations                              |
-| `urllib.request`   | Fetching data from URLs                                   |
-| `smtplib`          | Sending emails                                            |
-| `datetime`         | Date and time operations                                  |
-| `zlib`             | Data compression                                           |
-| `timeit`           | Performance measurement                                    |
-| `unittest`         | Unit testing                                               |
-| `xml`              | XML parsing and handling                                  |
-
-
 ## Output Formatting
 
 ### `reprlib` Module
@@ -8209,9 +8191,39 @@ round(Decimal('0.70') * Decimal('1.05'), 2)
 # Output: Decimal('0.74')
 ```
 
-# Virtual Environments and Packages
+## Summary of Modules
 
-## 12.1 Introduction
+| Module             | Functionality                                             |
+|--------------------|------------------------------------------------------------|
+| `os`               | Operating system interactions (e.g., file management)      |
+| `shutil`           | Higher-level file operations (e.g., copy, move files)     |
+| `glob`             | File matching with wildcards                              |
+| `sys`              | Command-line arguments, stdin, stdout, stderr             |
+| `argparse`         | Command-line argument parsing                              |
+| `re`               | Regular expression matching                               |
+| `math`             | Mathematical functions (e.g., trigonometry, logarithms)   |
+| `random`           | Random number generation                                  |
+| `statistics`       | Basic statistical operations                              |
+| `urllib.request`   | Fetching data from URLs                                   |
+| `smtplib`          | Sending emails                                            |
+| `datetime`         | Date and time operations                                  |
+| `zlib`             | Data compression                                           |
+| `timeit`           | Performance measurement                                    |
+| `unittest`         | Unit testing                                               |
+| `xml`              | XML parsing and handling                                  |
+| `reprlib`          | For customizing `repr()` method |
+| `pprint`           | Format Python obects to be more readable |
+| `textwrap`         | Format text to fit specified width | 
+| `locale`           | Region format settings for numbers, date, etc |  
+| `string.Template`  | Create text templates with placeholders | 
+| `struct`           | Working with Binary Data Record Layouts | 
+| `threading`        | For working with threads | 
+| `logging`          | Provides flexible logging systems | 
+| `weakref`          | Tracking objects without creating a reference, useful for caching | 
+| `array` <br> `deque`<br> `bisect` <br>`heapq` | data structures | 
+ `decimal` | For high precision computing | 
+
+# Virtual Environments and Packages
 
 In Python, applications may require external packages and modules that are not part of the standard library. Sometimes, different applications require different versions of the same package, which could lead to version conflicts. To solve this problem, Python provides the concept of **virtual environments**. 
 
@@ -8223,7 +8235,7 @@ For example:
 
 By creating separate virtual environments, Application A and B can use different versions without conflict. Upgrading one environment does not affect the other.
 
-## 12.2 Creating Virtual Environments
+## Creating Virtual Environments
 
 The `venv` module in Python is used to create and manage virtual environments. This module installs the version of Python that is currently being used to execute the command.
 
@@ -8237,15 +8249,11 @@ The `venv` module in Python is used to create and manage virtual environments. T
 
 3. **Directory Naming Convention**: A common practice is to name the virtual environment `.venv`. This keeps the directory hidden in Unix-like systems and prevents it from interfering with environment variable definition files.
 
-### Activating the Virtual Environment:
-- **Windows**: Run the following command:
-   ```bash
-   tutorial-env\Scripts\activate
-   ```
-- **Unix/MacOS**: Run the following command:
-   ```bash
-   source tutorial-env/bin/activate
-   ```
+## Activating the Virtual Environment:
+
+```bash
+source tutorial-env/bin/activate
+```
 
 Activating the environment changes your shell prompt to indicate which virtual environment you are using and modifies the environment so that the `python` command uses the correct version from the virtual environment.
 
@@ -8255,13 +8263,13 @@ $ source ~/envs/tutorial-env/bin/activate
 (tutorial-env) $ python
 ```
 
-### Deactivating the Virtual Environment:
+## Deactivating the Virtual Environment:
 To deactivate a virtual environment and return to the system's Python installation, simply run:
 ```bash
 deactivate
 ```
 
-## 12.3 Managing Packages with pip
+## Managing Packages with pip
 
 `pip` is the Python package manager that allows you to install, upgrade, and remove packages from the virtual environment. By default, `pip` installs packages from the Python Package Index (PyPI).
 
@@ -8325,15 +8333,11 @@ To install the dependencies:
 $ python -m pip install -r requirements.txt
 ```
 
-## Conclusion
-
-Virtual environments in Python offer an isolated environment for each project, allowing for different Python versions and package versions to coexist without conflict. The `venv` module makes it easy to create and manage these environments, and `pip` helps in managing the installation and removal of packages within them. Using virtual environments and a `requirements.txt` file is a standard practice for Python development.
-
 # Floating-Point Arithmetic: Issues and Limitations
 
 Floating-point numbers in computers are represented using binary fractions (base 2), similar to how decimal numbers are represented in base 10. However, the issue arises because many decimal numbers cannot be exactly represented in binary. This leads to approximations when dealing with floating-point numbers in computers, often causing unexpected results.
 
-#### Representation of Fractions
+## Representation of Fractions
 
 Consider a decimal fraction like 0.625. In base 10, it is represented as:
 \[ 0.625 = \frac{6}{10} + \frac{2}{100} + \frac{5}{1000} \]
@@ -8354,7 +8358,7 @@ For instance, 0.1 in binary is approximated as:
 \[ \frac{3602879701896397}{2^{55}} \]
 This is a close approximation, but not exactly equal to 1/10. On most systems, this binary approximation is used to store 0.1.
 
-#### Floating-Point Approximation and Display
+## Floating-Point Approximation and Display
 
 Even though the value stored for 0.1 is an approximation, Python (and many other programming languages) only displays a rounded version of this value. If Python were to display the exact internal binary representation of 0.1, it would be:
 ```
@@ -8366,7 +8370,7 @@ However, Python rounds this to the simpler:
 ```
 This rounded representation gives the illusion of exactness, but the actual stored value is an approximation. Interestingly, many different decimal numbers (like 0.1, 0.10000000000000001, and others) share the same closest binary approximation.
 
-#### Examples of Floating-Point Errors
+## Examples of Floating-Point Errors
 
 Floating-point arithmetic can lead to errors that are not immediately obvious. For instance, summing three values of 0.1:
 ```python
@@ -8394,7 +8398,7 @@ This results in:
 True
 ```
 
-#### Handling Floating-Point Precision
+## Handling Floating-Point Precision
 
 To mitigate the effects of floating-point errors, Python provides several methods:
 
@@ -8414,13 +8418,13 @@ To mitigate the effects of floating-point errors, Python provides several method
   math.fsum(arr)
   ```
 
-#### When Exact Arithmetic is Needed
+## When Exact Arithmetic is Needed
 
 For applications that require exact decimal arithmetic (e.g., financial calculations), Python provides the **`decimal`** and **`fractions`** modules:
 - **`decimal` module**: This implements decimal arithmetic and is useful for high-precision operations.
 - **`fractions` module**: This works with rational numbers, so fractions like 1/3 can be represented exactly.
 
-#### Analyzing the `0.1` Example in Detail
+## Analyzing the `0.1` Example in Detail
 
 The primary issue with floating-point representation is that certain decimal fractions (like 0.1) cannot be represented exactly in binary. In IEEE 754 double-precision format (binary64), 0.1 is represented as:
 \[ \frac{7205759403792794}{2^{56}} \]
@@ -8437,7 +8441,3 @@ This returns:
 (3602879701896397, 36028797018963968)
 ```
 This exact ratio can be used to represent 0.1 precisely in rational form.
-
-#### Conclusion
-
-The limitations of floating-point arithmetic stem from the fact that many decimal numbers cannot be exactly represented in binary form. This can lead to unexpected behavior in programs, such as errors when summing numbers like 0.1. However, Python offers tools to mitigate these issues, such as string formatting, `math.fsum()`, and the `decimal` and `fractions` modules for exact arithmetic. Understanding these limitations and using the right tools can help ensure that floating-point operations behave as expected in most applications.
