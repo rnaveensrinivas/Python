@@ -2299,6 +2299,9 @@ A simple lambda function that adds two arguments:
 lambda a, b: a + b
 ```
 
+> ### Note: 
+> Assigning lambdas to variables is bad practice and needs to be avoided.
+
 ### Example of Lambda in Practice:
 A function `make_incrementor` returns a lambda function that increments its argument by a given value:
 ```python
