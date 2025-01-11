@@ -7745,7 +7745,6 @@ Generator expressions are a compact way to create generators without writing a f
 ## `os` Module
 
 The `os` module provides several functions to interact with the operating system. It allows for file and directory management, running system commands, and more.
-
   
 ```python
 # os.getcwd()
@@ -7775,27 +7774,24 @@ shutil.copyfile('data.db', 'archive.db')  # Copy file
 shutil.move('/build/executables', 'installdir')  # Move directory
 ```
 
-## 10.2 File Wildcards
+## File Wildcards
 
 The `glob` module helps in matching files with patterns using wildcard characters (`*`, `?`, etc.).
 
-### Example:
 ```python
 import glob
 files = glob.glob('*.py')  # Get all Python files in the directory
 print(files)  # Output: ['primes.py', 'random.py', 'quote.py']
 ```
 
-## 10.3 Command Line Arguments
+## Command Line Arguments
 
 The `sys` module provides access to command-line arguments via `sys.argv`.
 
-### Example:
 ```python
 import sys
 print(sys.argv)  # Output: ['demo.py', 'one', 'two', 'three']
 ```
-
 For more sophisticated argument parsing, the `argparse` module is used:
 ```python
 import argparse
@@ -7806,11 +7802,10 @@ args = parser.parse_args()
 print(args)
 ```
 
-## 10.4 Error Output Redirection and Program Termination
+## Error Output Redirection and Program Termination
 
 The `sys` module provides access to `stdin`, `stdout`, and `stderr` for redirecting input, output, and error messages, respectively.
 
-### Example:
 ```python
 import sys
 sys.stderr.write('Warning: log file not found, starting a new one\n')
@@ -7818,7 +7813,7 @@ sys.stderr.write('Warning: log file not found, starting a new one\n')
 
 To terminate a script, use `sys.exit()`.
 
-## 10.5 String Pattern Matching
+## String Pattern Matching
 
 The `re` module provides regular expressions for pattern matching and string manipulation. Regular expressions offer concise and optimized solutions for complex string operations.
 
@@ -7834,11 +7829,10 @@ re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')  # Remove duplicate words
 
 For simpler string operations, native string methods like `replace()` are preferred for clarity.
 
-## 10.6 Mathematics
+## Mathematics
 
 The `math` module provides mathematical functions for floating-point math.
 
-### Examples:
 ```python
 import math
 print(math.cos(math.pi / 4))  # Cosine of 45 degrees
@@ -7863,11 +7857,10 @@ print(statistics.mean(data))  # Calculate the mean
 # Output: 1.6071428571428572
 ```
 
-## 10.7 Internet Access
+## Internet Access
 
 The `urllib.request` module is used to retrieve data from URLs, while `smtplib` allows for sending emails.
 
-### Examples:
 ```python
 from urllib.request import urlopen
 with urlopen('http://worldtimeapi.org/api/timezone/etc/UTC.txt') as response:
@@ -7889,11 +7882,10 @@ Beware the Ides of March.
 server.quit()
 ```
 
-## 10.8 Dates and Times
+## Dates and Times
 
 The `datetime` module provides tools for manipulating dates and times. It supports both simple and complex operations such as date arithmetic.
 
-### Example:
 ```python
 from datetime import date
 now = date.today()
@@ -7901,7 +7893,7 @@ print(now.strftime("%m-%d-%y. %d %b %Y is a %A on the %d day of %B."))
 # Output: '12-02-03. 02 Dec 2003 is a Tuesday on the 02 day of December.'
 ```
 
-## 10.9 Data Compression
+## Data Compression
 
 The `zlib` module supports data compression using the DEFLATE algorithm.
 
@@ -7914,21 +7906,19 @@ print(len(t))  # Compressed length
 # Output: 37
 ```
 
-## 10.10 Performance Measurement
+## Performance Measurement
 
 The `timeit` module measures the execution time of small code snippets.
 
-### Example:
 ```python
 from timeit import Timer
 print(Timer('a, b = b, a', 'a=1; b=2').timeit())  # Measure time for swapping
 ```
 
-## 10.11 Quality Control
+## Quality Control
 
 Python offers tools like `doctest` and `unittest` for testing code. The `doctest` module checks that code examples in docstrings are correct.
 
-### Example:
 ```python
 import doctest
 doctest.testmod()
@@ -7944,7 +7934,7 @@ class TestStatisticalFunctions(unittest.TestCase):
 unittest.main()
 ```
 
-## 10.12 Batteries Included
+## Batteries Included
 
 Python's "batteries included" philosophy is evident in the rich set of modules available for various tasks:
 - **XML Processing:** `xmlrpc.client`, `xml.etree.ElementTree`
@@ -7954,9 +7944,7 @@ Python's "batteries included" philosophy is evident in the rich set of modules a
 
 These modules simplify complex tasks like remote procedure calls, email handling, and database interactions.
 
----
-
-### Summary Table of Key Modules
+## Summary Table of Key Modules
 
 | Module             | Functionality                                             |
 |--------------------|------------------------------------------------------------|
@@ -7977,13 +7965,8 @@ These modules simplify complex tasks like remote procedure calls, email handling
 | `unittest`         | Unit testing                                               |
 | `xml`              | XML parsing and handling                                  |
 
-This chapter provides a comprehensive overview of Python's standard library, showcasing the power and versatility of its built-in modules.
 
-# Brief Tour of the Standard Library — Part II
-
-This section covers more advanced modules in Python's standard library, which are primarily used in professional programming scenarios. These modules are often not used in small scripts but play a crucial role in more complex applications.
-
-## 11.1 Output Formatting
+## Output Formatting
 
 ### `reprlib` Module
 
@@ -8024,10 +8007,8 @@ doc = """The wrap() method is just like fill() except that it returns
 a list of strings instead of one big string with newlines to separate
 the wrapped lines."""
 print(textwrap.fill(doc, width=40))
-```
 
-Output:
-```
+# Output
 The wrap() method is just like fill()
 except that it returns a list of strings
 instead of one big string with newlines
@@ -8047,13 +8028,11 @@ print(locale.format_string("%d", x, grouping=True))
 # Output: '1,234,567'
 ```
 
-## 11.2 Templating
+## Templating
 
 ### `string.Template`
 
 The `string.Template` class allows users to create simple templates with placeholders. It is useful for applications where end-users might customize the content.
-
-Example:
 
 ```python
 from string import Template
@@ -8090,7 +8069,7 @@ img_1074.jpg --> Ashley_0.jpg
 img_1076.jpg --> Ashley_1.jpg
 ```
 
-## 11.3 Working with Binary Data Record Layouts
+## Working with Binary Data Record Layouts
 
 The `struct` module provides `pack()` and `unpack()` functions for handling binary data. This example reads header information from a ZIP file:
 
@@ -8111,7 +8090,7 @@ with open('myfile.zip', 'rb') as f:
         start += extra_size + comp_size
 ```
 
-## 11.4 Multi-threading
+## Multi-threading
 
 The `threading` module allows you to run tasks in the background, improving the responsiveness of applications.
 
@@ -8135,7 +8114,7 @@ background.start()
 background.join()
 ```
 
-## 11.5 Logging
+## Logging
 
 The `logging` module offers a flexible logging system:
 
@@ -8156,7 +8135,7 @@ ERROR:root:Error occurred
 CRITICAL:root:Critical error -- shutting down
 ```
 
-## 11.6 Weak References
+## Weak References
 
 The `weakref` module allows tracking objects without creating a reference, useful for caching. When the object is no longer in use, it is removed:
 
@@ -8175,7 +8154,7 @@ del a
 gc.collect()
 ```
 
-## 11.7 Tools for Working with Lists
+## Tools for Working with Lists
 
 ### `array` Module
 
@@ -8220,7 +8199,7 @@ print([heappop(data) for _ in range(3)])
 # Output: [-5, 0, 1]
 ```
 
-## 11.8 Decimal Floating-Point Arithmetic
+## Decimal Floating-Point Arithmetic
 
 The `decimal` module provides precise decimal floating-point arithmetic, useful for financial calculations:
 
@@ -8230,7 +8209,7 @@ round(Decimal('0.70') * Decimal('1.05'), 2)
 # Output: Decimal('0.74')
 ```
 
-# Virtual Environments and Packages - Chapter 12 Summary
+# Virtual Environments and Packages
 
 ## 12.1 Introduction
 
