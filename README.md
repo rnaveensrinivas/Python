@@ -1262,7 +1262,15 @@ else:
 - `elif` is short for "else if" and prevents **excessive indentation**.
 - The `else` part is optional.
 - Use the `match` statement for comparing same constant value to several constant.
+- Python lets you use any value where it expects a Boolean. 
+  - The following are "falsy": `False`, `None`, `[]`, `{}`, `""`, `set()`, `0`, `0.0`.
+  - Everything else gets treated as `True`. 
+  - This allows the checking of empty lists empty strings, empty dictionaries, etc. using `if` statements. 
 
+### Ternary if-then-else 
+```python
+parity = "even" if x % 2 == 0 else "odd"
+```
 ---
 
 ## `for` Statements
@@ -1747,7 +1755,7 @@ match color:
 
 ## `in` Keyword
 
-The `in` keyword is used to check for **membership** in sequences (like lists, strings, tuples, or sets) or to iterate through items in an iterable.
+The `in` keyword is used to check for **membership** in sequences (like lists, strings, tuples, or sets) or to iterate through items in an iterable. This check involves examining the elements of the list one at a time, which means that you probably shouldn't use it unless you know your list is pretty small (or unless you don't care how long the check takes).
 
 ### Uses of `in`
 
@@ -2248,6 +2256,12 @@ d = {"voltage": "four million", "state": "bleedin' demised", "action": "VOOM"}
 parrot(**d)  # Output: -- This parrot wouldn't VOOM if you put four million volts through it. E's bleedin' demised!
 ```
 
+
+A common idiom is to use an underscore for a value you're going to throw
+away:
+```python
+_, y = [1, 2] # now y == 2, didn't care about the first element
+```
 ---
 
 ### Function Annotations
@@ -2280,6 +2294,38 @@ f('ham')
 # Arguments: spam eggs
 # 'spam and eggs'
 ```
+
+#### Good Reasons to use function annotations
+Types are an important form of documentation. Compare the following two function stubs, the second one is more informative:
+```python
+def dot_product(x, y): ...
+def dot_product(x: Vector, y: Vector) -> float: ...
+```
+
+
+There are external tools (the most popular is mypy) that will read your code, inspect the type annotations, and let you know about type errors before you ever run your code. For example, if you ran mypy over a file containing add("hi ", "there"), it would warn you:
+
+```python
+error: Argument 1 to "add" has incompatible type "str"; expected
+"int"
+```
+Like assert testing, this is a good way to find mistakes in your code before you ever run it. The narrative in the book will not involve such a type checker; however, behind the scenes I will be running one, which will help ensure that the book itself is correct.
+
+
+Having to think about the types in your code forces you to design cleaner functions and interfaces:
+```python
+from typing import Union
+def secretly_ugly_function(value, operation): ...
+def ugly_function(value: int,
+operation: Union[str, int, float, bool]) -> int:
+...
+```
+
+Here we have a function whose operation parameter is allowed to be a string, or an int, or a float, or a bool. It is highly likely that this function is fragile and difficult to use, but it becomes farmore clear when the types are made explicit. Doing so, then, will force us to design in a less clunky way, for which our users will thank us.
+
+For more on this checkout [typing module](#typing)
+
+
 
 ---
 
@@ -2758,7 +2804,7 @@ print(queue)     # Output: deque(['Michael', 'Terry', 'Graham'])
 
 ---
 
-### List Comprehensions and Nested List Comprehensions
+### List Comprehensions
 
 List comprehensions offer a concise, readable way to construct lists, applying operations or filters to elements from other sequences or iterables. It consists of brackets containing an expression followed by a `for` clause, then zero or more `for` or `if` clasues.
 
@@ -2835,7 +2881,13 @@ print(rounded_pi)  # Output: ['3.1', '3.14', '3.142', '3.1416', '3.14159']
 ---
 
 
-Nested list comprehensions allow processing nested structures, such as lists of lists.
+Nested list comprehensions allow processing nested structures, such as lists of lists. The later `for`s can you the result of earlier ones. A Simple example demonstrating syntax: 
+
+```python
+increasing_pairs = [(x, y)
+for x in range(10)
+for y in range(x+1, 10)]
+```
 
 #### Example: Matrix Transposition
 ```python
@@ -3230,6 +3282,86 @@ Use expressions to create dictionaries dynamically:
 
 ---
 
+## DefaultDict
+
+Imagine that you're trying to count the words in a document. An obvious approach is to create a dictionary in which the keys are words and the values are counts. As you check each word, you can increment its count if it's already in the dictionary and add it to the dictionary if it's not:
+
+```python
+word_counts = {}
+for word in document:
+  if word in word_counts:
+    word_counts[word] += 1
+  else:
+    word_counts[word] = 1
+```
+
+You could also use the “forgiveness is better than permission” approach and
+just handle the exception from trying to look up a missing key:
+
+```python
+word_counts = {}
+for word in document:
+  try:
+    word_counts[word] += 1
+  except KeyError:
+    word_counts[word] = 1
+```
+
+A third approach is to use get, which behaves gracefully for missing keys:
+```python
+word_counts = {}
+for word in document:
+  previous_count = word_counts.get(word, 0)
+  word_counts[word] = previous_count + 1
+```
+Every one of these is slightly unwieldy, which is why defaultdict is useful. A defaultdict is like a regular dictionary, except that when you try to look up a key it doesn't contain, it first adds a value for it using a zero-argument function you provided when you created it. In order to use defaultdicts, you have to import them from collections:
+```python
+from collections import defaultdict
+word_counts = defaultdict(int) # int() produces 0
+for word in document:
+  word_counts[word] += 1
+```
+
+They can also be useful with list or dict, or even your own functions:
+
+```python
+dd_list = defaultdict(list) # list() produces an empty list
+dd_list[2].append(1) # now dd_list contains {2: [1]}
+
+dd_dict = defaultdict(dict) # dict() produces an empty dict
+dd_dict["Joel"]["City"] = "Seattle" # {"Joel" : {"City": Seattle"}}
+
+dd_pair = defaultdict(lambda: [0, 0])
+dd_pair[2][1] = 1 # now dd_pair contains {2: [0, 1]}
+```
+These will be useful when we're using dictionaries to “collect” results by some key and don't want to have to check every time to see if the key exists yet.
+
+
+---
+
+## Counter
+
+A Counter turns a sequence of values into a defaultdict(int)-like object mapping keys to counts:
+```python
+from collections import Counter
+c = Counter([0, 1, 2, 0]) # c is (basically) {0: 2, 1: 1, 2: 1}
+```
+
+This gives us a very simple way to solve our word_counts problem:
+```python
+# document is a list of words
+word_counts = Counter(document) 
+```
+
+A Counter instance has a most_common method that is frequently useful:
+
+```python
+# print the 10 most common words and their counts
+for word, count in word_counts.most_common(10):
+  print(word, count)
+```
+
+---
 ## Looping Techniques
 
 Python provides versatile tools for iterating over collections, enabling clear and concise iteration patterns for different use cases.
@@ -3259,6 +3391,19 @@ for i, v in enumerate(['tic', 'tac', 'toe']):
 2 toe
 ```
 
+The below are equivalents to above, but are not Pythonic way of doing it (doesn't follow the zen of python.)
+
+```python
+# Not Pythonic
+for i in range(len(['tic', 'tac', 'toe'])): 
+    print(f"word {i} is {word[i]}")
+
+# Not Pythonic
+i = 0
+for word in ['tic', 'tac', 'toe']: 
+    print(f"word {i} is {word}")
+    i + =1 
+```
 
 ### `zip()`
 Use the `zip()` function to combine sequences element-wise and iterate over the paired results.
@@ -3273,6 +3418,7 @@ What is your name? It is lancelot.
 What is your quest? It is the holy grail.
 What is your favorite color? It is blue.
 ```
+**Note**: if the lists are different lenghts, `zip` stops as soon as the first list ends. 
 
 
 ### `reversed(sequence)`
@@ -3424,6 +3570,39 @@ print(non_null)  # Trondheim
 ```
 The expression returns the **first non-empty value** from the sequence.
   
+Consider this another construct: 
+```python
+s = some_function_that_returns_a_string()
+if s:
+  first_char = s[0]
+else:
+  first_char = ""
+```
+The above can be simplified using `and` operator: 
+```python
+first_char = s and s[0] # using 'short circuit' and 'returning' property
+```
+
+Similary: 
+```python
+safe_x = x or 0
+```
+Where `x` is checked for `None`. Alternatively: 
+```python
+safe_x = x if x is not None else 0
+```
+
+### `and()` and `any()`
+
+Python has an all function, which takes an iterable and returns `True` precisely when every element is truthy, and an any function, which returns `True` when at least one element is truthy: 
+```python
+all([True, 1, {3}]) # True
+all([True, 1, {}])  # False
+any([True, 1, {}])  # True
+all([])             # False
+any([])             # False
+```
+
 
 ### The Walrus Operator (`:=`)
 
@@ -6726,6 +6905,71 @@ In this example, the `Complex` class represents complex numbers with `realpart` 
 
 Classes encapsulate both data (attributes) and behavior (methods) into a single entity, allowing for better organization and abstraction in programming.
 
+
+## Magic Methods
+
+Magic methods are methods that start with double underscores, they are also called "dunder" (double underscore). Any member of a class that start with double score are private members, and hence shouldn't be used outside of the class. Note, Python will not stop you even if you did use them outside class. There are many such dunder methods available for Python classes. Here is a table contain some of them: 
+
+| **Category**       | **Method**                     | **Description**                                                                                                   |
+|---------------------|---------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **Initialization** | `__init__`                     | Constructor, initializes an instance of a class.                                                                 |
+|                     | `__new__`                     | Called to create a new instance of a class before `__init__`.                                                    |
+| **Object Representation** | `__str__`              | Returns a string representation for `str()` and `print()`.                                                       |
+|                     | `__repr__`                    | Returns an official string representation of an object, often used for debugging.                                |
+|                     | `__format__`                  | Defines custom string formatting behavior with `format()`.                                                       |
+|                     | `__bytes__`                   | Converts the object to bytes using `bytes()`.                                                                    |
+| **Comparison**      | `__eq__`                      | Defines behavior for the equality operator `==`.                                                                 |
+|                     | `__ne__`                      | Defines behavior for the inequality operator `!=`.                                                               |
+|                     | `__lt__`                      | Defines behavior for the less-than operator `<`.                                                                 |
+|                     | `__le__`                      | Defines behavior for the less-than-or-equal-to operator `<=`.                                                    |
+|                     | `__gt__`                      | Defines behavior for the greater-than operator `>`.                                                              |
+|                     | `__ge__`                      | Defines behavior for the greater-than-or-equal-to operator `>=`.                                                 |
+| **Arithmetic**      | `__add__`                     | Defines behavior for addition `+`.                                                                               |
+|                     | `__sub__`                     | Defines behavior for subtraction `-`.                                                                            |
+|                     | `__mul__`                     | Defines behavior for multiplication `*`.                                                                         |
+|                     | `__matmul__`                  | Defines behavior for matrix multiplication `@`.                                                                  |
+|                     | `__truediv__`                 | Defines behavior for division `/`.                                                                               |
+|                     | `__floordiv__`                | Defines behavior for floor division `//`.                                                                        |
+|                     | `__mod__`                     | Defines behavior for modulus `%`.                                                                                |
+|                     | `__pow__`                     | Defines behavior for exponentiation `**`.                                                                        |
+|                     | `__radd__`, `__rsub__`...     | Right-hand versions of arithmetic methods (e.g., `__radd__` for `b + a`).                                        |
+|                     | `__iadd__`, `__isub__`...     | In-place versions of arithmetic methods (e.g., `__iadd__` for `+=`).                                             |
+| **Unary Operations**| `__neg__`                     | Defines behavior for unary negation `-self`.                                                                     |
+|                     | `__pos__`                     | Defines behavior for unary positive `+self`.                                                                     |
+|                     | `__abs__`                     | Defines behavior for `abs(self)`.                                                                                |
+|                     | `__invert__`                  | Defines behavior for bitwise NOT `~self`.                                                                        |
+| **Type Conversion** | `__int__`                     | Converts an object to an integer using `int()`.                                                                  |
+|                     | `__float__`                   | Converts an object to a float using `float()`.                                                                   |
+|                     | `__complex__`                 | Converts an object to a complex number using `complex()`.                                                        |
+|                     | `__bool__`                    | Converts an object to a boolean using `bool()`.                                                                  |
+| **Attribute Access**| `__getattr__`                 | Called when accessing a missing attribute.                                                                       |
+|                     | `__getattribute__`            | Called for all attribute accesses.                                                                               |
+|                     | `__setattr__`                 | Called when setting an attribute.                                                                                |
+|                     | `__delattr__`                 | Called when deleting an attribute.                                                                               |
+|                     | `__dir__`                     | Called by `dir()` to list attributes.                                                                            |
+| **Container Emulation** | `__len__`                | Returns the length of an object using `len()`.                                                                   |
+|                     | `__getitem__`                 | Called to retrieve an item using `obj[key]`.                                                                     |
+|                     | `__setitem__`                 | Called to set an item using `obj[key] = value`.                                                                  |
+|                     | `__delitem__`                 | Called to delete an item using `del obj[key]`.                                                                   |
+|                     | `__iter__`                    | Returns an iterator object using `iter(obj)`.                                                                    |
+|                     | `__next__`                    | Returns the next item from an iterator.                                                                          |
+|                     | `__contains__`                | Implements membership testing with `in`.                                                                         |
+| **Callable Objects**| `__call__`                    | Makes an instance callable like a function.                                                                      |
+| **Context Managers**| `__enter__`                   | Defines setup behavior for context management using `with`.                                                      |
+|                     | `__exit__`                    | Defines cleanup behavior for context management using `with`.                                                    |
+| **Descriptors**     | `__get__`                     | Defines behavior for attribute access in descriptors.                                                            |
+|                     | `__set__`                     | Defines behavior for setting a value in descriptors.                                                             |
+|                     | `__delete__`                  | Defines behavior for deleting a value in descriptors.                                                            |
+| **Other Special Methods** | `__hash__`            | Returns the hash value for an object using `hash()`.                                                             |
+|                     | `__del__`                     | Called when an object is about to be destroyed.                                                                  |
+|                     | `__sizeof__`                  | Returns the size of an object in memory using `sys.getsizeof()`.                                                 |
+|                     | `__copy__`                    | Defines behavior for shallow copies.                                                                             |
+|                     | `__deepcopy__`                | Defines behavior for deep copies.                                                                                |
+|                     | `__index__`                   | Converts an object to an integer for use as a sequence index.                                                    |
+
+---
+
+
 ## Instance Objects
 
 Instance objects in Python represent individual objects created from a class. They can hold attributes (both data and methods) that can be accessed or modified, enabling unique behavior and state for each object.
@@ -7620,6 +7864,7 @@ Generators in Python are a special type of iterable that allow you to generate v
 - When you call a generator function, it doesn't execute the function immediately. Instead, it returns a generator object, which can be iterated over.
 - The function's execution is paused when `yield` is encountered, and the value specified by `yield` is returned to the caller.
 - When `next()` is called again on the generator, it resumes execution from where it left off, remembering all of its local variables and the execution state.
+- **Note**: you can only only iterate through a generator once. If you need to iterate through something multiple times, you'll need to either re-create the generator each time or use a list. 
   
 #### Example: Basic Generator
 
@@ -7646,6 +7891,16 @@ g
   - When `yield` is encountered, it returns the current character and pauses the function's execution.
   - On subsequent calls to `next()`, the function resumes from the last `yield`, continuing until all characters are returned.
   - This is more efficient than manually maintaining an index or creating a separate iterator class.
+
+#### Example: Custom `range()` function
+
+```python
+def custom_range(start=0, stop=n, step=1):
+    i = start
+    while i < stop: 
+        yield i
+        i += step
+```
 
 ### Benefits of Generators
 - **Compact and Clear:** Generators are easy to write because they avoid the need for explicit `__iter__()` and `__next__()` methods (as seen in class-based iterators).
@@ -7836,6 +8091,21 @@ re.sub(r'(\b[a-z]+) \1', r'\1', 'cat in the the hat')  # Remove duplicate words
 
 For simpler string operations, native string methods like `replace()` are preferred for clarity.
 
+More example: 
+
+```python
+import re
+re_examples = [                         # All of these are True, because
+not re.match("a", "cat"),               # 'cat' doesn't start with 'a'
+re.search("a", "cat"),                  # 'cat' has an 'a' in it
+not re.search("c", "dog"),              # 'dog' doesn't have a 'c' in it.
+3 == len(re.split("[ab]", "carbs")),    # Split on a or b to ['c','r','s'].
+"R-D-" == re.sub("[0-9]", "-", "R2D2")  # Replace digits with dashes.
+]
+assert all(re_examples), "all the regex examples should be True"
+
+```
+
 ## Mathematics
 
 The `math` module provides mathematical functions for floating-point math.
@@ -7849,6 +8119,7 @@ print(math.log(1024, 2))  # Logarithm base 2 of 1024
 # Output: 10.0
 ```
 
+## Random
 The `random` module is used for generating random numbers and making random selections:
 ```python
 import random
@@ -7856,6 +8127,35 @@ print(random.choice(['apple', 'pear', 'banana']))  # Randomly choose a fruit
 # Output: 'apple'
 ```
 
+```Python
+import random
+random.seed(10) # this ensure we get the same results every time. 
+
+four_uniform_randoms = [random.random() for _ in range(4)]
+# [0.5714025946899135,  # random.random() produces numbers
+# 0.4288890546751146,   # uniformly between 0 and 1.
+# 0.5780913011344704,   # It's the random function we'll use
+# 0.20609823213950174]  # most often.
+
+random.randrange(10)    # returns a number [0,10)
+random.randrange(3,6)   # returns a number [3,6)
+
+
+up_to_ten = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+random.seed(10)
+random.shuffle(up_to_ten)
+print(up_to_ten)
+# [7, 2, 6, 8, 9, 4, 10, 1, 3, 5]
+
+
+random.sample(up_to_ten, 5) # Samples elements without replacement. 
+# outputs [1,5,2,3,6]
+[random.choice(up_to_ten) for _ in range(5)] # with replacement. 
+# outputs [1,5,5,3,2]
+
+```
+
+# Statistics
 The `statistics` module provides functions for basic statistical calculations:
 ```python
 import statistics
@@ -7924,6 +8224,22 @@ print(Timer('a, b = b, a', 'a=1; b=2').timeit())  # Measure time for swapping
 
 ## Quality Control
 
+
+### `assert`
+For simple testing, one can use assert statements, which will raise an `AssertionError` if the condition is failed. 
+
+```python
+assert 1 + 1 == 2
+assert 1 + 1 == 2, "1 + 1 should equal 2 but didn't"
+```
+In the second assert statement we have added an optional message to be printed if the assertion fails. 
+
+Another way to use assert statements: 
+```python
+assert name, "empty can't be accepted"
+```
+
+### `doctest`
 Python offers tools like `doctest` and `unittest` for testing code. The `doctest` module checks that code examples in docstrings are correct.
 
 ```python
@@ -8193,6 +8509,189 @@ from decimal import *
 round(Decimal('0.70') * Decimal('1.05'), 2)
 # Output: Decimal('0.74')
 ```
+
+## `typing` module
+
+The `typing` module in Python provides support for **type hints**, which are a way to indicate the types of variables, function arguments, and return values in your code. Introduced in Python 3.5, it helps improve code readability, catch errors early using static type checkers (e.g., `mypy`), and provides better editor and IDE support.
+
+---
+
+### Why Use the `typing` Module?
+- **Improved Readability**: Makes your code easier to understand by specifying types.
+- **Error Detection**: Tools like `mypy` can catch type-related bugs without running the code.
+- **Better Tooling**: IDEs can provide autocompletion and better suggestions with type hints.
+
+---
+
+### Common Features of `typing` Module
+
+#### 1. Type Annotations for Variables
+You can annotate variables to specify their types:
+```python
+from typing import List
+
+x: int = 10
+names: List[str] = ["Alice", "Bob", "Charlie"]
+```
+
+#### 2. Function Annotations
+You can annotate function arguments and return types:
+```python
+from typing import List
+
+def add_numbers(a: int, b: int) -> int:
+    return a + b
+
+def get_names() -> List[str]:
+    return ["Alice", "Bob"]
+```
+
+#### 3. Built-in Generic Types
+The `typing` module provides generic versions of Python's built-in types:
+
+| **Type**         | **Description**                              | **Example**                  |
+|-------------------|----------------------------------------------|------------------------------|
+| `List[T]`         | List of elements of type `T`.               | `List[int]`                 |
+| `Dict[K, V]`      | Dictionary with keys of type `K` and values of type `V`. | `Dict[str, int]`          |
+| `Set[T]`          | Set of elements of type `T`.                | `Set[str]`                  |
+| `Tuple[T1, T2]`   | Tuple with specific types for each element.  | `Tuple[int, str]`           |
+| `Union[T1, T2]`   | A value that can be of type `T1` or `T2`.    | `Union[int, str]`           |
+| `Optional[T]`     | A value of type `T` or `None`.               | `Optional[int]`             |
+
+---
+
+### Detailed Examples
+
+#### 1. Using `List`, `Dict`, and `Set`
+```python
+from typing import List, Dict, Set
+
+names: List[str] = ["Alice", "Bob"]
+scores: Dict[str, int] = {"Alice": 90, "Bob": 80}
+unique_ids: Set[int] = {1, 2, 3}
+```
+
+#### 2. Using `Union`
+```python
+from typing import Union
+
+def get_value(value: Union[int, str]) -> str:
+    return str(value)
+```
+
+#### 3. Using `Optional`
+```python
+from typing import Optional
+
+def find_user(user_id: int) -> Optional[str]:
+    if user_id == 1:
+        return "Alice"
+    return None
+```
+
+#### 4. Using `Tuple`
+```python
+from typing import Tuple
+
+def get_coordinates() -> Tuple[int, int]:
+    return (10, 20)
+```
+
+#### 5. Type Aliases
+You can create custom type aliases for better readability:
+```python
+from typing import List
+
+UserID = int
+UserList = List[UserID]
+
+def get_user_ids() -> UserList:
+    return [1, 2, 3]
+```
+
+---
+
+### Advanced Features
+
+#### 1. Callable
+Specifies a function's signature:
+```python
+from typing import Callable
+
+def execute(func: Callable[[int, int], int], a: int, b: int) -> int:
+    return func(a, b)
+```
+
+#### 2. Literal (Python 3.8+)
+Restrict a value to specific literals:
+```python
+from typing import Literal
+
+def set_mode(mode: Literal["auto", "manual"]) -> None:
+    print(f"Mode set to {mode}")
+```
+
+#### 3. TypedDict (Python 3.8+)
+Defines dictionaries with specific keys and value types:
+```python
+from typing import TypedDict
+
+class User(TypedDict):
+    name: str
+    age: int
+
+user: User = {"name": "Alice", "age": 30}
+```
+
+#### 4. NewType
+Creates distinct types for better type checking:
+```python
+from typing import NewType
+
+UserID = NewType('UserID', int)
+
+def get_user_name(user_id: UserID) -> str:
+    return f"User {user_id}"
+
+uid = UserID(123)
+print(get_user_name(uid))
+```
+
+#### 5. Generic
+Allows for creating custom generic types:
+```python
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
+
+class Stack(Generic[T]):
+    def __init__(self):
+        self.items: List[T] = []
+
+    def push(self, item: T) -> None:
+        self.items.append(item)
+
+    def pop(self) -> T:
+        return self.items.pop()
+
+stack = Stack[int]()
+stack.push(10)
+stack.push(20)
+print(stack.pop())  # Output: 20
+```
+
+---
+
+### Static Type Checking
+Using tools like `mypy`, you can check the types in your code:
+```bash
+pip install mypy
+mypy your_script.py
+```
+
+---
+
+The `typing` module is a powerful tool for maintaining robust, readable, and error-free code, especially for large and collaborative projects.
 
 ## Summary of Modules
 
