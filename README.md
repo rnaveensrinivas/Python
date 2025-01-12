@@ -2597,6 +2597,19 @@ Namespaces are one honking great idea -- let's do more of those!
 
 # Data Structures
 
+Python has a number of built-in collection classes. Lists, string, and tuples are ordered collections, sets and dictionaries are unordered collections. 
+
+## Operations on Any Sequence in Python
+
+| **Operation Name** | **Operator** | **Explanation**                                |
+|---------------------|--------------|------------------------------------------------|
+| **Indexing**        | `[ ]`        | Access an element of a sequence               |
+| **Concatenation**   | `+`          | Combine sequences together                    |
+| **Repetition**      | `*`          | Concatenate a repeated number of times        |
+| **Membership**      | `in`         | Ask whether an item is in a sequence          |
+| **Length**          | `len`        | Ask the number of items in the sequence       |
+| **Slicing**         | `[ : ]`      | Extract a part of a sequence                  |
+
 ## List 
 
 Python lists are versatile, mutable sequences that can hold an ordered collection of items. 
@@ -2616,7 +2629,7 @@ The following table summarizes the key methods available for Python lists:
 | `list.sort(*, key=None, reverse=False)` | Sorts the list in-place. Accepts optional `key` for custom sorting and `reverse`.      | `None`           | `a.sort(reverse=True)`                             |
 | `list.reverse()`      | Reverses the list in-place.                                                                           | `None`           | `a.reverse()`                                      |
 | `list.copy()`         | Returns a shallow copy of the list.                                                                   | `list`           | `b = a.copy()`                                     |
-
+| `del list` <br> `del list[index]` | Delete list or an item in list.  | `None` | `del task_list` <br> `del alist[4]` |
 ---
 
 Let's look at how some of these methods work: 
@@ -4757,6 +4770,17 @@ f"{num:#x}"  # Output: '0xff'
 f"{num:#b}"  # Output: '0b11111111'
 ```
 
+#### Formatting option for Floating Point Numbers
+
+| **Modifier** | **Example**   | **Description**                                                                 |
+|--------------|---------------|---------------------------------------------------------------------------------|
+| **number**   | `:20d`        | Put the value in a field width of 20                                            |
+| **<**        | `:<20d`       | Put the value in a field 20 characters wide, left-aligned                       |
+| **>**        | `:>20d`       | Put the value in a field 20 characters wide, right-aligned                      |
+| **^**        | `:^20d`       | Put the value in a field 20 characters wide, center-aligned                     |
+| **0**        | `:020d`       | Put the value in a field 20 characters wide, fill in with leading zeros         |
+| **.**        | `:20.2f`      | Put the value in a field 20 characters wide with 2 characters to the right of the decimal point |
+
 ---
 
 #### Advantages of F-strings
@@ -5016,13 +5040,13 @@ format % values
 
 #### Placeholders and Specifiers
 
-Placeholders are introduced with `%` followed by format specifiers that define how the value will be formatted.
+Placeholders are introduced with `%` (**format operator**) followed by format specifiers that define how the value will be formatted.
 
 ##### Common Format Specifiers
 | Specifier | Meaning                         | Example Input | Example Output      |
 |-----------|---------------------------------|---------------|---------------------|
 | `%s`      | String                          | `'Python'`    | `Python`            |
-| `%d`      | Integer                         | `42`          | `42`                |
+| `%d` or `%i`     | Integer                         | `42`          | `42`                |
 | `%f`      | Floating-point number           | `3.14159`     | `3.141590`          |
 | `%x`      | Hexadecimal (lowercase)         | `255`         | `ff`                |
 | `%X`      | Hexadecimal (uppercase)         | `255`         | `FF`                |
@@ -5030,6 +5054,16 @@ Placeholders are introduced with `%` followed by format specifiers that define h
 | `%E`      | Scientific notation (uppercase) | `12345.67`    | `1.234567E+04`      |
 | `%c`      | Single character                | `65`          | `A` (ASCII 65)      |
 
+##### Additional Format Options
+
+| **Modifier** | **Example**   | **Description**                                                                 |
+|--------------|---------------|---------------------------------------------------------------------------------|
+| **number**   | `%20d`        | Put the value in a field width of 20                                            |
+| **-**        | `%-20d`       | Put the value in a field 20 characters wide, left-justified                     |
+| **+**        | `%+20d`       | Put the value in a field 20 characters wide, right-justified                    |
+| **0**        | `%020d`       | Put the value in a field 20 characters wide, fill in with leading zeros         |
+| **.**        | `%20.2f`      | Put the value in a field 20 characters wide with 2 characters to the right of the decimal point |
+| **(name)**   | `%(name)d`    | Get the value from the supplied dictionary using name as the key                |
 ---
 
 #### Examples of Basic Usage
