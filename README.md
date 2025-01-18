@@ -8189,7 +8189,7 @@ random.sample(up_to_ten, 5) # Samples elements without replacement.
 
 ```
 
-# Statistics
+## Statistics
 The `statistics` module provides functions for basic statistical calculations:
 ```python
 import statistics
@@ -8725,7 +8725,60 @@ mypy your_script.py
 
 ---
 
-The `typing` module is a powerful tool for maintaining robust, readable, and error-free code, especially for large and collaborative projects.
+## Turtle
+
+The **turtle** module in Python is a beginner-friendly graphics library used to create simple drawings and animations. It introduces programming concepts visually, making it an excellent tool for learning programming and exploring recursion, geometry, and patterns.
+
+### Key Features:
+- **Turtle as a Cursor**: A "turtle" represents a cursor that moves on the screen to draw lines or shapes.
+- **Drawing Commands**: Control the turtle to move forward, backward, turn, or lift its pen for movement without drawing.
+- **Customization**: You can change the pen color, width, and speed of the turtle.
+- **Shapes and Patterns**: Draw geometric shapes like circles, squares, and polygons or create complex patterns using loops and recursion.
+
+### Basic Commands:
+1. **Setup**: 
+   - `import turtle`: Import the module.
+   - `turtle.Turtle()`: Create a turtle object.
+
+2. **Movement**:
+   - `forward(distance)`: Move forward by a specified distance.
+   - `backward(distance)`: Move backward.
+   - `right(angle)` / `left(angle)`: Turn the turtle right or left by a given angle.
+
+3. **Drawing**:
+   - `penup()` / `pendown()`: Lift or place the pen to stop or start drawing.
+   - `color(color_name)`: Set the pen color.
+   - `width(width)`: Set the pen's thickness.
+
+4. **Control**:
+   - `speed(speed)`: Adjust drawing speed.
+   - `exitonclick()`: Wait for a click to close the turtle window.
+
+### Example:
+```python
+import turtle
+
+# Create a turtle object
+t = turtle.Turtle()
+
+# Set turtle properties
+t.color("blue")
+t.width(2)
+
+# Draw a square
+for _ in range(4):
+    t.forward(100)  # Move forward 100 units
+    t.right(90)     # Turn right by 90 degrees
+
+# Finish and close the window
+turtle.done()
+```
+
+### Applications:
+- Visualizing recursion (fractals, spirals)
+- Drawing geometric shapes
+- Animation and simple games
+
 
 ## Summary of Modules
 
@@ -8757,7 +8810,8 @@ The `typing` module is a powerful tool for maintaining robust, readable, and err
 | `logging`          | Provides flexible logging systems | 
 | `weakref`          | Tracking objects without creating a reference, useful for caching | 
 | `array` <br> `deque`<br> `bisect` <br>`heapq` | data structures | 
- `decimal` | For high precision computing | 
+| `decimal` | For high precision computing | 
+| `turtle` | For beginner friendly graphics | 
 
 # Virtual Environments and Packages
 
