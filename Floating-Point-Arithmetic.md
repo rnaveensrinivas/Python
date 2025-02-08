@@ -5,22 +5,22 @@ Floating-point numbers in computers are represented using binary fractions (base
 ## Representation of Fractions
 
 Consider a decimal fraction like 0.625. In base 10, it is represented as:
-\[ 0.625 = \frac{6}{10} + \frac{2}{100} + \frac{5}{1000} \]
+$0.625 = \frac{6}{10} + \frac{2}{100} + \frac{5}{1000}$
 
 In base 2 (binary), the number 0.625 is represented as:
-\[ 0.625 = \frac{1}{2} + \frac{0}{4} + \frac{1}{8} \]
+$0.625 = \frac{1}{2} + \frac{0}{4} + \frac{1}{8}$
 This is straightforward because it can be expressed precisely using powers of 2.
 
 However, many decimal fractions cannot be exactly represented in binary. For example, 1/10 in decimal is:
-\[ 0.1 \text{ (in base 10)} \]
+$0.1 \text{ (in base 10)}$
 
 In binary, this fraction is an infinitely repeating sequence:
-\[ 0.1 = 0.00011001100110011001100110011\ldots \text{ (repeating)} \]
+$0.1 = 0.00011001100110011001100110011\ldots \text{ (repeating)}$
 
 If we truncate this repeating sequence, we get an approximation. In most computers, binary floating-point numbers are approximated using 53 bits for precision (in double-precision format).
 
 For instance, 0.1 in binary is approximated as:
-\[ \frac{3602879701896397}{2^{55}} \]
+$\frac{3602879701896397}{2^{55}}$
 This is a close approximation, but not exactly equal to 1/10. On most systems, this binary approximation is used to store 0.1.
 
 
@@ -93,7 +93,7 @@ For applications that require exact decimal arithmetic (e.g., financial calculat
 ## Analyzing the `0.1` Example in Detail
 
 The primary issue with floating-point representation is that certain decimal fractions (like 0.1) cannot be represented exactly in binary. In IEEE 754 double-precision format (binary64), 0.1 is represented as:
-\[ \frac{7205759403792794}{2^{56}} \]
+$\frac{7205759403792794}{2^{56}}$
 This is a good approximation of 1/10, but it is slightly larger. The value stored in memory for 0.1 is:
 ```
 0.1000000000000000055511151231257827021181583404541015625
